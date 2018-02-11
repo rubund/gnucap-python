@@ -13,17 +13,24 @@ AC_LANG([C++])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([dl], [dlopen])
 
+AC_CHECK_PROG(HAVE_GCCONF, gnucap-conf, true, false)
+if test "x$HAVE_GCCONF" = "xfalse"; then
+	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
+fi
+GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
+
 # Check for python
 AC_PYTHON_DEVEL([>= '2.3'])
 AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
+AC_SUBST([GC_CPPFLAGS])
 
 ## Libtool init
 AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
 ## Check for gnucap
-PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+# PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
 
 ## Check for numpy development file
 AC_PYTHON_MODULE(numpy)

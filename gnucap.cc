@@ -1,10 +1,11 @@
 #include "gnucap.h"
-#include "gnucap/u_lang.h"
-#include "gnucap/c_comand.h"
-#include "gnucap/globals.h"
-#include "gnucap/m_wave.h"
-#include "gnucap/s__.h"
-#include "gnucap/io_.h"
+#include <u_lang.h>
+#include <c_comand.h>
+#include <globals.h>
+#include <m_wave.h>
+#include <s__.h>
+#include <io_.h>
+#include <e_cardlist.h>
 
 #include "numpy_interface.h"
 

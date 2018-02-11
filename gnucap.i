@@ -3,6 +3,7 @@
 // generate directors for all classes that have virtual methods
 %feature("director");
 //%feature("nodirector") TRANSIENT; 
+%feature(nodirector) CARD;
 
 %include stl.i
 %include std_string.i
@@ -10,18 +11,20 @@
 
 %{
 #include "gnucap.h"
-#include "gnucap/ap.h"
-#include "gnucap/c_comand.h"
-#include "gnucap/l_dispatcher.h"
-#include "gnucap/s__.h"
-#include "gnucap/m_wave.h"
-#include "gnucap/u_opt.h"
-#include "gnucap/e_cardlist.h"
-#include "gnucap/globals.h"
-#include "gnucap/md.h"
-#include "gnucap/m_matrix.h"
-#include "gnucap/u_status.h"
-#include "gnucap/s_tr.h"
+#include <ap.h>
+#include <c_comand.h>
+#include <l_dispatcher.h>
+#include <s__.h>
+#include <m_wave.h>
+#include <u_opt.h>
+#include <e_cardlist.h>
+#include <globals.h>
+#include <md.h>
+#include <m_matrix.h>
+#include <u_status.h>
+#include <s_tr.h>
+#include <u_time_pair.h>
+#include <u_sim_data.h>
 %}
 
 #ifdef HAS_NUMPY
@@ -72,7 +75,7 @@ public:
   void          fbsub(T* x, const T* b, T* c = NULL) const;
 
   T     d(int r, int  )const    {return *(_diaptr[r]);}
-  const T&    s(int r, int c);
+ //  const T&    s(int r, int c);
 
 private:
   T& m(int r, int c);
@@ -125,24 +128,28 @@ protected:
   explicit CKT_BASE(const CKT_BASE& p)    :_probes(0), _label(p._label) {}
   virtual  ~CKT_BASE();
 public:
+  static WAVE* find_wave(const std::string&);
 
-  static BSMATRIX<double>  aa;  /* raw matrix for DC & tran */
-  static BSMATRIX<double>  lu;  /* decomposed matrix for DC & tran */
-  static BSMATRIX<COMPLEX> acx; /* raw & decomposed matrix for AC */
+// these are in _sim nowadays
+//  static BSMATRIX<double>  aa;  /* raw matrix for DC & tran */
+//  static BSMATRIX<double>  lu;  /* decomposed matrix for DC & tran */
+//  static BSMATRIX<COMPLEX> acx; /* raw & decomposed matrix for AC */
 
 
-
+#if 0 // also in _sim
 protected:
   void set_command_ac()const      {_mode = s_AC;}
   void set_command_dc()const      {_mode = s_DC;}
   void set_command_op()const      {_mode = s_OP;}
   void set_command_tran()const    {_mode = s_TRAN;}
   void set_command_fourier()const {_mode = s_FOURIER;}
+#endif
 
 };
 
 class CARD : public CKT_BASE {
 protected:                              // create and destroy.
+private:
   CARD();
   CARD(const CARD&);
 public:
@@ -168,6 +175,7 @@ public:
       std::string value_name()const;
       static void command(const std::string&, CARD_LIST*);
       static void cmdproc(CS&, CARD_LIST*);
+  // virtual CARD*	 clone()const { incomplete();}
 };
 
 class SIM : public CMD {
@@ -176,35 +184,47 @@ protected:
 public:
                 ~SIM();
 
-        static void   init();
-        static void   uninit();
+protected: // swig needs to know about these, apparently
+  virtual void	setup(CS&)	= 0;
+  virtual void	sweep()		= 0;
+};
+
+struct SIM_DATA{
+// SIM_DATA
  
-        static double freq;           /* AC frequency to analyze at (Hertz) */
-        static std::complex<double> jomega;        /* AC frequency to analyze at (radians) */
-        static double time0;          /* time now */
-        static double time1;          /* time at previous time step */
-        static double _dtmin;         /* min internal step size */
-        static double temp_c_in;      /* ambient temperature, input and sweep variable */
-        static double temp_c;         /* ambient temperature, actual */
-        static double damp;           /* Newton-Raphson damping coefficient actual */
-        static bool uic;              /* flag: use initial conditions (spice-like) */
-        static bool bypass_ok;        /* flag: ok to bypass model evaluation */
-        static bool fulldamp;         /* flag: big iter. jump. use full (min) damp */
-        static bool limiting;         /* flag: node limiting */
-        static bool freezetime;       /* flag: don't advance stored time */
-        static double genout;         /* tr dc input to circuit (generator) */
+        //static double freq;           /* AC frequency to analyze at (Hertz) */
+        // static std::complex<double> jomega;        /* AC frequency to analyze at (radians) */
+        // static double time0;          /* time now */
+        // static double time1;          /* time at previous time step */
+        // static double _dtmin;         /* min internal step size */
+        // static double temp_c_in;      /* ambient temperature, input and sweep variable */
+        // static double temp_c;         /* ambient temperature, actual */
+        // static double damp;           /* Newton-Raphson damping coefficient actual */
+        // static bool uic;              /* flag: use initial conditions (spice-like) */
+        // static bool bypass_ok;        /* flag: ok to bypass model evaluation */
+        // static bool fulldamp;         /* flag: big iter. jump. use full (min) damp */
+        // static bool limiting;         /* flag: node limiting */
+        // static bool freezetime;       /* flag: don't advance stored time */
+        // static double genout;         /* tr dc input to circuit (generator) */
 
-        static double last_time;      /* time at which "volts" is valid */
-        static int    *nm;            /* node map (external to internal)      */
-        static double *i;             /* dc-tran current (i) vector           */
-        static double *v0;            /* dc-tran voltage, new                 */
-        static double *vt1;           /* dc-tran voltage, 1 time ago          */
-                                /*  used to restore after rejected step */
-        static double *fw;            /* dc-tran fwd sub intermediate values  */
-        static double *vdc;           /* saved dc voltages                    */
-        static COMPLEX *ac;           /* ac right side                        */
+        // static double last_time;      /* time at which "volts" is valid */
+        // static int    *nm;            /* node map (external to internal)      */
+        // static double *i;             /* dc-tran current (i) vector           */
+        // static double *v0;            /* dc-tran voltage, new                 */
+        // static double *vt1;           /* dc-tran voltage, 1 time ago          */
+        //                         /*  used to restore after rejected step */
+        // static double *fw;            /* dc-tran fwd sub intermediate values  */
+        // static double *vdc;           /* saved dc voltages                    */
+        // static COMPLEX *ac;           /* ac right side                        */
+        int _user_nodes;
+        int _subckt_nodes;
+        int _model_nodes;
+        int _total_nodes;
+        int _iter[iCOUNT];
 
-        static WAVE* find_wave(const std::string&);
+
+        void init();
+        void uninit();
 private:
         virtual void  setup(CS&)      = 0;
         virtual void  sweep()         = 0;
@@ -225,16 +245,16 @@ protected:
          const PROBELIST& plotlist()const;
          const PROBELIST& printlist()const;
          const PROBELIST& storelist()const;
-         void   outdata(double);
+         void   outdata(double, int);
          void   head(double,double,const std::string&);
          void   print_results(double);
          void   alarm();
          virtual void  store_results(double);
 private:
         const std::string long_label()const {unreachable(); return "";}
-protected: 
-         void   alloc_vectors();
-  static void   unalloc_vectors(); 
+protected: // what's this?
+//         void   alloc_vectors();
+//  static void   unalloc_vectors(); 
 
 };
 
@@ -249,20 +269,15 @@ private:
 protected:
         bool _cont;
         void sweep();
-        void outdata(double);
+        void outdata(double, int);
 };
 
 class STATUS {
 public:
 //  void command(CS& cmd);
 
-  int user_nodes;
-  int subckt_nodes;
-  int model_nodes;
-  int total_nodes;
   int control;
   int hidden_steps;
-  int iter[iCOUNT];
 };
 
 enum RUN_MODE {
@@ -331,3 +346,5 @@ template<class T> void bsmatrix_fbsub_array(BSMATRIX<T> *A, PyObject *rhs, PyObj
 ///////////////////////////////////////////////////////////////////////////////
 %pythoncode %{
 %}
+
+// vim:ts=8:sw=8:et:

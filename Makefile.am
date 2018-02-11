@@ -4,6 +4,8 @@
 
 pluginsdir = $(libdir)/gnucap
 
+AM_CPPFLAGS=${GC_CPPFLAGS}
+
 plugins_LTLIBRARIES = python.la
 
 python_la_SOURCES = c_python.cc gnucap.cc gnucap_wrap.cxx
@@ -13,7 +15,7 @@ if NUMPY
 endif
 
 python_la_CPPFLAGS = @PYTHON_CPPFLAGS@ \
-	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\"
+	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
 python_la_CFLAGS = -fPIC ${DEPS_CFLAGS}
 
@@ -23,5 +25,8 @@ python_la_LIBADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@
 
 ACLOCAL_AMFLAGS = -I m4
 
+# ouch. also builds .h?
 %_wrap.cxx: %.i
 	swig -python -c++ -Wall $(SWIG_FLAGS) $<
+
+CLEANFILES = gnucap_wrap.cxx gnucap_wrap.h
