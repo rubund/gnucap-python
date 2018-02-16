@@ -18,12 +18,15 @@ if test "x$HAVE_GCCONF" = "xfalse"; then
 	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
 fi
 GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
+GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
+GC_LIBS=$(gnucap-conf$_program_suffix --libs)
 
 # Check for python
 AC_PYTHON_DEVEL([>= '2.3'])
 AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
 AC_SUBST([GC_CPPFLAGS])
+AC_SUBST([GC_LIBS])
 
 ## Libtool init
 AC_PROG_LIBTOOL
@@ -52,7 +55,7 @@ AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
 AC_PROG_SWIG()
 
 # exports symbols to plugins
-LDFLAGS="$LDFLAGS -rdynamic"
+LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
 AC_OUTPUT([
 	Makefile
@@ -63,6 +66,7 @@ AC_MSG_RESULT([
 
    prefix:                   $prefix
    CPPFLAGS:                 $CPPFLAGS
+   GC_CPPFLAGS:              $GC_CPPFLAGS
    CFLAGS:                   $CFLAGS
    CXXFLAGS:                 $CXXFLAGS
    LDFLAGS:                  $LDFLAGS
