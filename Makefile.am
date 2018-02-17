@@ -2,6 +2,11 @@
 ##
 ## Top level automake file for gnucap
 
+# this is a hack
+all-local:
+	ln -sf .libs/python.so _gnucap.so
+
+
 pluginsdir = $(libdir)/gnucap
 
 AM_CPPFLAGS=${GC_CPPFLAGS}
@@ -38,4 +43,4 @@ ACLOCAL_AMFLAGS = -I m4
 %_wrap.cxx: %.i
 	swig -python -c++ -Wall $(SWIG_FLAGS) $<
 
-CLEANFILES = gnucap_wrap.cxx gnucap_wrap.h
+CLEANFILES = gnucap_wrap.cxx gnucap_wrap.h gnucap.py
