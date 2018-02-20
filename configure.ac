@@ -2,9 +2,10 @@
 # Process this file with autoconf to produce a configure script.
 # $Id$
 
-AC_PREREQ(2.59)
-AC_INIT([c_python.cc])
-AM_INIT_AUTOMAKE(gnucap-python, 2009-04-30)
+AC_PREREQ(2.69)
+AC_INIT([gnucap-python], [0.0.0], [gnucap-devel@gnu.org])
+AC_CONFIG_SRCDIR([c_python.cc])
+AM_INIT_AUTOMAKE([])
 AM_CONFIG_HEADER([config.h])
 
 # Checks for libraries.
@@ -21,8 +22,10 @@ GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
 GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
 GC_LIBS=$(gnucap-conf$_program_suffix --libs)
 
+AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 # Check for python
-AC_PYTHON_DEVEL([>= '2.3'])
+AM_PATH_PYTHON([2.7])
+AC_PYTHON_DEVEL([>= '2.3']) # ???
 AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
 AC_SUBST([GC_CPPFLAGS])
@@ -45,11 +48,13 @@ AC_ARG_WITH([numpy], [AC_HELP_STRING([--with-numpy=DIR],
 NUMPY_DIR="${NUMPY_DIR}/core/include/numpy"
 save_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS -I$NUMPY_DIR"
+HAS_NUMPY=no
+
 AC_CHECK_HEADER([${NUMPY_DIR}/arrayobject.h],
-                [AC_DEFINE(HAS_NUMPY,,[wether to include numpy support]),
-                HAS_NUMPY=yes],,
-                [#include "Python.h"])
+                [ AC_DEFINE(HAS_NUMPY,[],[wether to include numpy support])
+		HAS_NUMPY=yes],[],[#include "Python.h"])
 CPPFLAGS=$save_CPPFLAGS
+
 AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
 
 AC_PROG_SWIG()
@@ -59,6 +64,8 @@ LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
 AC_OUTPUT([
 	Makefile
+	include/Makefile
+	gnucap/Makefile
 	])
 
 AC_MSG_RESULT([
@@ -74,3 +81,4 @@ AC_MSG_RESULT([
 
 ])
 
+dnl vim:ts=8:sw=2:

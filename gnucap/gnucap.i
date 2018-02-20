@@ -2,15 +2,16 @@
 
 // generate directors for all classes that have virtual methods
 %feature("director");
-//%feature("nodirector") TRANSIENT; 
-%feature(nodirector) CARD;
+%feature("nodirector") TRANSIENT; 
+%feature(nodirector) CMD;
+%feature(nodirector) SIM;
 
 %include stl.i
 %include std_string.i
 %include std_complex.i
 
 %{
-#include "gnucap.h"
+#include "wrap.h"
 #include <ap.h>
 #include <c_comand.h>
 #include <l_dispatcher.h>
@@ -25,6 +26,7 @@
 #include <s_tr.h>
 #include <u_time_pair.h>
 #include <u_sim_data.h>
+#include <globals.h>
 %}
 
 #ifdef HAS_NUMPY
@@ -130,23 +132,11 @@ protected:
 public:
   static WAVE* find_wave(const std::string&);
 
-// these are in _sim nowadays
-//  static BSMATRIX<double>  aa;  /* raw matrix for DC & tran */
-//  static BSMATRIX<double>  lu;  /* decomposed matrix for DC & tran */
-//  static BSMATRIX<COMPLEX> acx; /* raw & decomposed matrix for AC */
-
-
-#if 0 // also in _sim
-protected:
-  void set_command_ac()const      {_mode = s_AC;}
-  void set_command_dc()const      {_mode = s_DC;}
-  void set_command_op()const      {_mode = s_OP;}
-  void set_command_tran()const    {_mode = s_TRAN;}
-  void set_command_fourier()const {_mode = s_FOURIER;}
-#endif
+  virtual bool help(CS&, OMSTREAM&) const{ untested(); }
 
 };
 
+#if 0
 class CARD : public CKT_BASE {
 protected:                              // create and destroy.
 private:
@@ -166,7 +156,122 @@ public: // parameters
   virtual void set_param_by_index(int, std::string&, int);
   virtual int param_count()const {return 0;}
 };
+#endif
+class CARD : public CKT_BASE {
+private:
+  mutable int	_evaliter;	// model eval iteration number
+  CARD_LIST*	_subckt;
+  CARD* 	_owner;
+  bool		_constant;	// eval stays the same every iteration
+protected:
+  node_t*	_n;
+public:
+  int		_net_nodes;	// actual number of "nodes" in the netlist
+  //--------------------------------------------------------------------
+public:   				// traversal functions
+  CARD* find_in_my_scope(const std::string& name);
+  const CARD* find_in_my_scope(const std::string& name)const;
+  const CARD* find_in_parent_scope(const std::string& name)const;
+  const CARD* find_looking_out(const std::string& name)const;
+  //--------------------------------------------------------------------
+protected: // create and destroy.
+  explicit CARD();
+  explicit CARD(const CARD&);
+public:
+  virtual  ~CARD();
+  virtual CARD*	 clone()const = 0;
+  virtual CARD*	 clone_instance()const  {return clone();}
+  //--------------------------------------------------------------------
+public:	// "elaborate"
+  virtual void	 precalc_first()	{}
+  virtual void	 expand_first()		{}
+  virtual void	 expand()		{}
+  virtual void	 expand_last()		{}
+  virtual void	 precalc_last()		{}
+  virtual void	 map_nodes()		{}
+  //--------------------------------------------------------------------
+public:	// dc-tran
+  virtual void	 tr_iwant_matrix()	{}
+  virtual void	 tr_begin()		{}
+  virtual void	 tr_restore()		{}
+  virtual void	 dc_advance()		{}
+  virtual void	 tr_advance()		{}
+  virtual void	 tr_regress()		{}
+  virtual bool	 tr_needs_eval()const	{return false;}
+  virtual void	 tr_queue_eval()	{}
+  virtual bool	 do_tr()		{return true;}
+  virtual bool	 do_tr_last()		{return true;}
+  virtual void	 tr_load()		{}
+  virtual TIME_PAIR tr_review();	//{return TIME_PAIR(NEVER,NEVER);}
+  virtual void	 tr_accept()		{}
+  virtual void	 tr_unload()		{untested();}
+  //--------------------------------------------------------------------
+public:	// ac
+  virtual void	 ac_iwant_matrix()	{}
+  virtual void	 ac_begin()		{}
+  virtual void	 do_ac()		{}
+  virtual void	 ac_load()		{}
+  //--------------------------------------------------------------------
+public:	// state, aux data
+  virtual char id_letter()const	{unreachable(); return '\0';}
+  virtual int  net_nodes()const	{untested();return 0;}
+  virtual bool is_device()const	{return false;}
+  virtual void set_slave()	{untested(); assert(!subckt());}
+	  bool evaluated()const;
 
+  void	set_constant(bool c)	{_constant = c;}
+  bool	is_constant()const	{return _constant;}
+  //--------------------------------------------------------------------
+public: // owner, scope
+  virtual CARD_LIST*	   scope();
+  virtual const CARD_LIST* scope()const;
+  virtual bool		   makes_own_scope()const  {return false;}
+
+  CARD*		owner()		   {return _owner;}
+  const CARD*	owner()const	   {return _owner;}
+  void		set_owner(CARD* o) {assert(!_owner||_owner==o); _owner=o;}
+  //--------------------------------------------------------------------
+public: // subckt
+  CARD_LIST*	     subckt()		{return _subckt;}
+  const CARD_LIST*   subckt()const	{return _subckt;}
+  void	  new_subckt();
+  void	  new_subckt(const CARD* model, PARAM_LIST* p);
+  void	  renew_subckt(const CARD* model, PARAM_LIST* p);
+  //void     new_subckt(const CARD* model, CARD* owner, const CARD_LIST* scope, PARAM_LIST* p);
+  //void     renew_subckt(const CARD* model, CARD* owner, const CARD_LIST* scope, PARAM_LIST* p);
+  //--------------------------------------------------------------------
+public:	// type
+  virtual std::string dev_type()const	{unreachable(); return "";}
+  virtual void set_dev_type(const std::string&);
+  //--------------------------------------------------------------------
+public:	// label -- in CKT_BASE
+  // non-virtual void set_label(const std::string& s) //BASE
+  // non-virtual const std::string& short_label()const //BASE
+  /*virtual*/ const std::string long_label()const; // no further override
+  //--------------------------------------------------------------------
+public:	// ports -- mostly defer to COMPONENT
+  node_t& n_(int i)const;
+  int     connects_to(const node_t& node)const;
+  //--------------------------------------------------------------------
+public: // parameters
+  virtual void set_param_by_name(std::string, std::string);
+  virtual void set_param_by_index(int i, std::string&, int offset)
+				{untested(); throw Exception_Too_Many(i, 0, offset);}
+  virtual int  param_count_dont_print()const	   {return 0;}
+  virtual int  param_count()const		   {return 0;}
+  virtual bool param_is_printable(int)const	   {untested(); return false;}
+  virtual std::string param_name(int)const	   {return "";}
+  virtual std::string param_name(int i,int j)const {return (j==0) ? param_name(i) : "";}
+  virtual std::string param_value(int)const	   {untested(); return "";}
+  virtual std::string value_name()const = 0;
+  //--------------------------------------------------------------------
+public:	// obsolete -- do not use in new code
+  virtual bool use_obsolete_callback_parse()const {return false;}
+  virtual bool use_obsolete_callback_print()const {return false;}
+  virtual void print_args_obsolete_callback(OMSTREAM&,LANGUAGE*)const {unreachable();}
+};
+
+#if 0
 class CMD : public CARD { 
 public:            
       CMD();
@@ -176,6 +281,16 @@ public:
       static void command(const std::string&, CARD_LIST*);
       static void cmdproc(CS&, CARD_LIST*);
   // virtual CARD*	 clone()const { incomplete();}
+};
+#endif
+
+class CMD : public CKT_BASE {
+public:
+  std::string value_name()const {return "";}
+  virtual void do_it(CS&, CARD_LIST*) = 0;
+  virtual ~CMD() {}
+  static  void  cmdproc(CS&, CARD_LIST*);
+  static  void	command(const std::string&, CARD_LIST*);
 };
 
 class SIM : public CMD {
@@ -190,46 +305,20 @@ protected: // swig needs to know about these, apparently
 };
 
 struct SIM_DATA{
-// SIM_DATA
- 
-        //static double freq;           /* AC frequency to analyze at (Hertz) */
-        // static std::complex<double> jomega;        /* AC frequency to analyze at (radians) */
-        // static double time0;          /* time now */
-        // static double time1;          /* time at previous time step */
-        // static double _dtmin;         /* min internal step size */
-        // static double temp_c_in;      /* ambient temperature, input and sweep variable */
-        // static double temp_c;         /* ambient temperature, actual */
-        // static double damp;           /* Newton-Raphson damping coefficient actual */
-        // static bool uic;              /* flag: use initial conditions (spice-like) */
-        // static bool bypass_ok;        /* flag: ok to bypass model evaluation */
-        // static bool fulldamp;         /* flag: big iter. jump. use full (min) damp */
-        // static bool limiting;         /* flag: node limiting */
-        // static bool freezetime;       /* flag: don't advance stored time */
-        // static double genout;         /* tr dc input to circuit (generator) */
-
-        // static double last_time;      /* time at which "volts" is valid */
-        // static int    *nm;            /* node map (external to internal)      */
-        // static double *i;             /* dc-tran current (i) vector           */
-        // static double *v0;            /* dc-tran voltage, new                 */
-        // static double *vt1;           /* dc-tran voltage, 1 time ago          */
-        //                         /*  used to restore after rejected step */
-        // static double *fw;            /* dc-tran fwd sub intermediate values  */
-        // static double *vdc;           /* saved dc voltages                    */
-        // static COMPLEX *ac;           /* ac right side                        */
-        int _user_nodes;
-        int _subckt_nodes;
-        int _model_nodes;
-        int _total_nodes;
-        int _iter[iCOUNT];
+  int _user_nodes;
+  int _subckt_nodes;
+  int _model_nodes;
+  int _total_nodes;
+  int _iter[iCOUNT];
 
 
-        void init();
-        void uninit();
-private:
-        virtual void  setup(CS&)      = 0;
-        virtual void  sweep()         = 0;
-        virtual void  finish()        {}
-        virtual bool  is_step_rejected()const {return false;}
+  void init();
+  void uninit();
+  private:
+  virtual void  setup(CS&)      = 0;
+  virtual void  sweep()         = 0;
+  virtual void  finish()        {}
+  virtual bool  is_step_rejected()const {return false;}
 };
 
 // The SIMWrapper is needed since Swig doesn't handle private virtual methods
@@ -240,6 +329,7 @@ public:
   explicit SIMWrapper():SIM()  {}
   virtual void  setup(CS&)      = 0;
   virtual void  sweep()         = 0;
+  void  do_it(CS&, CARD_LIST*)       {incomplete();}
 protected:
          const PROBELIST& alarmlist()const;     /* s__out.cc */
          const PROBELIST& plotlist()const;
@@ -294,12 +384,18 @@ class SET_RUN_MODE {
 public:
       SET_RUN_MODE(RUN_MODE rm);
 };
+// ENV::run_mode;
+
+class ENV {
+public:
+  static RUN_MODE run_mode; // variations on handling of dot commands
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 // Global variables
 ///////////////////////////////////////////////////////////////////////////////
 //RUN_MODE ENV::run_mode = rPRE_MAIN;
-DISPATCHER<CMD> command_dispatcher;
+//DISPATCHER<CMD> command_dispatcher;
 //DISPATCHER<COMMON_COMPONENT> bm_dispatcher;
 //DISPATCHER<MODEL_CARD> model_dispatcher;
 //DISPATCHER<CARD> device_dispatcher;
@@ -347,4 +443,4 @@ template<class T> void bsmatrix_fbsub_array(BSMATRIX<T> *A, PyObject *rhs, PyObj
 %pythoncode %{
 %}
 
-// vim:ts=8:sw=8:et:
+// vim:ts=8:sw=2:et:

@@ -1,0 +1,6 @@
+- get rid of warnings
+- redirect output to numpy array
+
+also
+- simulation commands implemented in python
+- components implemented in python

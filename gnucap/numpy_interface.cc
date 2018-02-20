@@ -1,33 +1,35 @@
-#include <gnucap/m_matrix.h>
-#include <gnucap/m_wave.h>
+#include <m_matrix.h>
+#include <m_wave.h>
+#include <io_trace.h>
+
 #include "numpy_interface.h"
 #include <Python.h>
 #include <numpy/arrayobject.h>
 
-void init_numpy() {
+void init_numpy() { untested();
   import_array();
 }
 
-PyObject *to_double_array(double *data, int len) {
+PyObject *to_double_array(double *data, int len) { untested();
   npy_intp dims[1] = {len};
   return PyArray_SimpleNewFromData(1, dims, PyArray_DOUBLE, (void *)(data+1));
 }
 
-PyObject *get_complex_array(COMPLEX *data, int len) {
+PyObject *get_complex_array(COMPLEX *data, int len) { untested();
   npy_intp dims[1] = {len};
   PyObject *arr = PyArray_SimpleNew(1, dims, PyArray_COMPLEX128);
 
   npy_complex128 *outdata = (npy_complex128 *) PyArray_DATA(arr);
   
   // copy data
-  for(int i=0; i < len; i++) {
+  for(int i=0; i < len; i++) { untested();
     outdata[i].real = data[i+1].real();
     outdata[i].imag = data[i+1].imag();
   }
   return arr;
 }
 
-void set_complex_array(COMPLEX *data, PyObject *srcarray) {
+void set_complex_array(COMPLEX *data, PyObject *srcarray) { untested();
   if( !PyArray_Check(srcarray) ||
        ( PyArray_TYPE(srcarray ) != PyArray_COMPLEX128 ) ||
       ( PyArray_NDIM(srcarray ) != 1 ))
@@ -38,7 +40,7 @@ void set_complex_array(COMPLEX *data, PyObject *srcarray) {
     data[i] = COMPLEX(indata[i].real, indata[i].imag);
 }
 
-PyObject *wave_to_arrays(WAVE *wave) {
+PyObject *wave_to_arrays(WAVE *wave) { untested();
   PyObject *x, *y;
   int i, nrows = 0;
 
@@ -59,7 +61,7 @@ PyObject *wave_to_arrays(WAVE *wave) {
   double *xdata = (double *) PyArray_DATA(x);
   double *ydata = (double *) PyArray_DATA(y);
   i=0;
-  for(WAVE::const_iterator wi = wave->begin(); wi < wave->end(); wi++, i++) {
+  for(WAVE::const_iterator wi = wave->begin(); wi < wave->end(); wi++, i++) { untested();
     xdata[i] = wi->first;
     ydata[i] = wi->second;
   }
@@ -72,7 +74,7 @@ PyObject *wave_to_arrays(WAVE *wave) {
   return pTuple;
 }
 
-PyObject *bsmatrix_to_array_d(BSMATRIX<double> &A) {
+PyObject *bsmatrix_to_array_d(BSMATRIX<double> &A) { untested();
   PyObject *Aarray;
   int i,j;
 
@@ -89,7 +91,7 @@ PyObject *bsmatrix_to_array_d(BSMATRIX<double> &A) {
   return Aarray;
 }
 
-PyObject *bsmatrix_to_array_c(BSMATRIX<COMPLEX> &A) {
+PyObject *bsmatrix_to_array_c(BSMATRIX<COMPLEX> &A) { untested();
   PyObject *Aarray;
   int i,j;
 
@@ -100,7 +102,7 @@ PyObject *bsmatrix_to_array_c(BSMATRIX<COMPLEX> &A) {
   // Copy data
   npy_complex128 *ptr = (npy_complex128 *) PyArray_DATA(Aarray);
   for(i = 1; i <= A.size(); i++) 
-    for(j = 1; j <= A.size(); j++) {
+    for(j = 1; j <= A.size(); j++) { untested();
       ptr->real = A.s(i,j).real();
       ptr->imag = A.s(i,j).imag();
       ptr++;

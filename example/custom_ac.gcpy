@@ -1,6 +1,8 @@
 """
 Create a new ac-analysis that always runs at a single frequency
+This only works when invoked from gnucap (?)
 """
+
 
 import os
 import numpy as np
@@ -8,6 +10,10 @@ import pylab
 
 import gnucap
 
+print("MYAC")
+A=file("/tmp/HELLO","w+")
+
+gnucap.command("set trace")
 gnucap.command("set lang=acs")
 
 ## Set gnucap run mode
@@ -17,6 +23,7 @@ gnucap.command("get example.ckt")
 
 class MyAC(gnucap.SIMWrapper):
     def do_it(self, cmd, scope):
+        PRINT("HELLOWORLD")
         self._scope = scope
         self.set_command_ac()
 
@@ -77,6 +84,7 @@ class MyAC(gnucap.SIMWrapper):
 myac = MyAC()
 
 gnucap.attach_command("myac", myac)
+gnucap.attach_command("ac", myac)
 
 gnucap.command("store ac vm(2)")
 gnucap.command("myac")

@@ -14,7 +14,7 @@ namespace {
 
 /*--------------------------------------------------------------------------*/
 void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
-{
+{ untested();
   std::string file_name;
   char *argv[] = {};
   FILE *fp;
@@ -23,10 +23,12 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
   
   fp = fopen(file_name.c_str(), "r");
   
-  if(fp == NULL) 
+  if(fp == NULL) {
     throw Exception_File_Open(std::string("Could not open ") + file_name);
+  }else{
+  }
   
-  if(!python_loaded) {
+  if(!python_loaded) { untested();
     dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
     Py_Initialize();
     PySys_SetArgv(0, argv);
@@ -35,8 +37,10 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
     init_gnucap();
 
     python_loaded = 1;
+  }else{ untested();
   }
 
+  trace1("running", file_name);
   PyRun_SimpleFile(fp, file_name.c_str());
 }
 
@@ -44,7 +48,7 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 class CMD_PYTHON : public CMD {
 public:
   void do_it(CS& cmd, CARD_LIST* Scope)
-  {
+  { untested();
     eval_python(cmd, IO::mstdout, Scope);
   }
 } p1;

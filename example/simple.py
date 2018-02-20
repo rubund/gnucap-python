@@ -4,14 +4,6 @@ import pylab
 
 import gnucap
 
-# here? (probably not)
-gnucap.command("load gnucap-default-plugins.so")
-
-gnucap.command("set lang=acs")
-
-## Set gnucap run mode
-runmode = gnucap.SET_RUN_MODE(gnucap.rBATCH)
-
 ## Load custom plot command
 import loadplot
 
