@@ -2,19 +2,44 @@
 
 import sys
 import ctypes
+import os
 
-flags = sys.getdlopenflags()
-sys.setdlopenflags(flags | ctypes.RTLD_GLOBAL)
-from _gnucap import *
-sys.setdlopenflags(flags)
+# python tries to outsmart us, work around that
+if(os.name=="posix"):
+	flags = sys.getdlopenflags()
+	sys.setdlopenflags(flags | ctypes.RTLD_GLOBAL)
+	from gnucap_swig import *
+	sys.setdlopenflags(flags)
+else:
+	untested()
+	from gnucap_swig import *
 
 # TODO: ask gnucap-conf (at configure time)
-import os
+# BUG: do not override, if set.
 os.environ["GNUCAP_PLUGPATH"] = "/usr/local/lib/gnucap"
 
-# not so sure. depend on variables in rc
-ENV_run_mode_set(rBATCH)
-command("load gnucap-default-plugins.so")
-command("set lang acs")
+if hasattr(sys, 'ps1'):
+	print("welcome to gnucap-python")
+	run_mode = SET_RUN_MODE(rINTERACTIVE)
+else:
+	run_mode = SET_RUN_MODE(rBATCH)
+	if sys.flags.interactive:
+		# what is this?
+		print("... in interactive postmortem mode, incomplete")
 
-print("welcome to gnucap-python")
+try:
+	lang = os.environ["GNUCAP_DEFAULT_PLUGINS"]
+except:
+	default_plugins = "gnucap-default-plugins.so"
+
+try:
+	lang = os.environ["GNUCAP_LANG"]
+except:
+	lang = "acs";
+
+command("load " + default_plugins)
+command("set lang=" + lang)
+
+# this is the plan
+# for s in simulations:
+#	attach_output(s, our_own_sink)

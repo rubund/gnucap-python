@@ -8,6 +8,7 @@
 #include <s__.h>
 #include <io_.h>
 #include <e_cardlist.h>
+#include <u_lang.h>
 
 #include "numpy_interface.h"
 
@@ -15,6 +16,13 @@
 #include <string>
 #include <fstream>
 
+void parse(char *command)
+{ untested();
+	assert(OPT::language);
+	CS cmd(CS::_STRING, command);
+	trace1("parse", command);
+	OPT::language->new__instance(cmd, NULL, &CARD_LIST::card_list);
+}
 std::string command(char *command)
 {
 	trace1("command", command);
@@ -55,20 +63,10 @@ void detach_command(DISPATCHER<CMD>::INSTALL *installer) {
   delete installer;
 }
 
+// could move to __init__.py.
 struct defpl_load{
 	defpl_load(){ untested();
-  // prepare_env();
-  CKT_BASE::_sim = new SIM_DATA;
-  CKT_BASE::_probe_lists = new PROBE_LISTS;
-		//void* handle=dlopen("/usr/local/lib/libgnucap.so", RTLD_GLOBAL | RTLD_NOW) ;
-		//std::cerr << dlerror() <<"\n";
-		//trace1("dlopened", handle);
-		// try{
-		//   CMD::command("load /usr/local/lib/gnucap/gnucap-default-plugins.so", &CARD_LIST::card_list);
-		//   CMD::command("load /usr/local/lib/gnucap/gnucap-default-plugins.so", &CARD_LIST::card_list);
-		// }catch(Exception& e){ untested();
-		// 	std::cout << e.message();
-		// }
-
+	  CKT_BASE::_sim = new SIM_DATA;
+	  CKT_BASE::_probe_lists = new PROBE_LISTS;
 	}
 }l1;

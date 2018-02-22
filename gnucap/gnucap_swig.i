@@ -407,6 +407,7 @@ STATUS status;
 // gnucap functions
 ///////////////////////////////////////////////////////////////////////////////
 std::string command(char *command);
+void parse(char *command);
 DISPATCHER<CMD>::INSTALL *attach_command(char *command_name, CMD *cmd);
 void detach_command(DISPATCHER<CMD>::INSTALL *installer);
 
