@@ -1,4 +1,4 @@
-%module(directors="0", allprotected="1") gnucap
+%module(directors="0", allprotected="1") gnucap_swig
 
 // generate directors for all classes that have virtual methods
 %feature("director");
