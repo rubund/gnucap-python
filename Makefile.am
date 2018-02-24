@@ -3,32 +3,42 @@
 # license GPLV3
 #
 # (inspired by now obsolete files from Henrik Johansson)
+#
+check_PROGRAMS = test_python
+test_python_SOURCES = test_python.cc
+
+test_python_LDADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@ -lpython2.7
+
+
+test_python_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
+	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = include gnucap
 
 all-local:
-	rm -f _gnucap.so
-	${LN_S} .libs/_gnucap.so _gnucap.so
-	rm -f python.so
-	${LN_S} .libs/python.so python.so
+	rm -f c_python.so
+	${LN_S} .libs/c_python.so c_python.so
 
 
 # gnucap plugins
 pluginsdir = $(libdir)/gnucap
-plugins_LTLIBRARIES = python.la
+plugins_LTLIBRARIES = c_python.la
 
-python_la_SOURCES = c_python.cc # gnucap_wrap.cxx
-python_la_CXXFLAGS = -Wall ${AM_CXXFLAGS} -fPIC ${DEPS_CFLAGS}
+c_python_la_SOURCES = c_python.cc # gnucap_wrap.cxx
+c_python_la_CXXFLAGS = -Wall ${AM_CXXFLAGS} -fPIC ${DEPS_CFLAGS}
 
 # BUG: it does not work without NUMPY either.
 if NUMPY
-  python_la_SOURCES += # numpy_interface.cc
+  c_python_la_SOURCES += # numpy_interface.cc
   SWIG_FLAGS = -DHAS_NUMPY
 endif
 
-python_la_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
+c_python_la_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
-python_la_LDFLAGS = -shared -module -avoid-version @LDFLAGS@ @PYTHON_LDFLAGS@
-python_la_LIBADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@ @GC_LIBS@
+c_python_la_LDFLAGS = -shared -module -avoid-version @LDFLAGS@ @PYTHON_LDFLAGS@
+c_python_la_LIBADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@
+
+# possibly required on non-posix systems
+#c_python_la_LIBADD += @GC_LIBS@

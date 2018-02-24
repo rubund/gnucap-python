@@ -55,11 +55,15 @@ std::string command(char *command)
   return output;
 }
 
-DISPATCHER<CMD>::INSTALL *attach_command(char *command_name, CMD *cmd) {
-  return new DISPATCHER<CMD>::INSTALL(&command_dispatcher, command_name, cmd);
+DISPATCHER<CMD>::INSTALL install_command(char *name, CMD *cmd) {
+  return DISPATCHER<CMD>::INSTALL(&command_dispatcher, name, cmd);
+}
+DISPATCHER<CARD>::INSTALL install_device(char *name, CARD *card) {
+  return DISPATCHER<CARD>::INSTALL(&device_dispatcher, name, card);
 }
 
-void detach_command(DISPATCHER<CMD>::INSTALL *installer) {
+// ???
+void uninstall_command(DISPATCHER<CMD>::INSTALL *installer) {
   delete installer;
 }
 

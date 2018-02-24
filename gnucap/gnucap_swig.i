@@ -2,9 +2,9 @@
 
 // generate directors for all classes that have virtual methods
 %feature("director");
-%feature("nodirector") TRANSIENT; 
-%feature(nodirector) CMD;
-%feature(nodirector) SIM;
+// %feature("nodirector") TRANSIENT; 
+// %feature(nodirector) CMD;
+// %feature(nodirector) SIM;
 
 %include stl.i
 %include std_string.i
@@ -136,154 +136,6 @@ public:
 
 };
 
-#if 0
-class CARD : public CKT_BASE {
-protected:                              // create and destroy.
-private:
-  CARD();
-  CARD(const CARD&);
-public:
-  virtual  ~CARD()                      {delete _subckt;}
-
-public: // parameters
-  virtual std::string value_name()const = 0;
-
-  virtual bool param_is_printable(int)const;
-  virtual std::string param_name(int)const;
-  virtual std::string param_name(int,int)const;
-  virtual std::string param_value(int)const;
-  virtual void set_param_by_name(std::string, std::string);
-  virtual void set_param_by_index(int, std::string&, int);
-  virtual int param_count()const {return 0;}
-};
-#endif
-class CARD : public CKT_BASE {
-private:
-  mutable int	_evaliter;	// model eval iteration number
-  CARD_LIST*	_subckt;
-  CARD* 	_owner;
-  bool		_constant;	// eval stays the same every iteration
-protected:
-  node_t*	_n;
-public:
-  int		_net_nodes;	// actual number of "nodes" in the netlist
-  //--------------------------------------------------------------------
-public:   				// traversal functions
-  CARD* find_in_my_scope(const std::string& name);
-  const CARD* find_in_my_scope(const std::string& name)const;
-  const CARD* find_in_parent_scope(const std::string& name)const;
-  const CARD* find_looking_out(const std::string& name)const;
-  //--------------------------------------------------------------------
-protected: // create and destroy.
-  explicit CARD();
-  explicit CARD(const CARD&);
-public:
-  virtual  ~CARD();
-  virtual CARD*	 clone()const = 0;
-  virtual CARD*	 clone_instance()const  {return clone();}
-  //--------------------------------------------------------------------
-public:	// "elaborate"
-  virtual void	 precalc_first()	{}
-  virtual void	 expand_first()		{}
-  virtual void	 expand()		{}
-  virtual void	 expand_last()		{}
-  virtual void	 precalc_last()		{}
-  virtual void	 map_nodes()		{}
-  //--------------------------------------------------------------------
-public:	// dc-tran
-  virtual void	 tr_iwant_matrix()	{}
-  virtual void	 tr_begin()		{}
-  virtual void	 tr_restore()		{}
-  virtual void	 dc_advance()		{}
-  virtual void	 tr_advance()		{}
-  virtual void	 tr_regress()		{}
-  virtual bool	 tr_needs_eval()const	{return false;}
-  virtual void	 tr_queue_eval()	{}
-  virtual bool	 do_tr()		{return true;}
-  virtual bool	 do_tr_last()		{return true;}
-  virtual void	 tr_load()		{}
-  virtual TIME_PAIR tr_review();	//{return TIME_PAIR(NEVER,NEVER);}
-  virtual void	 tr_accept()		{}
-  virtual void	 tr_unload()		{untested();}
-  //--------------------------------------------------------------------
-public:	// ac
-  virtual void	 ac_iwant_matrix()	{}
-  virtual void	 ac_begin()		{}
-  virtual void	 do_ac()		{}
-  virtual void	 ac_load()		{}
-  //--------------------------------------------------------------------
-public:	// state, aux data
-  virtual char id_letter()const	{unreachable(); return '\0';}
-  virtual int  net_nodes()const	{untested();return 0;}
-  virtual bool is_device()const	{return false;}
-  virtual void set_slave()	{untested(); assert(!subckt());}
-	  bool evaluated()const;
-
-  void	set_constant(bool c)	{_constant = c;}
-  bool	is_constant()const	{return _constant;}
-  //--------------------------------------------------------------------
-public: // owner, scope
-  virtual CARD_LIST*	   scope();
-  virtual const CARD_LIST* scope()const;
-  virtual bool		   makes_own_scope()const  {return false;}
-
-  CARD*		owner()		   {return _owner;}
-  const CARD*	owner()const	   {return _owner;}
-  void		set_owner(CARD* o) {assert(!_owner||_owner==o); _owner=o;}
-  //--------------------------------------------------------------------
-public: // subckt
-  CARD_LIST*	     subckt()		{return _subckt;}
-  const CARD_LIST*   subckt()const	{return _subckt;}
-  void	  new_subckt();
-  void	  new_subckt(const CARD* model, PARAM_LIST* p);
-  void	  renew_subckt(const CARD* model, PARAM_LIST* p);
-  //void     new_subckt(const CARD* model, CARD* owner, const CARD_LIST* scope, PARAM_LIST* p);
-  //void     renew_subckt(const CARD* model, CARD* owner, const CARD_LIST* scope, PARAM_LIST* p);
-  //--------------------------------------------------------------------
-public:	// type
-  virtual std::string dev_type()const	{unreachable(); return "";}
-  virtual void set_dev_type(const std::string&);
-  //--------------------------------------------------------------------
-public:	// label -- in CKT_BASE
-  // non-virtual void set_label(const std::string& s) //BASE
-  // non-virtual const std::string& short_label()const //BASE
-  /*virtual*/ const std::string long_label()const; // no further override
-  //--------------------------------------------------------------------
-public:	// ports -- mostly defer to COMPONENT
-  node_t& n_(int i)const;
-  int     connects_to(const node_t& node)const;
-  //--------------------------------------------------------------------
-public: // parameters
-  virtual void set_param_by_name(std::string, std::string);
-  virtual void set_param_by_index(int i, std::string&, int offset)
-				{untested(); throw Exception_Too_Many(i, 0, offset);}
-  virtual int  param_count_dont_print()const	   {return 0;}
-  virtual int  param_count()const		   {return 0;}
-  virtual bool param_is_printable(int)const	   {untested(); return false;}
-  virtual std::string param_name(int)const	   {return "";}
-  virtual std::string param_name(int i,int j)const {return (j==0) ? param_name(i) : "";}
-  virtual std::string param_value(int)const	   {untested(); return "";}
-  virtual std::string value_name()const = 0;
-  //--------------------------------------------------------------------
-public:	// obsolete -- do not use in new code
-  virtual bool use_obsolete_callback_parse()const {return false;}
-  virtual bool use_obsolete_callback_print()const {return false;}
-  virtual void print_args_obsolete_callback(OMSTREAM&,LANGUAGE*)const {unreachable();}
-};
-
-#if 0
-class CMD : public CARD { 
-public:            
-      CMD();
-      virtual ~CMD();
-      virtual void do_it(CS& cmd, CARD_LIST*)=0;
-      std::string value_name()const;
-      static void command(const std::string&, CARD_LIST*);
-      static void cmdproc(CS&, CARD_LIST*);
-  // virtual CARD*	 clone()const { incomplete();}
-};
-#endif
-
 class CMD : public CKT_BASE {
 public:
   std::string value_name()const {return "";}
@@ -295,9 +147,9 @@ public:
 
 class SIM : public CMD {
 protected:
-         SIM();
+  SIM();
 public:
-                ~SIM();
+  ~SIM();
 
 protected: // swig needs to know about these, apparently
   virtual void	setup(CS&)	= 0;
@@ -321,31 +173,32 @@ struct SIM_DATA{
   virtual bool  is_step_rejected()const {return false;}
 };
 
-// The SIMWrapper is needed since Swig doesn't handle private virtual methods
-// All non-status methods that are inherited from SIM should also be copied 
+// The sim is needed since Swig doesn't handle private virtual methods
+// All non-status methods that are inherited from SIM should also be copied
 // here or you will get segmentation faults
-class SIMWrapper : public SIM {
+class sim : public SIM {
+protected:
+  explicit sim():SIM()  { untested(); }
+  ~sim() { untested(); }
 public:
-  explicit SIMWrapper():SIM()  {}
   virtual void  setup(CS&)      = 0;
   virtual void  sweep()         = 0;
   void  do_it(CS&, CARD_LIST*)       {incomplete();}
 protected:
-         const PROBELIST& alarmlist()const;     /* s__out.cc */
-         const PROBELIST& plotlist()const;
-         const PROBELIST& printlist()const;
-         const PROBELIST& storelist()const;
-         void   outdata(double, int);
-         void   head(double,double,const std::string&);
-         void   print_results(double);
-         void   alarm();
-         virtual void  store_results(double);
+  const PROBELIST& alarmlist()const;     /* s__out.cc */
+  const PROBELIST& plotlist()const;
+  const PROBELIST& printlist()const;
+  const PROBELIST& storelist()const;
+  void   outdata(double, int);
+  void   head(double,double,const std::string&);
+  void   print_results(double);
+  void   alarm();
+  virtual void  store_results(double);
 private:
-        const std::string long_label()const {unreachable(); return "";}
+  const std::string long_label()const {unreachable(); return "";}
 protected: // what's this?
 //         void   alloc_vectors();
 //  static void   unalloc_vectors(); 
-
 };
 
 class TRANSIENT : public SIM {
@@ -408,9 +261,25 @@ STATUS status;
 ///////////////////////////////////////////////////////////////////////////////
 std::string command(char *command);
 void parse(char *command);
-DISPATCHER<CMD>::INSTALL *attach_command(char *command_name, CMD *cmd);
-void detach_command(DISPATCHER<CMD>::INSTALL *installer);
+void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
 
+class cmd_install{
+public:
+  cmd_install(DISPATCHER<CMD>* d, const std::string& name, CMD* p);
+};
+
+// THIS IS DEPRECATED. possibly there's a good way now?!
+// (it works)
+%nestedworkaround DISPATCHER<CMD>::INSTALL;
+
+
+%{
+typedef DISPATCHER<CMD>::INSTALL cmd_install;
+%}
+
+cmd_install install_command(char *command_name, CMD *cmd);
+
+DISPATCHER<CMD>::INSTALL::~INSTALL();
 ///////////////////////////////////////////////////////////////////////////////
 // non-gnucap utility functions
 ///////////////////////////////////////////////////////////////////////////////

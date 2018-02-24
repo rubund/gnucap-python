@@ -83,7 +83,7 @@ class MyAC(gnucap.SIMWrapper):
 
 myac = MyAC()
 
-gnucap.attach_command("myac", myac)
+gnucap.install_command("myac", myac)
 gnucap.attach_command("ac", myac)
 
 gnucap.command("store ac vm(2)")

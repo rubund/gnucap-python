@@ -1,19 +1,19 @@
-#include "gnucap/u_lang.h"
-#include "gnucap/c_comand.h"
-#include "gnucap/globals.h"
-#include "gnucap/s__.h"
+#include <u_lang.h>
+#include <c_comand.h>
+#include <globals.h>
+#include <s__.h>
 
 #include <Python.h>
 
 // Swig _gnucap init function prototype
-extern "C" void init_gnucap();
+//extern "C" void init_gnucap();
 
 /*--------------------------------------------------------------------------*/
 namespace {
   static int python_loaded = 0;
 
 /*--------------------------------------------------------------------------*/
-void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
+void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 { untested();
   std::string file_name;
   char *argv[] = {};
@@ -28,15 +28,18 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
   }else{
   }
   
+
+//  huh?! why not link?
   if(!python_loaded) { untested();
-    dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
+	  trace0("dlopen python");
+   // dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
     Py_Initialize();
     PySys_SetArgv(0, argv);
     
     // Call init function of SWIG _gnucap module
-    init_gnucap();
+ //   init_gnucap();
 
-    python_loaded = 1;
+//    python_loaded = 1;
   }else{ untested();
   }
 
@@ -49,7 +52,7 @@ class CMD_PYTHON : public CMD {
 public:
   void do_it(CS& cmd, CARD_LIST* Scope)
   { untested();
-    eval_python(cmd, IO::mstdout, Scope);
+    load_file(cmd, IO::mstdout, Scope);
   }
 } p1;
 

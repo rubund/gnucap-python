@@ -9,10 +9,12 @@ if(os.name=="posix"):
 	flags = sys.getdlopenflags()
 	sys.setdlopenflags(flags | ctypes.RTLD_GLOBAL)
 	from gnucap_swig import *
+	from component import component
 	sys.setdlopenflags(flags)
 else:
 	untested()
 	from gnucap_swig import *
+	from component import component
 
 # TODO: ask gnucap-conf (at configure time)
 # BUG: do not override, if set.
