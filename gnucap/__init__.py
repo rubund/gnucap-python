@@ -9,12 +9,21 @@ if(os.name=="posix"):
 	flags = sys.getdlopenflags()
 	sys.setdlopenflags(flags | ctypes.RTLD_GLOBAL)
 	from gnucap_swig import *
-	from component import component
 	sys.setdlopenflags(flags)
 else:
 	untested()
 	from gnucap_swig import *
-	from component import component
+
+# trying to manifest an interface.
+# ideally the type names should be the usual ones, wrapper layers must be invisible.
+from component import COMPONENT_ as COMPONENT
+from element import ELEMENT
+from gnucap_swig import SIM_ as SIM
+
+# this will change
+from globals import install_device
+from globals import install_command
+# from globals import shared_command_installer as command_installer
 
 # TODO: ask gnucap-conf (at configure time)
 # BUG: do not override, if set.

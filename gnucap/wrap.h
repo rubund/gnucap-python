@@ -1,7 +1,9 @@
 #include <c_comand.h>
 #include <l_dispatcher.h>
 #include <s__.h>
+#include <memory>
 
+#if 0
 class sim : public SIM {
 protected:
   explicit sim() : SIM() { untested(); }
@@ -11,10 +13,13 @@ public:
   virtual void  sweep()=0;
   virtual void  do_it(CS&, CARD_LIST*){ incomplete(); };
 };
+#endif
 
 #include <e_compon.h>
+
+#if 0
 class component : public COMPONENT {
-public:
+protected:
   explicit component(const COMPONENT& c) : COMPONENT(c) { untested(); }
   explicit component() : COMPONENT() { untested(); }
 
@@ -30,6 +35,7 @@ public:	// obsolete -- do not use in new code
   void print_args_obsolete_callback(OMSTREAM&, LANGUAGE*)const { unreachable(); }
   void obsolete_move_parameters_from_common(const COMMON_COMPONENT*) { unreachable(); }
 };
+#endif
 
 class card : public CARD {
 public:
@@ -42,8 +48,23 @@ std::string command(char *command);
 void parse(char *command);
 
 
-DISPATCHER<CMD>::INSTALL install_command(char *name, CMD*);
-DISPATCHER<CARD>::INSTALL install_device(char *name, CARD*);
+//DISPATCHER<CARD>::INSTALL install_device(char *name, CARD*);
+
+inline void test_dummy(CARD *c){ untested(); }
+
+#if 0
+namespace{
+struct test{
+	class ct: public component {
+	};
+	test(){
+		ct x;
+		CARD* y = &x;
+	}
+};
+}
+#endif
+
 
 // maybe later
 void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);

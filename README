@@ -12,11 +12,8 @@ results can be done in Python using numpy/scipy/matplotlib.
  Requirements
 -------------
 
-You have to installed the modified version of gnucap that is compiled as a
-shared library. You can download it from the git repo at 
-http://github.com/henjo/gnucap.
-
-Other requirements are:
+requirements are:
+  * gnucap >= oct '17
   * Python >= 2.4
   * Swig
   * Numpy (with development headers/libraries)
@@ -33,7 +30,7 @@ Build python plugin for gnucap
    $ make
    $ make install # optional. may require root privileges
 
-this will install the python module "gnucap" and a gnucap plugin "python".
+will install the python module "gnucap" and a gnucap plugin "python".
 
 Examples
 --------

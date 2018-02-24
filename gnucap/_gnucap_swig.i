@@ -1,14 +1,14 @@
 %module(directors="0", allprotected="1") gnucap_swig
 
 // generate directors for all classes that have virtual methods
-%feature("director");
-// %feature("nodirector") TRANSIENT; 
-// %feature(nodirector) CMD;
-// %feature(nodirector) SIM;
+%feature(director);
+%feature(nodirector) CARD;
 
 %include stl.i
 %include std_string.i
 %include std_complex.i
+%include c_comand.i
+%include std_shared_ptr.i
 
 %{
 #include "wrap.h"
@@ -27,6 +27,7 @@
 #include <u_time_pair.h>
 #include <u_sim_data.h>
 #include <globals.h>
+#include <memory>
 %}
 
 #ifdef HAS_NUMPY
@@ -123,27 +124,6 @@ public:
    static CARD_LIST card_list; // in globals.cc
 };
 
-class CKT_BASE {
-protected:
-  explicit CKT_BASE()                     :_probes(0), _label() {}
-  explicit CKT_BASE(const std::string& s) :_probes(0), _label(s) {}
-  explicit CKT_BASE(const CKT_BASE& p)    :_probes(0), _label(p._label) {}
-  virtual  ~CKT_BASE();
-public:
-  static WAVE* find_wave(const std::string&);
-
-  virtual bool help(CS&, OMSTREAM&) const{ untested(); }
-
-};
-
-class CMD : public CKT_BASE {
-public:
-  std::string value_name()const {return "";}
-  virtual void do_it(CS&, CARD_LIST*) = 0;
-  virtual ~CMD() {}
-  static  void  cmdproc(CS&, CARD_LIST*);
-  static  void	command(const std::string&, CARD_LIST*);
-};
 
 class SIM : public CMD {
 protected:
@@ -176,30 +156,17 @@ struct SIM_DATA{
 // The sim is needed since Swig doesn't handle private virtual methods
 // All non-status methods that are inherited from SIM should also be copied
 // here or you will get segmentation faults
-class sim : public SIM {
+%inline %{
+class SIM_ : public SIM {
 protected:
-  explicit sim():SIM()  { untested(); }
-  ~sim() { untested(); }
+  explicit SIM_() : SIM() { untested(); }
+  ~SIM_() { untested(); }
 public:
-  virtual void  setup(CS&)      = 0;
-  virtual void  sweep()         = 0;
-  void  do_it(CS&, CARD_LIST*)       {incomplete();}
-protected:
-  const PROBELIST& alarmlist()const;     /* s__out.cc */
-  const PROBELIST& plotlist()const;
-  const PROBELIST& printlist()const;
-  const PROBELIST& storelist()const;
-  void   outdata(double, int);
-  void   head(double,double,const std::string&);
-  void   print_results(double);
-  void   alarm();
-  virtual void  store_results(double);
-private:
-  const std::string long_label()const {unreachable(); return "";}
-protected: // what's this?
-//         void   alloc_vectors();
-//  static void   unalloc_vectors(); 
+  virtual void  setup(CS&)=0;
+  virtual void  sweep()=0;
+  virtual void  do_it(CS&, CARD_LIST*){ incomplete(); };
 };
+%}
 
 class TRANSIENT : public SIM {
 public:
@@ -244,16 +211,6 @@ public:
   static RUN_MODE run_mode; // variations on handling of dot commands
 };
 
-///////////////////////////////////////////////////////////////////////////////
-// Global variables
-///////////////////////////////////////////////////////////////////////////////
-//RUN_MODE ENV::run_mode = rPRE_MAIN;
-//DISPATCHER<CMD> command_dispatcher;
-//DISPATCHER<COMMON_COMPONENT> bm_dispatcher;
-//DISPATCHER<MODEL_CARD> model_dispatcher;
-//DISPATCHER<CARD> device_dispatcher;
-//DISPATCHER<LANGUAGE> language_dispatcher;
-//DISPATCHER<FUNCTION> function_dispatcher;
 STATUS status;
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -261,25 +218,13 @@ STATUS status;
 ///////////////////////////////////////////////////////////////////////////////
 std::string command(char *command);
 void parse(char *command);
-void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
-
-class cmd_install{
-public:
-  cmd_install(DISPATCHER<CMD>* d, const std::string& name, CMD* p);
-};
-
-// THIS IS DEPRECATED. possibly there's a good way now?!
-// (it works)
-%nestedworkaround DISPATCHER<CMD>::INSTALL;
 
 
-%{
-typedef DISPATCHER<CMD>::INSTALL cmd_install;
-%}
+// not needed: working around weird python memorymanagement?
+// void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
 
-cmd_install install_command(char *command_name, CMD *cmd);
 
-DISPATCHER<CMD>::INSTALL::~INSTALL();
+//DISPATCHER<CMD>::INSTALL::~INSTALL();
 ///////////////////////////////////////////////////////////////////////////////
 // non-gnucap utility functions
 ///////////////////////////////////////////////////////////////////////////////
@@ -298,19 +243,10 @@ template<class T> void bsmatrix_fbsub_array(BSMATRIX<T> *A, PyObject *rhs, PyObj
 
 #endif
 
-///////////////////////////////////////////////////////////////////////////////
-// init
-///////////////////////////////////////////////////////////////////////////////
 #ifdef HAS_NUMPY
 %init %{
       init_numpy();
 %}
 #endif
-
-///////////////////////////////////////////////////////////////////////////////
-// python code
-///////////////////////////////////////////////////////////////////////////////
-%pythoncode %{
-%}
 
 // vim:ts=8:sw=2:et:

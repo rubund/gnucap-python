@@ -7,7 +7,7 @@
 #include <numpy/arrayobject.h>
 
 void init_numpy() { untested();
-  import_array();
+  // import_array();
 }
 
 PyObject *to_double_array(double *data, int len) { untested();

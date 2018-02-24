@@ -34,7 +34,11 @@ void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 	  trace0("dlopen python");
    // dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
     Py_Initialize();
+
+#if PY_MAJOR_VERSION >= 3
+#else
     PySys_SetArgv(0, argv);
+#endif
     
     // Call init function of SWIG _gnucap module
  //   init_gnucap();

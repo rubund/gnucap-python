@@ -1,15 +1,16 @@
 
 %include e_base.i
+%feature(nodirector) CARD;
 
 class CARD : public CKT_BASE {
 protected:                              // create and destroy.
-private:
   CARD();
   CARD(const CARD&);
 public:
   virtual  ~CARD()                      {delete _subckt;}
 
 public: // parameters
+  // virtual CARD*	 clone()const = 0;
   virtual std::string value_name()const = 0;
 
   virtual bool param_is_printable(int)const;

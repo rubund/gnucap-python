@@ -15,6 +15,7 @@
 #include <stdio.h>
 #include <string>
 #include <fstream>
+#include <memory>
 
 void parse(char *command)
 { untested();
@@ -55,16 +56,11 @@ std::string command(char *command)
   return output;
 }
 
-DISPATCHER<CMD>::INSTALL install_command(char *name, CMD *cmd) {
-  return DISPATCHER<CMD>::INSTALL(&command_dispatcher, name, cmd);
-}
-DISPATCHER<CARD>::INSTALL install_device(char *name, CARD *card) {
-  return DISPATCHER<CARD>::INSTALL(&device_dispatcher, name, card);
-}
 
 // ???
-void uninstall_command(DISPATCHER<CMD>::INSTALL *installer) {
-  delete installer;
+void uninstall_command(DISPATCHER<CMD>::INSTALL *x) { untested();
+  trace1("uninstall", x);
+  delete x;
 }
 
 // could move to __init__.py.
