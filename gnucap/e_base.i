@@ -32,6 +32,8 @@ protected: // create and destroy
   explicit CKT_BASE(const std::string& s) :_probes(0), _label(s) { untested(); }
   explicit CKT_BASE(const CKT_BASE& p)	  :_probes(0), _label(p._label) { untested(); }
   virtual  ~CKT_BASE();
+public:
+  static WAVE* find_wave(const std::string&);
 };
 
 /// class CKT_BASE {
@@ -41,7 +43,6 @@ protected: // create and destroy
 ///   explicit CKT_BASE(const CKT_BASE& p)    :_probes(0), _label(p._label) {}
 ///   virtual  ~CKT_BASE();
 /// public:
-///   static WAVE* find_wave(const std::string&);
 /// 
 ///   virtual bool help(CS&, OMSTREAM&) const{ untested(); }
 /// 

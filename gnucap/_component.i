@@ -28,6 +28,7 @@
 %include stl.i
 %include std_string.i
 %include std_complex.i
+%include _m_wave.i
 %include e_card.i
 %include std_shared_ptr.i
 

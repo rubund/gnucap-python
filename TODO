@@ -1,6 +1,5 @@
 todo, easy
 - get rid of warnings
-- redirect output to numpy array (from where?)
 - need to figure out what to do with interactive output
 - python 2 vs 3?
 - node_t/NODE access
@@ -11,3 +10,6 @@ later
 hacks
 - clone (when implemented in python) must keep a local reference, to trick garbage collector
 - need to be careful with dispatcher instances
+
+bugs
+- WAVE iterator next does not throw at the end.

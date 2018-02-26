@@ -19,6 +19,7 @@ else:
 from component import COMPONENT_ as COMPONENT
 from element import ELEMENT
 from gnucap_swig import SIM_ as SIM
+from m_wave import WAVE
 
 # this will change
 from globals import install_device

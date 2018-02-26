@@ -16,7 +16,12 @@ AM_CPPFLAGS = \
 pythongcdir = $(pythondir)/gnucap
 pythongc_PYTHON = gnucap_swig.py __init__.py
 
-pythongc_LTLIBRARIES = _gnucap_swig.la _component.la _globals.la _element.la
+pythongc_LTLIBRARIES = \
+	_gnucap_swig.la \
+	_component.la \
+	_globals.la \
+	_m_wave.la \
+	_element.la
 
 all-local:
 	for i in ${pythongc_LTLIBRARIES:%.la=%.so}; do \
@@ -44,7 +49,9 @@ _gnucap_swig_la_CPPFLAGS = ${AM_CPPFLAGS}
 _component_la_CPPFLAGS = ${AM_CPPFLAGS}
 _globals_la_CPPFLAGS = ${AM_CPPFLAGS}
 _element_la_CPPFLAGS = ${AM_CPPFLAGS}
+_m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
 
+# (why) is this needed?
 _component_la_SOURCES = _component.i
 
 %.py _%.cxx _%.h: _%.i
