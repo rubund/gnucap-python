@@ -1,5 +1,10 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
+# Copyright: 2009-2011 Henrik Johansson
+#            2018 Felix Salfelder <felix@salfelder.org>
+# Author: Henrik Johansson
+# License: GPLv3
+#
 # $Id$
 
 AC_PREREQ(2.69)

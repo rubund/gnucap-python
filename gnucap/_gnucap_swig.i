@@ -1,3 +1,6 @@
+// Copyright: 2009-2011 Henrik Johansson
+// Author: Henrik Johansson
+
 %module(directors="0", allprotected="1") gnucap_swig
 
 // generate directors for all classes that have virtual methods

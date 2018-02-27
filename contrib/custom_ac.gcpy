@@ -1,4 +1,7 @@
 """
+Copyright: 2009-2011 Henrik Johansson
+Author: Henrik Johansson
+
 Create a new ac-analysis that always runs at a single frequency
 This only works when invoked from gnucap (?)
 """

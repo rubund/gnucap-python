@@ -1,8 +1,7 @@
-print("reading comp.py")
+# Copyright (C) 2018 Felix Salfelder
+# Author: Felix Salfelder <felix@salfelder.org>
 
-print("import gnucap")
 import gnucap
-print("done import gnucap")
 
 from gnucap import ELEMENT
 from gnucap import install_device
