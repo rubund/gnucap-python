@@ -169,7 +169,7 @@ public:
   virtual std::string value_name()const = 0;
 protected:
   int      _loaditer;	// load iteration number
-  node_t*	_n;
+  nodearray_t	_n;
 private:
   node_t   _nodes[NODES_PER_BRANCH]; // nodes (0,1:out, 2,3:in)
 public:

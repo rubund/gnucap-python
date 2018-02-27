@@ -72,5 +72,6 @@ CLEANFILES+= ${pythongc_LTLIBRARIES:%.la=%.cxx}
 CLEANFILES+= ${pythongc_LTLIBRARIES:%.la=%.h}
 
 #### dep
+_e_elemnt.cxx: _e_node.i
 _component.cxx: e_card.i e_base.i
 _gnucap_swig.cxx: e_card.i e_base.i

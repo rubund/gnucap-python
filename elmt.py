@@ -71,8 +71,7 @@ class someelt(ELEMENT):
 		elif s=="v":
 			return self.tr_involts()
 		elif s=="nodeprobe":
-			# this is a bit ugly :|
-			return gnucap.e_node.get_node(self._n,0).v0()
+			return self._n[0].v0()
 		return 0;
 
 

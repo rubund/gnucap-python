@@ -19,9 +19,6 @@
  */
 %module(directors="0", allprotected="1") e_node
 
-// %include "cpointer.i"
-// %include "carrays.i"
-
 %{
 #include <e_node.h>
 %}
@@ -64,9 +61,22 @@ public:
 };
 
 %inline %{
+
 node_t& get_node(node_t* n, unsigned x){
 return n[x];
 }
 
+struct nodearray_t {
+  node_t* _t;
+  operator node_t*(){ unreachable(); return _t;}
+};
+
 %}
 
+%extend nodearray_t {
+  // inline size_t __len__() const { return -1; }
+  inline const node_t& __getitem__(size_t i) const{
+    return self->_t[i];
+  }
+  // inline void __setitem__ ...
+}
