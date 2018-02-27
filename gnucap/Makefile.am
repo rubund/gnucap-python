@@ -21,7 +21,8 @@ pythongc_LTLIBRARIES = \
 	_component.la \
 	_globals.la \
 	_m_wave.la \
-	_element.la
+	_e_elemnt.la \
+	_e_node.la
 
 all-local:
 	for i in ${pythongc_LTLIBRARIES:%.la=%.so}; do \
@@ -35,7 +36,8 @@ AM_LDFLAGS = -module -omit-version
 _gnucap_swig_la_LIBADD = -lgnucap
 _component_la_LIBADD = -lgnucap
 _globals_la_LIBADD = -lgnucap
-_element_la_LIBADD = -lgnucap
+_e_elemnt_la_LIBADD = -lgnucap
+_e_node_la_LIBADD = -lgnucap
 
 
 AM_DEFAULT_SOURCE_EXT = .i
@@ -48,8 +50,9 @@ _gnucap_swig_la_SOURCES += s_tr.cc s_tr_set.cc s_tr_swp.cc s__solve.cc s__out.cc
 _gnucap_swig_la_CPPFLAGS = ${AM_CPPFLAGS}
 _component_la_CPPFLAGS = ${AM_CPPFLAGS}
 _globals_la_CPPFLAGS = ${AM_CPPFLAGS}
-_element_la_CPPFLAGS = ${AM_CPPFLAGS}
+_e_elemnt_la_CPPFLAGS = ${AM_CPPFLAGS}
 _m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
+_e_node_la_CPPFLAGS = ${AM_CPPFLAGS}
 
 # (why) is this needed?
 _component_la_SOURCES = _component.i

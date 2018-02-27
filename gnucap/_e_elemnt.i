@@ -17,7 +17,7 @@
  * 02110-1301, USA.
  *------------------------------------------------------------------
  */
-%module(directors="0", allprotected="1") element
+%module(directors="0", allprotected="1") e_elemnt
 
 %feature("director") ELEMENT;
 
@@ -27,6 +27,7 @@
 %include e_card.i
 %include std_shared_ptr.i
 %include "_component.i"
+%include "_e_node.i"
 
 %{
 #include <e_elemnt.h>
@@ -168,6 +169,7 @@ public:
   virtual std::string value_name()const = 0;
 protected:
   int      _loaditer;	// load iteration number
+  node_t*	_n;
 private:
   node_t   _nodes[NODES_PER_BRANCH]; // nodes (0,1:out, 2,3:in)
 public:
@@ -184,5 +186,7 @@ public: // commons
   FPOLY1   _y1;		// iteration parameters, 1 iter ago
   FPOLY1   _y[OPT::_keep_time_steps]; /* charge or flux, and deriv.	*/
 };
+
+
 
 // vim:ts=8:sw=2:et:

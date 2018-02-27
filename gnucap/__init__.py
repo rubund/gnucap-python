@@ -17,9 +17,10 @@ else:
 # trying to manifest an interface.
 # ideally the type names should be the usual ones, wrapper layers must be invisible.
 from component import COMPONENT_ as COMPONENT
-from element import ELEMENT
+from e_elemnt import ELEMENT
 from gnucap_swig import SIM_ as SIM
 from m_wave import WAVE
+from e_node import node_t
 
 # this will change
 from globals import install_device

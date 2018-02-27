@@ -4,6 +4,7 @@
 import gnucap
 
 from gnucap import ELEMENT
+from gnucap import node_t
 from gnucap import install_device
 from copy import deepcopy, copy
 
@@ -67,8 +68,11 @@ class someelt(ELEMENT):
 	def tr_probe_num(self, s):
 		if s=="fourtytwo":
 			return 42;
-		if s=="v":
+		elif s=="v":
 			return self.tr_involts()
+		elif s=="nodeprobe":
+			# this is a bit ugly :|
+			return gnucap.e_node.get_node(self._n,0).v0()
 		return 0;
 
 
@@ -93,7 +97,7 @@ gnucap.command("set lang=verilog")
 gnucap.parse("vsource #(.dc(1)) v(1 0)")
 gnucap.parse("someelt #() s(1 0)")
 gnucap.command("list")
-gnucap.command("print dc fourtytwo(s) v(s)")
+gnucap.command("print dc fourtytwo(s) v(s) nodeprobe(s)")
 gnucap.command("dc v 0 1 .5")
 
 print("done")
