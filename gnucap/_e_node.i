@@ -60,23 +60,36 @@ public:
   //COMPLEX&    iac();
 };
 
+%{
+
+struct nodearray_t {
+  operator node_t const*() const { return _t; }
+  operator node_t*() { return _t; }
+  node_t const& get(unsigned i) const{return _t[i];}
+//private: // why not?
+  node_t* _t;
+};
+
+%}
+
+struct nodearray_t {
+  node_t* _t;
+//  node_t const& get(unsigned i) const;
+};
+
 %inline %{
 
 node_t& get_node(node_t* n, unsigned x){
 return n[x];
 }
 
-struct nodearray_t {
-  node_t* _t;
-  operator node_t*(){ unreachable(); return _t;}
-};
-
 %}
+
 
 %extend nodearray_t {
   // inline size_t __len__() const { return -1; }
   inline const node_t& __getitem__(size_t i) const{
-    return self->_t[i];
+    return self->get(i);
   }
   // inline void __setitem__ ...
 }

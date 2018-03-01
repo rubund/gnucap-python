@@ -28,6 +28,7 @@
 %include std_shared_ptr.i
 %include "_component.i"
 %include "_e_node.i"
+%include "_m_cpoly.i"
 
 %{
 #include <e_elemnt.h>
@@ -44,7 +45,7 @@
 }
 %allowexception;
 
-class ELEMENT : public CARD {
+class ELEMENT : public CARD /* it's actually COMPONENT */ {
   virtual ~ELEMENT() {}
 protected:
   explicit ELEMENT();
@@ -55,21 +56,28 @@ protected:
 protected: // from lower down.
   virtual CARD*	 clone()const = 0;
   virtual std::string port_name(int)const = 0;
-protected: //component
-  virtual std::string dev_type()const	{unreachable(); return "";}
-  virtual int	max_nodes()const	{unreachable(); return 0;}
-  virtual int	min_nodes()const	{unreachable(); return 0;}
-  virtual int	net_nodes()const	{unreachable(); return 0;}
-  virtual int	num_current_ports()const {return 0;}
-  virtual int	tail_size()const	{return 0;}
+protected: //COMPONENT, actually unnecessary here.
+  virtual std::string dev_type()const;
+  virtual int	max_nodes()const;
+  virtual int	min_nodes()const;
+  virtual int	net_nodes()const;
+  virtual int	matrix_nodes()const;
+  virtual int	num_current_ports()const;
+  virtual int	tail_size()const;
+  virtual void  precalc_last();
+  virtual void  tr_begin();
+  virtual void  tr_load();
+  virtual void  tr_unload();
+protected: // CARD
+  void	set_constant(bool c);
 public:
-  double*  set__value()			{return _value.pointer_hack();}
+//  double*  set__value()			{return _value.pointer_hack();}
 
   bool	   skip_dev_type(CS&);
 public: // override virtual
   bool	   print_type_in_spice()const {return false;}
-  void	   precalc_last();
-  void	   tr_begin();
+  // void	   precalc_last();
+  //void	   tr_begin();
   void	   tr_restore();
   void	   dc_advance();
   void	   tr_advance();
@@ -79,7 +87,6 @@ public: // override virtual
   TIME_PAIR tr_review();
 
   std::string long_label()const;
-  //void   map_nodes();
   virtual void	   tr_iwant_matrix() = 0;
   virtual void	   ac_iwant_matrix() = 0;
   //XPROBE   ac_probe_ext(const std::string&)const;
@@ -184,9 +191,20 @@ public: // commons
 
   double   _time[OPT::_keep_time_steps];
   FPOLY1   _y1;		// iteration parameters, 1 iter ago
-  FPOLY1   _y[OPT::_keep_time_steps]; /* charge or flux, and deriv.	*/
+//  FPOLY1_array_t   _y;
 };
 
+%extend ELEMENT {
+  inline FPOLY1& _y_(unsigned i){
+    return self->_y[i];
+  }
+  inline void element_tr_begin(){
+    return self->ELEMENT::tr_begin();
+  }
+  inline void element_precalc_last(){
+    return self->ELEMENT::precalc_last();
+  }
+}
 
 
 // vim:ts=8:sw=2:et:

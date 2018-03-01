@@ -19,6 +19,7 @@ else:
 from component import COMPONENT_ as COMPONENT
 from e_elemnt import ELEMENT
 from gnucap_swig import SIM_ as SIM
+from m_cpoly import FPOLY1, CPOLY1
 from m_wave import WAVE
 from e_node import node_t
 
