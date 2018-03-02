@@ -1,0 +1,11 @@
+#!/bin/bash
+
+[ x$1 = xSKIP ] && exit 77
+
+base=`basename $1`
+out=${base}.out
+make $out
+
+ref=${srcdir}/${base}.ref
+diff $out $ref || exit 1
+rm $out

@@ -31,6 +31,7 @@ all-local:
 		${LN_S} .libs/$$i $$i; \
 	done
 
+check: all-local
 
 _gnucap_swig_la_LDFLAGS = -module -omit-version
 AM_LDFLAGS = -module -omit-version
@@ -68,9 +69,9 @@ _component_la_SOURCES = _component.i
 .i.cxx:
 .cxx.lo:
 
-EXTRA_DIST = wrap.h
+EXTRA_DIST = wrap.h e_card.i e_base.i c_comand.i
 
-CLEANFILES = *~
+CLEANFILES = *~ *.pyc
 
 CLEANFILES+= ${pythongc_LTLIBRARIES:_%.la=%.py}
 CLEANFILES+= ${pythongc_LTLIBRARIES:%.la=%.cxx}

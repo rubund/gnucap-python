@@ -5,33 +5,27 @@ stashing as transient:0
 transient: already installed, replacing
 stashing as transient:0
 default plugins: develop 2017.11.18
-('construct someelt', <__main__.someelt;  >)
+('construct myvs', <__main__.myvs;  >)
 ('init', '')
-max
 ('mtest', 2, '')
 somelt clone
-copyconstruct someelt
+copyconstruct myvs
 ('init', '')
-max
 ('mtest', 2, '')
-('TT', <class '__main__.someelt'>)
+('TT', <class '__main__.myvs'>)
 somelt clone
-copyconstruct someelt
+copyconstruct myvs
 ('init', '')
-max
-max
 min
-vsource #(.dc(1)) v (.p(1),.n(0));
+resistor #(.r(1)) r (.p(1),.n(0));
 pyelt #() s (.P(1),.N(0));
 min
-max
-max
-max
-max
 iwant incomplete
-iwant incomplete
-#           fourtytwo(s) v(s)       nodeprobe(s)
- 0.         42.        0.         0.        
- 0.5        42.        0.5        0.5       
- 1.         42.        1.         1.        
+#           fourtytwo(s) i(r)       v(s)       nodeprobe(s) v(1)      
+r: short circuit
+ 1.         42.        2.111      2.111      2.111      2.111     
+ 1.5        42.        1.4073     2.111      2.111      2.111     
+ 2.         42.        1.0555     2.111      2.111      2.111     
+ 2.5        42.        0.8444     2.111      2.111      2.111     
+ 3.         42.        0.70366    2.111      2.111      2.111     
 done

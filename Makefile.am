@@ -42,3 +42,35 @@ c_python_la_LIBADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@
 
 # possibly required on non-posix systems
 #c_python_la_LIBADD += @GC_LIBS@
+
+####### TESTS #########
+
+M_TESTS_ENVIRONMENT = \
+    export REDIRECT='exec 2>&9'\
+           MAKEFLAGS=--no-print-directory \
+           srcdir='$(srcdir)';
+AM_TESTS_FD_REDIRECT = 9>&2
+TEST_EXTENSIONS = .gc .py
+PY_LOG_COMPILER = $(top_srcdir)/py_log_compiler
+
+PY_TESTS = \
+	elmt.py \
+	sim.py \
+	comp.py
+
+# not yet.
+# PY_TESTS += store.py
+
+TESTS = ${PY_TESTS}
+
+${PY_TESTS:%.py=%.py.out}: %.py.out: %.py
+	python < ${srcdir}/$*.py > $@
+
+.PHONY: .P
+.P:
+	@:
+
+$(PY_TESTS:%.py=%.py.out): .P
+$(PY_TESTS:%.gc=%.log): .P
+
+EXTRA_DIST=py_log_compiler ${TESTS} ${TESTS:%=%.ref}

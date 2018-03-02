@@ -71,6 +71,7 @@ AC_OUTPUT([
 	Makefile
 	include/Makefile
 	gnucap/Makefile
+	gnucap/__init__.py
 	])
 
 AC_MSG_RESULT([
