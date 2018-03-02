@@ -1,0 +1,10 @@
+* test python from within gnucap
+
+load public c_python.so
+
+python batchtest.gcpy
+
+ac
+myac
+
+end
