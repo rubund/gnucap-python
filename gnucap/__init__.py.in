@@ -18,7 +18,10 @@ else:
 # ideally the type names should be the usual ones, wrapper layers must be invisible.
 from component import COMPONENT_ as COMPONENT
 from e_elemnt import ELEMENT
+from gnucap_swig import CARD_LIST
 from gnucap_swig import SIM_ as SIM
+# from gnucap_swig import DPAIR
+# from gnucap_swig import COMPLEX
 from m_cpoly import FPOLY1, CPOLY1
 from m_wave import WAVE
 from e_node import node_t

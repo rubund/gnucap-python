@@ -1,0 +1,19 @@
+generator: already installed, replacing
+stashing as generator:0
+transient: already installed, replacing
+stashing as transient:0
+transient: already installed, replacing
+stashing as transient:0
+default plugins: develop 2017.11.18
+Vin ( 1 0 )  DC  0.  AC  1.
+R1 ( 1 2 )  1.K
+C1 ( 2 0 )  10.n
+ac: already installed, replacing
+stashing as ac:0
+#          
+ 27.       
+('numnodes:', 2)
+Loaded AC-matrix
+decomp
+fbsubt
+(20000.0, 0.6226769884870146)

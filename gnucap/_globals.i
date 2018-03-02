@@ -77,8 +77,6 @@ public:
   ~shared_command_installer();
 };
 
-
-
 // later
 //DISPATCHER<CMD> command_dispatcher;
 //DISPATCHER<COMMON_COMPONENT> bm_dispatcher;

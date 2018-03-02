@@ -14,7 +14,8 @@ AM_CPPFLAGS = \
 
 # python objects
 pythongcdir = $(pythondir)/gnucap
-pythongc_PYTHON = gnucap_swig.py __init__.py
+pythongc_PYTHON = \
+	${pythongc_LTLIBRARIES:_%.la=%.py} __init__.py
 
 pythongc_LTLIBRARIES = \
 	_gnucap_swig.la \
@@ -69,7 +70,7 @@ _component_la_SOURCES = _component.i
 .i.cxx:
 .cxx.lo:
 
-EXTRA_DIST = wrap.h e_card.i e_base.i c_comand.i
+EXTRA_DIST = wrap.h e_card.i e_base.i c_comand.i m_complex.i
 
 CLEANFILES = *~ *.pyc
 

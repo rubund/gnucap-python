@@ -3,15 +3,15 @@ Copyright: 2009-2011 Henrik Johansson
 Author: Henrik Johansson
 
 Create a new ac-analysis that always runs at a single frequency
-This only works when invoked from gnucap (?)
 """
-
 
 import os
 import numpy as np
 import pylab
 
 import gnucap
+
+cl=gnucap.CARD_LIST().card_list_()
 
 print("MYAC")
 A=file("/tmp/HELLO","w+")
@@ -24,31 +24,27 @@ runmode = gnucap.SET_RUN_MODE(gnucap.rBATCH)
 
 gnucap.command("get example.ckt")
 
-class MyAC(gnucap.SIMWrapper):
+class MyAC(gnucap.SIM):
     def do_it(self, cmd, scope):
-        PRINT("HELLOWORLD")
         self._scope = scope
-        self.set_command_ac()
-
-        self.init()
-
-        self.alloc_vectors()
-
-        acx =  gnucap.cvar.CKT_BASE_acx ## Static attributes must be accessed
-                                        ## through cvar
-
+        self.sim_().set_command_ac()
+        self.sim_().init()
+        self.sim_().alloc_vectors()
+        acx = self.sim_()._acx
         acx.reallocate()
 
         freq = 20e3
 
-        gnucap.cvar.SIM_jomega = 2j * np.pi * freq
+        self.sim_()._jomega = 2j * np.pi * freq
 
-        self.head(freq, freq, "Freq")
+#        self.head(freq, freq, "Freq")
 
-        card_list = gnucap.cvar.CARD_LIST_card_list
+        card_list = gnucap.CARD_LIST().card_list_()
         card_list.ac_begin()
+        print("begun")
 
         self.solve()
+        print("solved")
 
         self.outdata(freq)
 
@@ -86,8 +82,8 @@ class MyAC(gnucap.SIMWrapper):
 
 myac = MyAC()
 
-gnucap.install_command("myac", myac)
-gnucap.attach_command("ac", myac)
+d0=gnucap.install_command("myac", myac)
+d1=gnucap.install_command("ac", myac)
 
 gnucap.command("store ac vm(2)")
 gnucap.command("myac")

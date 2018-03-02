@@ -56,10 +56,9 @@ PY_LOG_COMPILER = $(top_srcdir)/py_log_compiler
 PY_TESTS = \
 	elmt.py \
 	sim.py \
+	ac.py \
+	store.py \
 	comp.py
-
-# not yet.
-# PY_TESTS += store.py
 
 TESTS = ${PY_TESTS}
 

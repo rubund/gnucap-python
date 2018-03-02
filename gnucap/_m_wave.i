@@ -73,19 +73,21 @@ public:
   try {
     $action // calls %extend function next() below
   } catch (StopIterator){
+//	 SWIG_exception(PyExc_StopIteration, "End of iterator");
     PyErr_SetString(PyExc_StopIteration, "End of iterator");
+// throw Stop_Iteration();
     return NULL;
   }
 }
 
-%extend WaveIterator
-{
+%extend WaveIterator {
   DPAIR const& next()
   {
     if ($self->cur != $self->end) {
       return *$self->cur++;
+    }else{ untested();
+		 throw StopIterator();
     }
-    throw StopIterator();
   }
 }
 

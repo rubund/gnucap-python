@@ -1,3 +1,17 @@
+#ifndef GC_SWIG_WRAP_H
+#define GC_SWIG_WRAP_H
+#include <md.h>
+//TODO: untangle
+struct COMPLEX_array_t {
+  operator COMPLEX*() { return _t; }
+  COMPLEX& get(unsigned i){return _t[i];}
+  COMPLEX* _t;
+};
+inline COMPLEX& get_z(COMPLEX* n, unsigned x){
+return n[x];
+}
+
+
 #include <c_comand.h>
 #include <l_dispatcher.h>
 #include <s__.h>
@@ -67,4 +81,7 @@ struct test{
 
 
 // maybe later
-void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
+// void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
+
+
+#endif

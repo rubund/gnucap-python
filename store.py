@@ -12,8 +12,7 @@ gnucap.command("ac 1 1024 * 4")
 
 w = gnucap.CKT_BASE_find_wave("v(nout)")
 
-b = w.begin();
-e = w.end();
+b = iter(w)
 
 print(next(b))
 print(next(b))
@@ -21,7 +20,12 @@ print(next(b))
 print(next(b))
 print(next(b))
 print(next(b))
-print(next(b)) # hmm, should throw?
+
+try:
+	next(b)
+	assert(False)
+except StopIteration:
+	pass
 
 for i in w:
 	print i
