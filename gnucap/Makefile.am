@@ -70,7 +70,13 @@ _component_la_SOURCES = _component.i
 .i.cxx:
 .cxx.lo:
 
-EXTRA_DIST = wrap.h e_card.i e_base.i c_comand.i m_complex.i
+EXTRA_DIST = \
+	wrap.h \
+	e_card.i \
+	e_base.i \
+	c_comand.i \
+	m_complex.i \
+	_m_matrix.i
 
 CLEANFILES = *~ *.pyc
 

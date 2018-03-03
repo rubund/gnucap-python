@@ -83,5 +83,16 @@ struct test{
 // maybe later
 // void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
 
+class BSCR{
+public:
+  BSCR( BSMATRIX<COMPLEX> const& m, size_t r) : _m(m), _r(r){ }
+  COMPLEX get(size_t x) const{
+	  return _m.s(_r, x);
+  }
+
+private:
+  BSMATRIX<COMPLEX> const& _m;
+  size_t _r;
+};
 
 #endif

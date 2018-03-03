@@ -57,8 +57,18 @@ class MyAC(gnucap.SIM):
 
 #        gnucap.set_complex_array(gnucap.cvar.SIM_ac, np.zeros(n, dtype=np.complex))
 
+        for a in range(3):
+           for b in range(3):
+              assert(self.sim_()._acx[a][b]==0.)
+
+
         card_list.do_ac()
         card_list.ac_load()
+        # not yet: print(self.sim_()._acx[0])
+        # not yet: print(self.sim_()._acx[0][0:2])
+        print(self.sim_()._acx[0][0], self.sim_()._acx[0][1], self.sim_()._acx[0][2])
+        print(self.sim_()._acx[1][0], self.sim_()._acx[1][1], self.sim_()._acx[1][2])
+        print(self.sim_()._acx[2][0], self.sim_()._acx[2][1], self.sim_()._acx[2][2])
 
         print("Loaded AC-matrix") # , gnucap.get_complex_array(gnucap.cvar.SIM_ac, n)
 

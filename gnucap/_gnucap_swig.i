@@ -12,6 +12,7 @@
 %include std_complex.i
 %include c_comand.i
 %include m_complex.i
+%include _m_matrix.i
 %include std_shared_ptr.i
 
 %{
@@ -67,46 +68,31 @@ struct COMPLEX_array_t {
 };
 
 
-///////////////////////////////////////////////////////////////////////////////
-// BSMATRIX
-///////////////////////////////////////////////////////////////////////////////
-template<class T> class BSMATRIX {
-public:
-  BSMATRIX(int ss=0);
-
-  void          iwant(int, int);
-  void          unallocate();
-  void          allocate();
-  void          reallocate();
-  int           size()const;
-  double        density();
-  void          zero();
-  void          dezero(T& o);
-  void          load_diagonal_point(int i, T value);
-  void          load_point(int i, int j, T value);
-  void          load_couple(int i, int j, T value);
-  void          load_symmetric(int i, int j, T value);
-  void          load_asymmetric(int r1, int r2, int c1, int c2, T value);
-
-  void          lu_decomp(const BSMATRIX<T>&, bool do_partial);
-  void          lu_decomp();
-//  void          fbsub(T* v) const;
-  void          fbsub(T* x, const T* b, T* c = NULL) const;
-
-  T     d(int r, int  )const    {return *(_diaptr[r]);}
- //  const T&    s(int r, int c);
-
-private:
-  T& m(int r, int c);
-};
 
 
 %template(BSMATRIXd) BSMATRIX<double>;
 %template(BSMATRIXc) BSMATRIX<COMPLEX>;
 
+class BSCR{
+  BSCR( BSMATRIX<COMPLEX> const& m, size_t r) : _m(m), _r(r){ }
+private:
+  BSMATRIX<COMPLEX>& _m;
+  size_t r;
+};
+
 %extend BSMATRIX<COMPLEX> {
   void fbsub_(COMPLEX_array_t& x){
     return self->fbsub(x._t);
+  }
+  inline BSCR __getitem__(int p){
+    return BSCR(*self, p);
+//    return self->s(p,p);
+  }
+}
+
+%extend BSCR{
+  inline COMPLEX __getitem__(int p){
+    return self->get(p);
   }
 }
 
