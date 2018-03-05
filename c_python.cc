@@ -1,20 +1,20 @@
-#include "gnucap/u_lang.h"
-#include "gnucap/c_comand.h"
-#include "gnucap/globals.h"
-#include "gnucap/s__.h"
+#include <u_lang.h>
+#include <c_comand.h>
+#include <globals.h>
+#include <s__.h>
 
 #include <Python.h>
 
 // Swig _gnucap init function prototype
-extern "C" void init_gnucap();
+//extern "C" void init_gnucap();
 
 /*--------------------------------------------------------------------------*/
 namespace {
   static int python_loaded = 0;
 
 /*--------------------------------------------------------------------------*/
-void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
-{
+void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
+{ untested();
   std::string file_name;
   char *argv[] = {};
   FILE *fp;
@@ -23,20 +23,31 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
   
   fp = fopen(file_name.c_str(), "r");
   
-  if(fp == NULL) 
+  if(fp == NULL) {
     throw Exception_File_Open(std::string("Could not open ") + file_name);
+  }else{
+  }
   
-  if(!python_loaded) {
-    dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
+
+//  huh?! why not link?
+  if(!python_loaded) { untested();
+	  trace0("dlopen python");
+   // dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
     Py_Initialize();
+
+#if PY_MAJOR_VERSION >= 3
+#else
     PySys_SetArgv(0, argv);
+#endif
     
     // Call init function of SWIG _gnucap module
-    init_gnucap();
+ //   init_gnucap();
 
-    python_loaded = 1;
+//    python_loaded = 1;
+  }else{ untested();
   }
 
+  trace1("running", file_name);
   PyRun_SimpleFile(fp, file_name.c_str());
 }
 
@@ -44,8 +55,8 @@ void eval_python(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 class CMD_PYTHON : public CMD {
 public:
   void do_it(CS& cmd, CARD_LIST* Scope)
-  {
-    eval_python(cmd, IO::mstdout, Scope);
+  { untested();
+    load_file(cmd, IO::mstdout, Scope);
   }
 } p1;
 

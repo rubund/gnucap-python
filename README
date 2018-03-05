@@ -1,19 +1,19 @@
-This package contains a python plugin for the circuit simulator Gnucap which\    allows the user to write custom commands in Python. 
-It also provides a gnucap extension for Python where gnucap can be used 
-as a library. No gnucap binary is needed. 
+This package contains a python plugin for the circuit simulator Gnucap which
+allows the user to implement commands or components (or anything) in Python,
+and run the simulator in a python environment, e.g. for postprocessing or
+plotting purposes.
 
-There is also waveform numpy array
-conversion functions which means that post-processing of gnucap simulation
-results can be done in Python using numpy/scipy/matplotlib.
+The package also provides a command for gnucap that loads python modules, such
+as python modules implementing custom commands or components (or anything).
+
+(there is some numpy code around which i do not understand. this is currently
+experimental)
 
  Requirements
 -------------
 
-You have to installed the modified version of gnucap that is compiled as a
-shared library. You can download it from the git repo at 
-http://github.com/henjo/gnucap.
-
-Other requirements are:
+requirements are:
+  * gnucap >= oct '17
   * Python >= 2.4
   * Swig
   * Numpy (with development headers/libraries)
@@ -25,17 +25,12 @@ Build python plugin for gnucap
 
 ::
 
-   $ ./autogen.sh
-   $ make install
+   $ ./bootstrap
+   $ ./configure
+   $ make
+   $ make install # optional. may require root privileges
 
-The resulting plugin will be written to "gnucap-plugins/python.so".
-
-Build gnucap extension
-
-::
-
-   $ python setup.py build
-   $ sudo python setup.py install
+will install the python module "gnucap" and a gnucap plugin "python".
 
 Examples
 --------
@@ -45,9 +40,8 @@ From gnucap
 
 ::
 
-   $ gnucap
-   gnucap> attach gnucap-plugins/python.so
-   gnucap> python example/loadplot.py
+   $ gnucap -a python.so
+   gnucap> python example/loadplot.py        <= this file is missing, but still.
    gnucap> get example/eq2-145.ckt
    gnucap> store ac vm(2)
    gnucap> ac oct 10 1k 100k
@@ -65,5 +59,10 @@ Do the same directly from Python
 
 ::
 
-   $ cd examples
-   $ python simple.py
+   $ python
+   >>> import gnucap
+   [..]
+   welcome to gnucap-python
+   >>> gnucap.stuff
+
+stuff is not documented yet.

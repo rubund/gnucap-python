@@ -1,10 +1,16 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
+# Copyright: 2009-2011 Henrik Johansson
+#            2018 Felix Salfelder <felix@salfelder.org>
+# Author: Henrik Johansson
+# License: GPLv3
+#
 # $Id$
 
-AC_PREREQ(2.59)
-AC_INIT([c_python.cc])
-AM_INIT_AUTOMAKE(gnucap-python, 2009-04-30)
+AC_PREREQ(2.69)
+AC_INIT([gnucap-python], [0.0.0], [gnucap-devel@gnu.org])
+AC_CONFIG_SRCDIR([c_python.cc])
+AM_INIT_AUTOMAKE([])
 AM_CONFIG_HEADER([config.h])
 
 # Checks for libraries.
@@ -13,17 +19,29 @@ AC_LANG([C++])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([dl], [dlopen])
 
+AC_CHECK_PROG(HAVE_GCCONF, gnucap-conf, true, false)
+if test "x$HAVE_GCCONF" = "xfalse"; then
+	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
+fi
+GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
+GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
+GC_LIBS=$(gnucap-conf$_program_suffix --libs)
+
+AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
 # Check for python
-AC_PYTHON_DEVEL([>= '2.3'])
+AM_PATH_PYTHON([2.7])
+AC_PYTHON_DEVEL([>= '2.3']) # ???
 AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
+AC_SUBST([GC_CPPFLAGS])
+AC_SUBST([GC_LIBS])
 
 ## Libtool init
 AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
 ## Check for gnucap
-PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+# PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
 
 ## Check for numpy development file
 AC_PYTHON_MODULE(numpy)
@@ -35,20 +53,25 @@ AC_ARG_WITH([numpy], [AC_HELP_STRING([--with-numpy=DIR],
 NUMPY_DIR="${NUMPY_DIR}/core/include/numpy"
 save_CPPFLAGS="$CPPFLAGS"
 CPPFLAGS="$CPPFLAGS $PYTHON_CPPFLAGS -I$NUMPY_DIR"
+HAS_NUMPY=no
+
 AC_CHECK_HEADER([${NUMPY_DIR}/arrayobject.h],
-                [AC_DEFINE(HAS_NUMPY,,[wether to include numpy support]),
-                HAS_NUMPY=yes],,
-                [#include "Python.h"])
+                [ AC_DEFINE(HAS_NUMPY,[],[wether to include numpy support])
+		HAS_NUMPY=yes],[],[#include "Python.h"])
 CPPFLAGS=$save_CPPFLAGS
+
 AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
 
 AC_PROG_SWIG()
 
 # exports symbols to plugins
-LDFLAGS="$LDFLAGS -rdynamic"
+LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
 AC_OUTPUT([
 	Makefile
+	include/Makefile
+	gnucap/Makefile
+	gnucap/__init__.py
 	])
 
 AC_MSG_RESULT([
@@ -56,6 +79,7 @@ AC_MSG_RESULT([
 
    prefix:                   $prefix
    CPPFLAGS:                 $CPPFLAGS
+   GC_CPPFLAGS:              $GC_CPPFLAGS
    CFLAGS:                   $CFLAGS
    CXXFLAGS:                 $CXXFLAGS
    LDFLAGS:                  $LDFLAGS
@@ -63,3 +87,4 @@ AC_MSG_RESULT([
 
 ])
 
+dnl vim:ts=8:sw=2:

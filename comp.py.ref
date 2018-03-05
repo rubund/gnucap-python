@@ -1,0 +1,39 @@
+generator: already installed, replacing
+stashing as generator:0
+transient: already installed, replacing
+stashing as transient:0
+transient: already installed, replacing
+stashing as transient:0
+default plugins: develop 2017.11.18
+myac: already installed, replacing
+stashing as myac:0
+#Freq      
+ 1.        
+ 2.        
+HELLOWORLD
+('construct somecomponent', <__main__.somecomponent;  >)
+('init', '')
+max
+('mtest', 2, '')
+copyconstruct somecomponent
+('init', '')
+max
+('mtest', 2, '')
+('TT', <class '__main__.somecomponent'>)
+copyconstruct somecomponent
+('init', '')
+max
+max
+min
+vsource #(.dc(1)) v (.p(1),.n(0));
+pythoncomptest #() s (.P(1),.N(0));
+min
+max
+max
+max
+max
+#           fourtytwo(s) v(s)      
+ 0.         42.       -1.        
+ 0.5        42.       -1.        
+ 1.         42.       -1.        
+done
