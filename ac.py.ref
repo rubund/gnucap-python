@@ -13,6 +13,9 @@ stashing as ac:0
 #          
  27.       
 ('numnodes:', 2)
+('incomplete', BMATRIX: incomplete)
+('incomplete', BSCR: incomplete)
+('incomplete', None)
 (0j, 0j, 0j)
 (0j, (0.001+0.0012566370614359172j), (-0.001+0j))
 (0j, (-0.001+0j), (100000.00099999999+0j))

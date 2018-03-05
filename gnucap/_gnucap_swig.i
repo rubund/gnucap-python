@@ -84,6 +84,9 @@ private:
   void fbsub_(COMPLEX_array_t& x){
     return self->fbsub(x._t);
   }
+  inline std::string __repr__(){
+        return("BMATRIX: incomplete");
+  }
   inline BSCR __getitem__(int p){
     return BSCR(*self, p);
 //    return self->s(p,p);
@@ -93,6 +96,21 @@ private:
 %extend BSCR{
   inline COMPLEX __getitem__(int p){
     return self->get(p);
+  }
+  inline std::string __repr__(){
+        return("BSCR: incomplete");
+  }
+
+  void __getitem__(PyObject *param) {
+    if (PySlice_Check(param)) {
+      incomplete();
+      Py_ssize_t len = -1u, start = 0, stop = 0, step = 0, slicelength = 0;
+
+      PySlice_GetIndicesEx((PySliceObject*)param,
+          len, &start, &stop, &step, &slicelength);
+      trace5("slice", len, start, stop, step, slicelength);
+    }else{
+    }
   }
 }
 
