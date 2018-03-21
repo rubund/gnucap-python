@@ -57,6 +57,7 @@ PY_TESTS = \
 	elmt.py \
 	sim.py \
 	ac.py \
+	param.py \
 	store.py \
 	comp.py
 

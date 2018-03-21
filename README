@@ -66,3 +66,9 @@ Do the same directly from Python
    >>> gnucap.stuff
 
 stuff is not documented yet.
+
+Caveats
+~~~~~~~
+
+python scatters the planet with .pyc files containing cached bytecode. these
+may lead to weird error messages.
