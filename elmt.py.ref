@@ -16,10 +16,8 @@ copyconstruct myvs
 somelt clone
 copyconstruct myvs
 ('init', '')
-min
 resistor #(.r(1)) r (.p(1),.n(0));
 pyelt #() s (.P(1),.N(0));
-min
 iwant incomplete
 #           fourtytwo(s) i(r)       v(s)       nodeprobe(s) v(1)      
 r: short circuit

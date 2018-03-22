@@ -68,12 +68,10 @@ class somecomponent(COMPONENT):
 		return "pythoncomptest"
 
 	def min_nodes(self):
-		print("min");
 		return 2;
 	def net_nodes(self):
 		return 2;
 	def max_nodes(self):
-		print("max");
 		return 2;
 	def net_nodes(self):
 		return 2;

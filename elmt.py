@@ -48,7 +48,6 @@ class myvs(ELEMENT):
 		return "pyelt"
 
 	def min_nodes(self):
-		print("min");
 		return 2;
 	def net_nodes(self):
 		return 2;
