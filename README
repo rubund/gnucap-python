@@ -17,6 +17,8 @@ requirements are:
   * Python >= 2.4
   * Swig
   * Numpy (with development headers/libraries)
+  * c++11 (pass -std=c++11 to your compiler,
+           if 11 is supported but the default is <11)
 
  Installation
 -------------
