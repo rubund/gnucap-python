@@ -7,8 +7,6 @@
 
 import os
 import numpy as np
-import pylab
-
 import gnucap
 
 gnucap.command("set trace")
