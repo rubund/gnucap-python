@@ -32,9 +32,8 @@ from globals import install_device
 from globals import install_command
 # from globals import shared_command_installer as command_installer
 
-# TODO: ask gnucap-conf (at configure time)
-# BUG: do not override, if set.
-os.environ["GNUCAP_PLUGPATH"] = "/usr/local/lib/gnucap"
+if not os.environ.has_key("GNUCAP_PLUGPATH"):
+	os.environ["GNUCAP_PLUGPATH"] = "@GC_PKGLIBDIR@"
 
 if hasattr(sys, 'ps1'):
 	print("welcome to gnucap-python")

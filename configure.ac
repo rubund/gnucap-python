@@ -24,6 +24,7 @@ if test "x$HAVE_GCCONF" = "xfalse"; then
 	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
 fi
 GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
+GC_PKGLIBDIR=$(gnucap-conf$_program_suffix --pkglibdir)
 GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
 GC_LIBS=$(gnucap-conf$_program_suffix --libs)
 
@@ -35,6 +36,7 @@ AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
 AC_SUBST([GC_CPPFLAGS])
 AC_SUBST([GC_LIBS])
+AC_SUBST([GC_PKGLIBDIR])
 
 ## Libtool init
 AC_PROG_LIBTOOL
