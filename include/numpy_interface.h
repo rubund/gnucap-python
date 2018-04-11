@@ -1,4 +1,4 @@
-#include <gnucap/m_matrix.h>
+#include <m_matrix.h>
 #include <Python.h>
 #include <numpy/arrayobject.h>
 
