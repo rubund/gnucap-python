@@ -64,7 +64,7 @@ PY_TESTS = \
 TESTS = ${PY_TESTS}
 
 ${PY_TESTS:%.py=%.py.out}: %.py.out: %.py
-	python < ${srcdir}/$*.py > $@
+	python < ${srcdir}/$*.py | sed '/^default plugins/s/:.*//' > $@
 
 .PHONY: .P
 .P:
