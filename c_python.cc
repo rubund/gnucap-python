@@ -7,6 +7,8 @@
 
 // Swig _gnucap init function prototype
 //extern "C" void init_gnucap();
+//
+extern std::vector<CMD*> installed_commands;
 
 /*--------------------------------------------------------------------------*/
 namespace {
@@ -53,6 +55,14 @@ void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 
 /*--------------------------------------------------------------------------*/
 class CMD_PYTHON : public CMD {
+public:
+	~CMD_PYTHON(){ untested();
+		// need to uninstall from here?
+		trace1("~CMD_PYTHON", installed_commands.size());
+		for(auto i : installed_commands){ untested();
+			command_dispatcher.uninstall(i);
+		}
+	}
 public:
   void do_it(CS& cmd, CARD_LIST* Scope)
   { untested();

@@ -27,6 +27,10 @@ pythongc_LTLIBRARIES = \
 	_e_elemnt.la \
 	_e_node.la
 
+pkglib_LTLIBRARIES = libgnucap-python.la
+libgnucap_python_la_SOURCES = garbage.cc
+
+
 all-local:
 	for i in ${pythongc_LTLIBRARIES:%.la=%.so}; do \
 		rm -f $$i; \
@@ -47,6 +51,7 @@ _e_elemnt_la_LIBADD = -lgnucap
 _e_node_la_LIBADD = -lgnucap
 _m_cpoly_la_LIBADD = -lgnucap
 
+_globals_la_LIBADD += libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i
 

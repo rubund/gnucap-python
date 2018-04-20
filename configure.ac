@@ -29,6 +29,8 @@ GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
 GC_LIBS=$(gnucap-conf$_program_suffix --libs)
 
 AM_CONDITIONAL([HAVE_PYTHON], [test "$PYTHON" != :])
+AM_CONDITIONAL([VPATH_BUILD], [test ! x$srcdir = "x."])
+
 # Check for python
 AM_PATH_PYTHON([2.7])
 AC_PYTHON_DEVEL([>= '2.3']) # ???

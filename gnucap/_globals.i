@@ -47,6 +47,11 @@
 }
 %allowexception;
 
+
+%{
+extern std::vector<CMD*> installed_commands;
+%}
+
 %inline %{
 
 typedef DISPATCHER<CARD>::INSTALL card_install;
@@ -60,7 +65,9 @@ typedef DISPATCHER<CMD>::INSTALL cmd_install;
 typedef std::shared_ptr< cmd_install > shared_command_installer;
 
 shared_command_installer install_command(char *name, CMD *cmd) { untested();
-  return std::make_shared<DISPATCHER<CMD>::INSTALL>(&command_dispatcher, name, cmd);
+  installed_commands.push_back(cmd);
+  auto x=std::make_shared<DISPATCHER<CMD>::INSTALL>(&command_dispatcher, name, cmd);
+  return x;
 }
 %}
 
