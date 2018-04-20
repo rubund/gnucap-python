@@ -16,7 +16,7 @@ namespace {
 
 /*--------------------------------------------------------------------------*/
 void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
-{ untested();
+{
   std::string file_name;
   char *argv[] = {};
   FILE *fp;
@@ -32,7 +32,7 @@ void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
   
 
 //  huh?! why not link?
-  if(!python_loaded) { untested();
+  if(!python_loaded) {
 	  trace0("dlopen python");
    // dlopen(PYTHON_SO, RTLD_NOW|RTLD_GLOBAL);
     Py_Initialize();
@@ -56,16 +56,16 @@ void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 /*--------------------------------------------------------------------------*/
 class CMD_PYTHON : public CMD {
 public:
-	~CMD_PYTHON(){ untested();
+	~CMD_PYTHON(){
 		// need to uninstall from here?
 		trace1("~CMD_PYTHON", installed_commands.size());
-		for(auto i : installed_commands){ untested();
+		for(auto i : installed_commands){
 			command_dispatcher.uninstall(i);
 		}
 	}
 public:
   void do_it(CS& cmd, CARD_LIST* Scope)
-  { untested();
+  {
     load_file(cmd, IO::mstdout, Scope);
   }
 } p1;
