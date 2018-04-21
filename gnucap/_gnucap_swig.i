@@ -11,7 +11,7 @@
 %include std_string.i
 %include std_complex.i
 %include c_comand.i
-%include m_complex.i
+%include _md.i
 %include _m_matrix.i
 %include std_shared_ptr.i
 #include _u_status.i
@@ -63,9 +63,6 @@ typedef std::complex<double> COMPLEX;
 #include <md.h>
 %}
 
-struct COMPLEX_array_t {
-  COMPLEX* _t;
-};
 
 
 
@@ -73,14 +70,6 @@ struct COMPLEX_array_t {
 ///////////////////////////////////////////////////////////////////////////////
 // Major gnucap classes
 ///////////////////////////////////////////////////////////////////////////////
-
-class CS {
-public:
-      enum STRING {_STRING};
-      CS(CS::STRING, const std::string& s);
-      const std::string fullstring()const;
-};
-
 
 class SIM : public CMD {
 protected:

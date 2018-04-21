@@ -18,6 +18,7 @@ pythongc_PYTHON = \
 	${pythongc_LTLIBRARIES:_%.la=%.py} __init__.py
 
 pythongc_LTLIBRARIES = \
+	_ap.la \
 	_gnucap_swig.la \
 	_component.la \
 	_globals.la \
@@ -92,7 +93,7 @@ EXTRA_DIST = \
 	e_card.i \
 	e_base.i \
 	c_comand.i \
-	m_complex.i \
+	_md.i \
 	_m_matrix.i
 
 CLEANFILES = *~ *.pyc

@@ -3,10 +3,9 @@
 #include "wrap.h"
 %}
 
-%{
-
-
-%}
+struct COMPLEX_array_t {
+  COMPLEX* _t;
+};
 
 
 %extend COMPLEX_array_t {
