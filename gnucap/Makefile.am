@@ -24,6 +24,7 @@ pythongc_LTLIBRARIES = \
 	_m_cpoly.la \
 	_m_wave.la \
 	_c_exp.la \
+	_e_cardlist.la \
 	_e_elemnt.la \
 	_e_node.la \
 	_u_status.la
@@ -48,6 +49,7 @@ _gnucap_swig_la_LIBADD = -lgnucap
 _c_exp_la_LIBADD = -lgnucap
 _component_la_LIBADD = -lgnucap
 _globals_la_LIBADD = -lgnucap
+_e_cardlist_la_LIBADD = -lgnucap
 _e_elemnt_la_LIBADD = -lgnucap
 _e_node_la_LIBADD = -lgnucap
 _m_cpoly_la_LIBADD = -lgnucap
@@ -66,6 +68,7 @@ _gnucap_swig_la_CPPFLAGS = ${AM_CPPFLAGS}
 _component_la_CPPFLAGS = ${AM_CPPFLAGS}
 _globals_la_CPPFLAGS = ${AM_CPPFLAGS}
 _c_exp_la_CPPFLAGS = ${AM_CPPFLAGS}
+_e_cardlist_la_CPPFLAGS = ${AM_CPPFLAGS}
 _e_elemnt_la_CPPFLAGS = ${AM_CPPFLAGS}
 _m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
 _m_cpoly_la_CPPFLAGS = ${AM_CPPFLAGS}

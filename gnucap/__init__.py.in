@@ -17,8 +17,8 @@ else:
 # trying to manifest an interface.
 # ideally the type names should be the usual ones, wrapper layers must be invisible.
 from component import COMPONENT_ as COMPONENT
+from e_cardlist import CARD_LIST
 from e_elemnt import ELEMENT
-from gnucap_swig import CARD_LIST
 from gnucap_swig import SIM_ as SIM
 # from gnucap_swig import DPAIR
 # from gnucap_swig import COMPLEX

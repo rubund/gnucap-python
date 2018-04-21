@@ -81,35 +81,6 @@ public:
       const std::string fullstring()const;
 };
 
-class CARD_LIST {
-public:
-   CARD_LIST& expand();
-   CARD_LIST& map_nodes();
-   CARD_LIST& tr_iwant_matrix();
-   CARD_LIST& tr_begin();
-   CARD_LIST& tr_restore();
-   CARD_LIST& dc_advance();
-   CARD_LIST& tr_advance();
-   CARD_LIST& tr_regress();
-   bool       tr_needs_eval()const;
-   CARD_LIST& tr_queue_eval();
-   bool       do_tr();
-   CARD_LIST& tr_load();
-   TIME_PAIR  tr_review();
-   CARD_LIST& tr_accept();
-   CARD_LIST& tr_unload();
-   CARD_LIST& ac_iwant_matrix();
-   CARD_LIST& ac_begin();
-   CARD_LIST& do_ac();
-   CARD_LIST& ac_load();
-
-};
-
-%extend CARD_LIST {
-  CARD_LIST& card_list_(){
-    return self->card_list;
-  }
-}
 
 class SIM : public CMD {
 protected:
