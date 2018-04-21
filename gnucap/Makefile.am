@@ -44,18 +44,21 @@ check: all-local
 _gnucap_swig_la_LDFLAGS = -module -omit-version
 AM_LDFLAGS = -module -omit-version
 
-# AM_LIBADD?
-_gnucap_swig_la_LIBADD = -lgnucap
-_c_exp_la_LIBADD = -lgnucap
-_component_la_LIBADD = -lgnucap
-_globals_la_LIBADD = -lgnucap
-_e_cardlist_la_LIBADD = -lgnucap
-_e_elemnt_la_LIBADD = -lgnucap
-_e_node_la_LIBADD = -lgnucap
-_m_cpoly_la_LIBADD = -lgnucap
-_u_status_la_LIBADD = -lgnucap
+# link everything here against gnucap
+# (good idea?)
+LIBS = -lgnucap
 
-_globals_la_LIBADD += libgnucap-python.la
+#_gnucap_swig_la_LIBADD = -lgnucap
+#_c_exp_la_LIBADD = -lgnucap
+#_component_la_LIBADD = -lgnucap
+#_globals_la_LIBADD = -lgnucap
+#_e_cardlist_la_LIBADD = -lgnucap
+#_e_elemnt_la_LIBADD = -lgnucap
+#_e_node_la_LIBADD = -lgnucap
+#_m_cpoly_la_LIBADD = -lgnucap
+#_u_status_la_LIBADD = -lgnucap
+
+_globals_la_LIBADD = ${AM_LIBADD} libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i
 
@@ -64,25 +67,25 @@ _gnucap_swig_la_SOURCES += c_genrat.cc
 _gnucap_swig_la_SOURCES += s_tr.cc s_tr_set.cc s_tr_swp.cc s__solve.cc s__out.cc s__init.cc
 
 # why is this needed?
-_gnucap_swig_la_CPPFLAGS = ${AM_CPPFLAGS}
-_component_la_CPPFLAGS = ${AM_CPPFLAGS}
-_globals_la_CPPFLAGS = ${AM_CPPFLAGS}
-_c_exp_la_CPPFLAGS = ${AM_CPPFLAGS}
-_e_cardlist_la_CPPFLAGS = ${AM_CPPFLAGS}
-_e_elemnt_la_CPPFLAGS = ${AM_CPPFLAGS}
-_m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
-_m_cpoly_la_CPPFLAGS = ${AM_CPPFLAGS}
-_e_node_la_CPPFLAGS = ${AM_CPPFLAGS}
-_u_status_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _gnucap_swig_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _component_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _globals_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _c_exp_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _e_cardlist_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _e_elemnt_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _m_cpoly_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _e_node_la_CPPFLAGS = ${AM_CPPFLAGS}
+# _u_status_la_CPPFLAGS = ${AM_CPPFLAGS}
 
 # (why) is this needed?
-_component_la_SOURCES = _component.i
+# _component_la_SOURCES = _component.i
 
 %.py _%.cxx _%.h: _%.i
 	swig -python -c++ -Wall $(SWIG_FLAGS) -o _$*.cxx $<
 
 .i.cxx:
-.cxx.lo:
+#.cxx.lo:
 
 EXTRA_DIST = \
 	wrap.h \
