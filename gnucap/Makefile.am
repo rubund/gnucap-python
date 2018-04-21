@@ -25,7 +25,8 @@ pythongc_LTLIBRARIES = \
 	_m_wave.la \
 	_c_exp.la \
 	_e_elemnt.la \
-	_e_node.la
+	_e_node.la \
+	_u_status.la
 
 pkglib_LTLIBRARIES = libgnucap-python.la
 libgnucap_python_la_SOURCES = garbage.cc
@@ -50,6 +51,7 @@ _globals_la_LIBADD = -lgnucap
 _e_elemnt_la_LIBADD = -lgnucap
 _e_node_la_LIBADD = -lgnucap
 _m_cpoly_la_LIBADD = -lgnucap
+_u_status_la_LIBADD = -lgnucap
 
 _globals_la_LIBADD += libgnucap-python.la
 
@@ -68,6 +70,7 @@ _e_elemnt_la_CPPFLAGS = ${AM_CPPFLAGS}
 _m_wave_la_CPPFLAGS = ${AM_CPPFLAGS}
 _m_cpoly_la_CPPFLAGS = ${AM_CPPFLAGS}
 _e_node_la_CPPFLAGS = ${AM_CPPFLAGS}
+_u_status_la_CPPFLAGS = ${AM_CPPFLAGS}
 
 # (why) is this needed?
 _component_la_SOURCES = _component.i

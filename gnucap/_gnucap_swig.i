@@ -14,6 +14,7 @@
 %include m_complex.i
 %include _m_matrix.i
 %include std_shared_ptr.i
+#include _u_status.i
 
 %{
 #include "wrap.h"
@@ -23,11 +24,11 @@
 #include <s__.h>
 #include <m_wave.h>
 #include <u_opt.h>
+#include <u_status.h>
 #include <e_cardlist.h>
 #include <globals.h>
 #include <md.h>
 #include <m_matrix.h>
-#include <u_status.h>
 #include <s_tr.h>
 #include <u_time_pair.h>
 #include <u_sim_data.h>
@@ -55,64 +56,17 @@
 // Basic types
 ///////////////////////////////////////////////////////////////////////////////
 //%template(COMPLEX) std::complex<double>;
+// _md.i?
 typedef std::complex<double> COMPLEX;
 
 %{
-
 #include <md.h>
-
 %}
 
 struct COMPLEX_array_t {
   COMPLEX* _t;
 };
 
-
-
-
-%template(BSMATRIXd) BSMATRIX<double>;
-%template(BSMATRIXc) BSMATRIX<COMPLEX>;
-
-class BSCR{
-  BSCR( BSMATRIX<COMPLEX> const& m, size_t r) : _m(m), _r(r){ }
-private:
-  BSMATRIX<COMPLEX>& _m;
-  size_t r;
-};
-
-%extend BSMATRIX<COMPLEX> {
-  void fbsub_(COMPLEX_array_t& x){
-    return self->fbsub(x._t);
-  }
-  inline std::string __repr__(){
-        return("BMATRIX: incomplete");
-  }
-  inline BSCR __getitem__(int p){
-    return BSCR(*self, p);
-//    return self->s(p,p);
-  }
-}
-
-%extend BSCR{
-  inline COMPLEX __getitem__(int p){
-    return self->get(p);
-  }
-  inline std::string __repr__(){
-        return("BSCR: incomplete");
-  }
-
-  void __getitem__(PyObject *param) {
-    if (PySlice_Check(param)) {
-      incomplete();
-      Py_ssize_t len = -1u, start = 0, stop = 0, step = 0, slicelength = 0;
-
-      PySlice_GetIndicesEx((PySliceObject*)param,
-          len, &start, &stop, &step, &slicelength);
-      trace5("slice", len, start, stop, step, slicelength);
-    }else{
-    }
-  }
-}
 
 
 
@@ -299,14 +253,6 @@ protected:
         bool _cont;
         void sweep();
         void outdata(double, int);
-};
-
-class STATUS {
-public:
-//  void command(CS& cmd);
-
-  int control;
-  int hidden_steps;
 };
 
 enum RUN_MODE {

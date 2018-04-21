@@ -26,6 +26,7 @@ class MyAC(gnucap.SIM):
         self._scope = scope
         self.sim_().set_command_ac()
         self.sim_().init()
+
         self.sim_().alloc_vectors()
         acx = self.sim_()._acx
         acx.reallocate()
@@ -33,7 +34,6 @@ class MyAC(gnucap.SIM):
         freq = 20e3
 
         self.sim_()._jomega = 2j * np.pi * freq
-
         self.head(freq, freq, "Freq")
 
         card_list = gnucap.CARD_LIST().card_list_()

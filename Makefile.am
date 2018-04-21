@@ -44,9 +44,10 @@ c_python_la_LIBADD += gnucap/libgnucap-python.la
 
 ####### TESTS #########
 
-M_TESTS_ENVIRONMENT = \
+AM_TESTS_ENVIRONMENT = \
     export REDIRECT='exec 2>&9'\
            MAKEFLAGS=--no-print-directory \
+			  GNUCAP_PLUGPATH=@GC_PKGLIBDIR@:$(builddir)${GNUCAP_PLUGPATH:%=:%} \
            srcdir='$(srcdir)';
 AM_TESTS_FD_REDIRECT = 9>&2
 TEST_EXTENSIONS = .gc .py
