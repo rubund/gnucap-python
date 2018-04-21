@@ -61,27 +61,7 @@ public: // pure?
 std::string command(char *command);
 void parse(char *command);
 
-
-//DISPATCHER<CARD>::INSTALL install_device(char *name, CARD*);
-
 inline void test_dummy(CARD *c){ untested(); }
-
-#if 0
-namespace{
-struct test{
-	class ct: public component {
-	};
-	test(){
-		ct x;
-		CARD* y = &x;
-	}
-};
-}
-#endif
-
-
-// maybe later
-// void uninstall_command(DISPATCHER<CMD>::INSTALL *installer);
 
 class BSCR{
 public:

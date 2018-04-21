@@ -17,8 +17,14 @@
  * 02110-1301, USA.
  *------------------------------------------------------------------
  */
+%module(directors="0", allprotected="1") c_comand
 
-%include e_base.i
+// .h?
+%include _e_base.i
+
+%{
+#include <c_comand.h>
+%}
 
 class CMD : public CKT_BASE {
 public:

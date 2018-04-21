@@ -17,7 +17,14 @@
  * 02110-1301, USA.
  *------------------------------------------------------------------
  */
+%module(directors="0", allprotected="1") e_base
 %feature(nodirector) CKT_BASE;
+
+%include _m_wave.i
+%include std_string.i
+%{
+#include <e_base.h>
+%}
 
 class CKT_BASE {
 private:
@@ -35,16 +42,3 @@ protected: // create and destroy
 public:
   static WAVE* find_wave(const std::string&);
 };
-
-/// class CKT_BASE {
-/// protected:
-///   explicit CKT_BASE()                     :_probes(0), _label() {}
-///   explicit CKT_BASE(const std::string& s) :_probes(0), _label(s) {}
-///   explicit CKT_BASE(const CKT_BASE& p)    :_probes(0), _label(p._label) {}
-///   virtual  ~CKT_BASE();
-/// public:
-/// 
-///   virtual bool help(CS&, OMSTREAM&) const{ untested(); }
-/// 
-/// };
-

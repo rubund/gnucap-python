@@ -22,6 +22,16 @@
  *------------------------------------------------------------------
  */
 
+%module(directors="0", allprotected="1") m_matrix
+
+%include stl.i
+%include std_complex.i
+%include _md.i
+
+%{
+#include "wrap.h"
+%}
+
 template<class T> class BSMATRIX {
 public:
   BSMATRIX(int ss=0);

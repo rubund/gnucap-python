@@ -22,7 +22,8 @@
 // %feature("director") WAVE;
 
 %{
-#include <m_wave.h>
+#include "m_wave_.h"
+#include <e_base.h>
 %}
 
 

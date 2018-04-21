@@ -17,25 +17,29 @@
  * 02110-1301, USA.
  *------------------------------------------------------------------
  */
-%module(directors="0", allprotected="1") md
+%module(directors="0", allprotected="1") u_opt
 
-%include std_complex.i
-%include "md.h"
-// typedef std::complex<double> COMPLEX;
+%include stl.i
+%include _md.i
 
 %{
-#include "wrap.h"
+#include <u_opt.h>
 %}
 
-struct COMPLEX_array_t {
-  COMPLEX* _t;
+#if 0
+// not yet?
+#define INTERFACE
+%include "u_opt.h"
+%include "mode.h"
+#endif
+
+class SET_RUN_MODE {
+public:
+      SET_RUN_MODE(RUN_MODE rm);
 };
+// ENV::run_mode;
 
-
-%extend COMPLEX_array_t {
-  // inline size_t __len__() const { return status.something }
-  inline COMPLEX& __getitem__(size_t i){
-    return self->get(i);
-  }
-}
-
+class ENV {
+public:
+  static RUN_MODE run_mode; // variations on handling of dot commands
+};

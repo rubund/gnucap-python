@@ -23,6 +23,11 @@
 #include <e_node.h>
 %}
 
+#if 0
+// not yet.
+#define INTERFACE
+%include "e_node.h"
+#else
 class node_t {
 public:
   int	m_()const;
@@ -59,6 +64,7 @@ public:
   double&     i();
   //COMPLEX&    iac();
 };
+#endif
 
 %{
 

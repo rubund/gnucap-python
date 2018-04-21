@@ -23,6 +23,7 @@ AC_CHECK_PROG(HAVE_GCCONF, gnucap-conf, true, false)
 if test "x$HAVE_GCCONF" = "xfalse"; then
 	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
 fi
+GC_INCLUDEDIR=$(gnucap-conf$_program_suffix --includedir)
 GC_CPPFLAGS+=$(gnucap-conf$_program_suffix --cppflags)
 GC_PKGLIBDIR=$(gnucap-conf$_program_suffix --pkglibdir)
 GC_LDFLAGS=$(gnucap-conf$_program_suffix --ldflags)
@@ -36,7 +37,9 @@ AM_PATH_PYTHON([2.7])
 AC_PYTHON_DEVEL([>= '2.3']) # ???
 AC_SUBST(ac_python_soname)
 AC_SUBST(ac_python_libdir)
+
 AC_SUBST([GC_CPPFLAGS])
+AC_SUBST([GC_INCLUDEDIR])
 AC_SUBST([GC_LIBS])
 AC_SUBST([GC_PKGLIBDIR])
 

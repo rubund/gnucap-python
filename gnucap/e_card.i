@@ -18,7 +18,7 @@
  *------------------------------------------------------------------
  */
 
-%include e_base.i
+%include _e_base.i
 %feature(nodirector) CARD;
 
 class CARD : public CKT_BASE {
