@@ -1,3 +1,8 @@
+# Copyright (C) 2018 Felix Salfelder
+# Author: Felix Salfelder <felix@salfelder.org>
+
+from __future__ import print_function
+
 import gnucap
 
 gnucap.command("set lang spice")
@@ -28,6 +33,6 @@ except StopIteration:
 	pass
 
 for i in w:
-	print i
+	print(i)
 
 print("done")

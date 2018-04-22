@@ -12,34 +12,37 @@ else:
 	untested()
 
 # need cleanup
-from gnucap_swig import command, parse
+if sys.version_info.major >= 3:
+	print("incomplete")
+else:
+	pass
 
-# do per file.
-from c_comand import CMD, CMD_cmdproc, CMD_command
-from c_exp import eval
-from component import COMPONENT_ as COMPONENT
-from e_base import CKT_BASE_find_wave, CKT_BASE
-from e_cardlist import CARD_LIST
-from e_elemnt import ELEMENT
-from e_node import node_t
-from m_cpoly import FPOLY1, CPOLY1
-from md import rBATCH, rINTERACTIVE, rPRESET, rPRE_MAIN, rSCRIPT
-from md import ENV
-from m_matrix import BSMATRIXd, BSMATRIXc
-from m_wave import WAVE
-from s__ import SIM_ as SIM
-from u_opt import SET_RUN_MODE
-from u_sim_data import SIM_DATA
+from .gnucap_swig import command, parse
+from .c_comand import CMD, CMD_cmdproc, CMD_command
+from .c_exp import eval
+from .component import COMPONENT_ as COMPONENT
+from .e_base import CKT_BASE_find_wave, CKT_BASE
+from .e_cardlist import CARD_LIST
+from .e_elemnt import ELEMENT
+from .e_node import node_t
+from .m_cpoly import FPOLY1, CPOLY1
+from .md import rBATCH, rINTERACTIVE, rPRESET, rPRE_MAIN, rSCRIPT
+from .md import ENV
+from .m_matrix import BSMATRIXd, BSMATRIXc
+from .m_wave import WAVE
+from .s__ import SIM_ as SIM
+from .u_opt import SET_RUN_MODE
+from .u_sim_data import SIM_DATA
 
 if(os.name=="posix"):
 	sys.setdlopenflags(oldflags)
 
 # this will change
-from globals import install_device
-from globals import install_command
+from .globals import install_device
+from .globals import install_command
 # from globals import shared_command_installer as command_installer
 
-if not os.environ.has_key("GNUCAP_PLUGPATH"):
+if not "GNUCAP_PLUGPATH" in os.environ:
 	os.environ["GNUCAP_PLUGPATH"] = "@GC_PKGLIBDIR@"
 
 if hasattr(sys, 'ps1'):

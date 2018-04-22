@@ -12,14 +12,14 @@ ac: already installed, replacing
 stashing as ac:0
 #          
  27.       
-('numnodes:', 2)
-('incomplete', BMATRIX: incomplete)
-('incomplete', BSCR: incomplete)
-('incomplete', None)
-(0j, 0j, 0j)
-(0j, (0.001+0.0012566370614359172j), (-0.001+0j))
-(0j, (-0.001+0j), (100000.00099999999+0j))
+numnodes: 2
+incomplete BMATRIX: incomplete
+incomplete BSCR: incomplete
+incomplete None
+M 0j 0j 0j
+M 0j (0.001+0.0012566370614359172j) (-0.001+0j)
+M 0j (-0.001+0j) (100000.00099999999+0j)
 Loaded AC-matrix
 decomp
 fbsubt
-(20000.0, 0.6226769884870146)
+0 (20000.0, 0.6226769884870146)

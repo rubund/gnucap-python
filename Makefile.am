@@ -7,8 +7,7 @@
 check_PROGRAMS = test_python
 test_python_SOURCES = test_python.cc
 
-test_python_LDADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@ -lpython2.7
-
+test_python_LDADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@ ${PYTHON_LIBS}
 test_python_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
@@ -35,7 +34,7 @@ endif
 c_python_la_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
-c_python_la_LDFLAGS = -shared -module -avoid-version @LDFLAGS@ @PYTHON_LDFLAGS@
+c_python_la_LDFLAGS = -shared -module -avoid-version @LDFLAGS@ @PYTHON_LIBS@
 c_python_la_LIBADD = ${DEPS_LIBS} @PYTHON_EXTRA_LIBS@
 c_python_la_LIBADD += gnucap/libgnucap-python.la
 
@@ -43,11 +42,16 @@ c_python_la_LIBADD += gnucap/libgnucap-python.la
 #c_python_la_LIBADD += @GC_LIBS@
 
 ####### TESTS #########
+GNUCAP_PLUGPATH := ${builddir}:@GC_PKGLIBDIR@:${GNUCAP_PLUGPATH:%=:%}
+PYTHONPATH=.
 
 AM_TESTS_ENVIRONMENT = \
     export REDIRECT='exec 2>&9'\
+           PYTHON=${PYTHON} \
+           PYTHON_VERSION=${PYTHON_VERSION} \
+           PYTHONPATH=. \
            MAKEFLAGS=--no-print-directory \
-			  GNUCAP_PLUGPATH=@GC_PKGLIBDIR@:$(builddir)${GNUCAP_PLUGPATH:%=:%} \
+			  GNUCAP_PLUGPATH=${GNUCAP_PLUGPATH} \
            srcdir='$(srcdir)';
 AM_TESTS_FD_REDIRECT = 9>&2
 TEST_EXTENSIONS = .gc .py
@@ -76,9 +80,14 @@ endif
 TESTS = ${PY_TESTS} ${GC_TESTS}
 
 ${PY_TESTS:%.py=%.py.out}: %.py.out: %.py
-	python < ${srcdir}/$*.py | sed '/^default plugins/s/:.*//' > $@
+	${PYTHON} < ${srcdir}/$*.py | sed '/^default plugins/s/:.*//' > $@
+
+TLP=.libs${LD_LIBRARY_PATH:%=:%}
 
 ${GC_TESTS:%.gc=%.gc.out}: %.gc.out: %.gc
+	GNUCAP_PLUGPATH=${GNUCAP_PLUGPATH} \
+	PYTHONPATH=${PYTHONPATH} \
+	LD_LIBRARY_PATH=${TLP} \
 	gnucap < ${srcdir}/$*.gc | sed '/^default plugins/s/:.*//' > $@
 
 .PHONY: .P
@@ -94,4 +103,6 @@ EXTRA_DIST = \
 	gc_log_compiler \
 	py_log_compiler \
 	simplugin.py \
-	${TESTS} ${TESTS:%=%.ref}
+	${TESTS:%=out3.6/%.ref} \
+	${TESTS:%=out2.7/%.ref} \
+	${TESTS}

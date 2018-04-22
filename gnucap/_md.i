@@ -25,6 +25,12 @@
 
 %{
 #include "wrap.h"
+
+
+#if PY_MAJOR_VERSION >= 3
+#define IS_PY3K
+#endif
+
 %}
 
 struct COMPLEX_array_t {

@@ -28,7 +28,7 @@ Build python plugin for gnucap
 ::
 
    $ ./bootstrap
-   $ ./configure
+   $ ./configure  # pass PYTHON=some_other_python, to select
    $ make
    $ make install # optional. may require root privileges
 

@@ -30,6 +30,11 @@
 
 %{
 #include "wrap.h"
+#include <Python.h>
+#if PY_MAJOR_VERSION >= 3
+#define IS_PY3K
+#endif
+
 %}
 
 template<class T> class BSMATRIX {
@@ -86,6 +91,7 @@ private:
 }
 
 %extend BSCR{
+
   inline COMPLEX __getitem__(int p){
     return self->get(p);
   }
@@ -98,8 +104,14 @@ private:
       incomplete();
       Py_ssize_t len = -1u, start = 0, stop = 0, step = 0, slicelength = 0;
 
-      PySlice_GetIndicesEx((PySliceObject*)param,
+%#if PY_MAJOR_VERSION >= 3
+     PySlice_GetIndicesEx(param,
           len, &start, &stop, &step, &slicelength);
+%#else
+     PySlice_GetIndicesEx((PySliceObject*)param,
+          len, &start, &stop, &step, &slicelength);
+%#endif
+
       trace5("slice", len, start, stop, step, slicelength);
     }else{
     }

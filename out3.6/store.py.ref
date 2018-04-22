@@ -1,0 +1,27 @@
+generator: already installed, replacing
+stashing as generator:0
+transient: already installed, replacing
+stashing as transient:0
+transient: already installed, replacing
+stashing as transient:0
+default plugins
+#Freq      
+ 1.        
+ 4.        
+ 16.       
+ 64.       
+ 256.      
+ 1.024K    
+(1.0, 0.006283061285742499)
+(4.0, 0.025124807380121187)
+(16.0, 0.10002677654054822)
+(64.0, 0.3730887678341566)
+(256.0, 0.8492558552041073)
+(1024.0, 0.9881360824859478)
+(1.0, 0.006283061285742499)
+(4.0, 0.025124807380121187)
+(16.0, 0.10002677654054822)
+(64.0, 0.3730887678341566)
+(256.0, 0.8492558552041073)
+(1024.0, 0.9881360824859478)
+done

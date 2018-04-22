@@ -1,0 +1,27 @@
+Gnucap : The Gnu Circuit Analysis Package
+Never trust any version less than 1.0
+Copyright 1982-2013, Albert Davis
+Gnucap comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome
+to redistribute it under the terms of 
+the GNU General Public License, version 3 or later.
+See the file "COPYING" for details.
+main version: develop 2017.11.18
+core-lib version: develop 2017.11.18
+default plugins
+generator: already installed, replacing
+stashing as generator:0
+transient: already installed, replacing
+stashing as transient:0
+transient: already installed, replacing
+stashing as transient:0
+load gnucap-default-plugins.so
+     ^ ? "gnucap-default-plugins.so": already loaded, replacing
+test: already installed, replacing
+stashing as test:0
+installing again
+installing again
+running mysim...
+running mysim...
+running mysim...
+running mysim...

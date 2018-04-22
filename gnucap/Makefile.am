@@ -85,5 +85,10 @@ CLEANFILES+= ${pythongc_LTLIBRARIES:%.la=%.h}
 
 #### dep
 _e_elemnt.cxx: _e_node.i
-_component.cxx: e_card.i _e_base.i
-_gnucap_swig.cxx: e_card.i _e_base.i
+_component.cxx: e_card.i _e_base.i _m_wave.i
+_globals.cxx: _m_wave.i
+_c_comand.cxx: _m_wave.i
+_s__.cxx: _m_wave.i
+_e_base.cxx: _m_wave.i
+_e_elemnt.cxx: _m_wave.i
+_gnucap_swig.cxx: e_card.i _e_base.i _m_matrix.i _m_wave.i

@@ -18,7 +18,7 @@ class mysim(SIM):
 sim = mysim()
 
 d1 = install_command("test", sim)
-del(d1) #what does it do?
+#del(d1) #what does it do?
 d1 = install_command("test", sim)
 
 print("installing again")

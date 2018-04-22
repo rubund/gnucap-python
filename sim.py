@@ -1,6 +1,8 @@
 # Copyright (C) 2018 Felix Salfelder
 # Author: Felix Salfelder <felix@salfelder.org>
 
+from __future__ import print_function
+
 import gnucap
 
 from gnucap import component as c
@@ -10,7 +12,7 @@ try:
 	a = gnucap.SIM()
 	assert(False)
 except RuntimeError:
-	print("SIM construction refused (correctly)")
+	print("SIM construction refused (correct)")
 
 class MyAC(gnucap.SIM):
 	def do_it(self, cmd, scope):
@@ -45,8 +47,8 @@ gnucap.command("myac 1 2 * 2")
 
 print("side effects")
 # BUG?: weird side effects
-del d2
-gnucap.command("myac:0 1 2 * 2")
+del(d2)
+gnucap.command("myac:0 1 2 * 2") # bad command?
 gnucap.command("myac 1 2 * 2")
 gnucap.command("myac1 1 2 * 2")
 

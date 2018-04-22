@@ -5,6 +5,8 @@
 #
 # inspired by "custom_ac.py" 2009-2011 Henrik Johansson
 
+from __future__ import print_function
+
 import os
 import numpy as np
 import gnucap
@@ -51,7 +53,7 @@ class MyAC(gnucap.SIM):
         card_list = gnucap.CARD_LIST().card_list_()
 
         n = self.sim_()._total_nodes
-        print("numnodes:", n)
+        print("numnodes: "+ str(n))
 
 #        gnucap.set_complex_array(gnucap.cvar.SIM_ac, np.zeros(n, dtype=np.complex))
 
@@ -62,12 +64,12 @@ class MyAC(gnucap.SIM):
 
         card_list.do_ac()
         card_list.ac_load()
-        print("incomplete", self.sim_()._acx)
+        print("incomplete " + str(  self.sim_()._acx))
         print("incomplete", self.sim_()._acx[0])
         print("incomplete", self.sim_()._acx[0][0:2])
-        print(self.sim_()._acx[0][0], self.sim_()._acx[0][1], self.sim_()._acx[0][2])
-        print(self.sim_()._acx[1][0], self.sim_()._acx[1][1], self.sim_()._acx[1][2])
-        print(self.sim_()._acx[2][0], self.sim_()._acx[2][1], self.sim_()._acx[2][2])
+        print("M", self.sim_()._acx[0][0], self.sim_()._acx[0][1], self.sim_()._acx[0][2])
+        print("M", self.sim_()._acx[1][0], self.sim_()._acx[1][1], self.sim_()._acx[1][2])
+        print("M", self.sim_()._acx[2][0], self.sim_()._acx[2][1], self.sim_()._acx[2][2])
 
         print("Loaded AC-matrix") # , gnucap.get_complex_array(gnucap.cvar.SIM_ac, n)
 
@@ -104,8 +106,7 @@ w = gnucap.CKT_BASE_find_wave("vm(2)")
 #w=w.begin()
 #print(next(w))
 
-# hmmm
-for i in w:
-    print i
+for i,k in enumerate(w):
+    print(i,k)
 
 # vim:et

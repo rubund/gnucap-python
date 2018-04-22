@@ -1,6 +1,8 @@
 # Copyright (C) 2018 Felix Salfelder
 # Author: Felix Salfelder <felix@salfelder.org>
 
+from __future__ import print_function
+
 import gnucap
 
 from gnucap import ELEMENT
@@ -23,12 +25,12 @@ except AttributeError:
 class myvs(ELEMENT):
 	def __init__(self, other=None):
 		if other is None:
-			print("construct myvs", self)
+			# print("construct myvs", self) // python3?
 			ELEMENT.__init__(self) # this is required. (or do not implement __init__)
 		else:
 			print("copyconstruct myvs")
 			ELEMENT.__init__(self, other) # this is required. (or do not implement __init__)
-		print("init", self.long_label())
+		# print("init", self.long_label()) // py3?
 		self.HACK=[]
 
 #	def __reduce__(self):

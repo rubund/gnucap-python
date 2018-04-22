@@ -30,7 +30,8 @@
 %include std_pair.i
 %include std_deque.i
 
-typedef std::pair<double, double> DPAIR;
+typedef std::pair<double, double> DPAIR; // swig says this is redundant
+                                         // but it's not!
 %template() std::pair<double,double>;
 %template(PairDeque) std::deque<std::pair<double,double> >;
 
@@ -38,9 +39,11 @@ typedef std::pair<double, double> DPAIR;
 class StopIterator {};
 class WaveIterator {
   public:
-    WaveIterator(WAVE::const_iterator _cur, WAVE::const_iterator _end) : cur(_cur), end(_end) {}
+    WaveIterator(WAVE::const_iterator _cur, WAVE::const_iterator _end)
+      : cur(_cur), end(_end) { untested();
+    }
     WaveIterator* __iter__()
-    {
+    { untested();
       return this;
     }
     WAVE::const_iterator cur;
@@ -55,7 +58,7 @@ public:
 
   explicit WAVE(double d=0);
   explicit WAVE(const WAVE&);
-	  ~WAVE() {}
+  ~WAVE() {}
   WAVE&	   set_delay(double d);
   WAVE&	   initialize();
   WAVE&	   push(double t, double v);
@@ -70,21 +73,40 @@ public:
 };
 
 %include "exception.i"
-%exception WaveIterator::next {
-  try {
+
+// python2
+%exception WaveIterator::next { untested();
+  try { untested();
     $action // calls %extend function next() below
-  } catch (StopIterator){
-//	 SWIG_exception(PyExc_StopIteration, "End of iterator");
+  } catch (StopIterator){ untested();
     PyErr_SetString(PyExc_StopIteration, "End of iterator");
-// throw Stop_Iteration();
+    return NULL;
+  }
+}
+
+// python3
+%exception WaveIterator::__next__ { untested();
+  try { untested();
+    $action // calls %extend function next() below
+  } catch (StopIterator){ untested();
+    PyErr_SetString(PyExc_StopIteration, "End of iterator");
     return NULL;
   }
 }
 
 %extend WaveIterator {
+  DPAIR const& __next__()
+  { untested();
+    if ($self->cur != $self->end) { untested();
+      return *$self->cur++;
+    }else{ untested();
+		 throw StopIterator();
+    }
+  }
+	// python2
   DPAIR const& next()
-  {
-    if ($self->cur != $self->end) {
+  { untested();
+    if ($self->cur != $self->end) { untested();
       return *$self->cur++;
     }else{ untested();
 		 throw StopIterator();
@@ -94,7 +116,7 @@ public:
 
 %extend WAVE {
   WaveIterator __iter__()
-  {
+  { untested();
     return WaveIterator($self->begin(), $self->end());
   }
 };

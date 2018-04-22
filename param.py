@@ -15,5 +15,5 @@ assert(17==gnucap.eval("test"))
 assert(0==gnucap.eval("mm"))
 
 for i in w:
-	print i
+	print(i)
 
