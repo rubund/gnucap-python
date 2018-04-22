@@ -1,0 +1,67 @@
+#!/usr/bin/make -f
+
+PYVERS:= $(shell pyversions -v -r debian/control) \
+          $(shell py3versions -v -r debian/control)
+
+PYDEF:= $(shell py3versions -d -v)
+
+include /usr/share/dpkg/pkg-info.mk
+
+#export DH_VERBOSE=1
+upstream_commit = $(shell v="$(DEB_VERSION_UPSTREAM)"; echo $${v\#\#*~})
+upstream_commit = origin/master
+
+# upstream_commit_short = $(shell echo $(upstream_commit) | sed -e 's/\(........\).*/\1/')
+#
+ORIG_TARBALL=../${DEB_SOURCE}_${DEB_VERSION_UPSTREAM}.orig.tar.gz
+
+ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+        MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
+endif
+
+
+%:
+	dh $@ --with python2,python3
+
+build: build-arch build-indep
+
+ab-python%:
+	dh_auto_build --builddirectory=build$*
+
+ac-python%:
+	dh_auto_configure --builddirectory=build$* -- PYTHON=python$*
+
+at-python%:
+		$(MAKE) -C build$* check
+
+ar-python%:
+	rm -rf debian/tmp$*
+
+override_dh_auto_install:
+	mkdir -p debian/tmp/usr/lib
+	for i in ${PYVERS}; do \
+		echo $$i; \
+		$(MAKE) -C build$$i install DESTDIR=$(CURDIR)/debian/tmp$$i; \
+		( cd debian/tmp$$i/usr/lib/*/gnucap; mv c_python.so c_python$$i.so ); \
+		cp -r debian/tmp$$i/usr/lib/* debian/tmp/usr/lib; \
+		rm -rf "debian/tmp$$i/usr/lib/*"; \
+	done
+
+	cd debian/tmp/usr/lib/*/gnucap; ln -sf c_python${PYDEF}.so c_python.so
+	mv debian/tmp${PYDEF}/usr/share debian/tmp/usr
+
+override_dh_auto_configure: $(PYVERS:%=ac-python%)
+override_dh_auto_build: $(PYVERS:%=ab-python%)
+override_dh_auto_test: $(PYVERS:%=at-python%)
+
+override_dh_clean: $(PYVERS:%=ar-python%)
+	dh_clean
+	rm -rf build*
+
+# create tarball
+get-orig-source:
+	@echo creating tarball from ${upstream_commit}
+	mkdir tmp; cd tmp; ../configure; $(MAKE) distcheck
+	mv tmp/gnucap-python*.gz $(ORIG_TARBALL)
+
+.PHONY: get-orig-source

@@ -1,0 +1,61 @@
+Source: gnucap-python
+Section: electronics
+Priority: optional
+Maintainer: Debian Electronics Team <pkg-electronics-devel@lists.alioth.debian.org>
+Uploaders: Felix Salfelder <felix@salfelder.org>
+X-Python-Version: >= 2.6
+X-Python3-Version: >= 3.6
+Standards-Version: 4.1.3
+Build-Depends: debhelper (>= 11),
+               dh-python,
+               dpkg-dev (>=1.17.14),
+               libgnucap-dev,
+               libpython-dev,
+               libpython3-dev,
+               python,
+               python3,
+               swig
+Homepage: http://gnucap.org
+Vcs-Git: https://salsa.debian.org/felixs-guest/gnucap-python.git
+Vcs-Browser: https://salsa.debian.org/felixs-guest/gnucap-python
+
+Package: gnucap-python
+Architecture: any
+Depends: ${misc:Depends},
+         ${python3:Depends},
+         ${python:Depends},
+         ${shlibs:Depends}
+Suggests: gnucap
+Description: GNU Circuit Analysis package, python command plugin
+ This package contains a plugin with a command to load extensions written in
+ the Python language.
+ .
+ Gnucap is a general purpose circuit simulator. It performs nonlinear
+ dc and transient analyses, Fourier analysis, and ac analysis
+ linearized at an operating point. It is fully interactive and
+ command driven. It can also be run in batch mode or as a server.
+
+Package: python-gnucap
+Architecture: any
+Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
+Recommends: gnucap-default-plugins0
+Suggests: gnucap-devel
+Description: Python bindings for the GNU Circuit Analysis Package
+ This package contains Python bindings for the GNU Circuit Analysis Package.
+ .
+ Gnucap is a general purpose circuit simulator. It performs nonlinear
+ dc and transient analyses, Fourier analysis, and ac analysis
+ linearized at an operating point. It is fully interactive and
+ command driven. It can also be run in batch mode or as a server.
+
+Package: python3-gnucap
+Architecture: any
+Depends: ${misc:Depends}, ${python3:Depends}, ${shlibs:Depends}
+Recommends: gnucap-default-plugins0
+Description: Python 3 bindings for the GNU Circuit Analysis Package
+ This package contains Python bindings for the GNU Circuit Analysis Package.
+ .
+ Gnucap is a general purpose circuit simulator. It performs nonlinear
+ dc and transient analyses, Fourier analysis, and ac analysis
+ linearized at an operating point. It is fully interactive and
+ command driven. It can also be run in batch mode or as a server.

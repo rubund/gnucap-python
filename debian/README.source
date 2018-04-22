@@ -1,0 +1,18 @@
+This package repo has three branches.
+- master         the packageing branch
+- upstream       the "master" branch in the upstream repo [1]
+- pristine-tar   storing tarballs..
+
+An x.y.z tag in the upstream repository is a release.
+
+The source tarball can be checked out with
+$ pristine-tar checkout ../gnucap-python_0.0.0.orig.tar.gz
+
+Create a new tarball from git with
+$ ./debian/rules get-orig-source
+
+Build the package with
+$ dpkg-buildpackage -rfakeroot
+(other tools might work as well.)
+
+[1] github/gnucap/gnucap-python (sorry)

@@ -1,0 +1,30 @@
+python bindings for gnucap... and gnucap bindings for python
+
+=== the pytho{n,n3}-gnucap packages ship the python modules for use in
+pytho{n,n3}. These give access to everything gnucap has. a typical
+session would be
+
+$ python
+>>> import gnucap
+>>> gnucap.get("circuitfile")
+>>> gnucap.command("dc")  # run a dc analysis...
+>>> 
+>>> class mycommand(gnucap.SIM):
+>>>    # custom simulation algorithm
+>>>    # see example(s)
+>>> 
+>>> mycommand c
+>>> gnucap.install("mycommand", c)
+>>> 
+>>> gnucap.command("mycommand ... args") # runs mycommand on circuit
+>>> # c.do_it() # similar, not implemented
+
+=== gnucap-python contains a gnucap plugin that allows one to attach stuff
+that is implemented in python. stuff is the usual components, elements,
+(simulation) commands, languages ... there is one plugin for each python ABI,
+only one should be loaded into a gnucap session.
+
+$ gnucap -a c_python.so # load the plugin corresponding to default python
+> python some_extension.py # TODO: should be pyattach, pyload..
+> // has an effect similar to "load some_extension.so" etc.
+> // ... now use the stuff installed by some_extension.py
