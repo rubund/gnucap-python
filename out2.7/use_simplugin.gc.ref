@@ -6,8 +6,8 @@ This is free software, and you are welcome
 to redistribute it under the terms of 
 the GNU General Public License, version 3 or later.
 See the file "COPYING" for details.
-main version: develop 2017.11.18
-core-lib version: develop 2017.11.18
+main version
+core-lib version
 default plugins
 generator: already installed, replacing
 stashing as generator:0

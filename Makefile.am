@@ -78,9 +78,12 @@ endif
 
 
 TESTS = ${PY_TESTS} ${GC_TESTS}
+SED_OUT = sed -e '/^default plugins/s/:.*//' \
+	           -e '/^core-lib version/s/:.*//' \
+	           -e '/^main version/s/:.*//'
 
 ${PY_TESTS:%.py=%.py.out}: %.py.out: %.py
-	${PYTHON} < ${srcdir}/$*.py | sed '/^default plugins/s/:.*//' > $@
+	${PYTHON} < ${srcdir}/$*.py | ${SED_OUT} > $@
 
 TLP=.libs${LD_LIBRARY_PATH:%=:%}
 
@@ -88,7 +91,7 @@ ${GC_TESTS:%.gc=%.gc.out}: %.gc.out: %.gc
 	GNUCAP_PLUGPATH=${GNUCAP_PLUGPATH} \
 	PYTHONPATH=${PYTHONPATH} \
 	LD_LIBRARY_PATH=${TLP} \
-	gnucap < ${srcdir}/$*.gc | sed '/^default plugins/s/:.*//' > $@
+	gnucap < ${srcdir}/$*.gc | ${SED_OUT} > $@
 
 .PHONY: .P
 .P:
