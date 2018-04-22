@@ -19,6 +19,24 @@ AC_LANG([C++])
 AC_CHECK_LIB([dl], [dlopen])
 AC_CHECK_LIB([dl], [dlopen])
 
+# ------------ debug switch
+AC_MSG_CHECKING([if debug code should be compiled in])
+AC_ARG_ENABLE([debug],
+[  --enable-debug            Enable building of debug code. [[default: disabled]]],
+[
+if test "X$enable_debug" = "Xno" ; then
+	AC_MSG_RESULT([no])
+else
+	AC_MSG_RESULT([yes])
+	enable_debug=yes
+fi
+],
+[
+	AC_MSG_RESULT([no])
+	enable_debug=no
+])
+
+
 AC_CHECK_PROG(HAVE_GCCONF, gnucap-conf, true, false)
 if test "x$HAVE_GCCONF" = "xfalse"; then
 	AC_MSG_ERROR([cannot find gnucap-conf. please install gnucap])
@@ -49,6 +67,12 @@ AC_CONFIG_MACRO_DIR([m4])
 
 ## Check for gnucap
 # PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+
+if test "$enable_debug" = "yes" ; then
+	CPPFLAGS="$CPPFLAGS -DTRACE_UNTESTED"
+else
+	CPPFLAGS="$CPPFLAGS -DNDEBUG"
+fi
 
 ## Check for numpy development file
 AC_PYTHON_MODULE(numpy)
