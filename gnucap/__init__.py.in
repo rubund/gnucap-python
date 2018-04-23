@@ -11,12 +11,6 @@ if(os.name=="posix"):
 else:
 	untested()
 
-# need cleanup
-if sys.version_info.major >= 3:
-	print("incomplete")
-else:
-	pass
-
 from .gnucap_swig import command, parse
 from .c_comand import CMD, CMD_cmdproc, CMD_command
 from .c_exp import eval
