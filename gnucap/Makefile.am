@@ -5,6 +5,8 @@
 # (inspired by now obsolete files from Henrik Johansson)
 #
 
+SUBDIRS=lib
+
 AM_CPPFLAGS = \
 	-I${top_srcdir}/include \
 	@PYTHON_CPPFLAGS@ \
@@ -37,11 +39,6 @@ pythongc_LTLIBRARIES = \
 	_u_status.la \
 	_s__.la
 
-pkglib_LTLIBRARIES = libgnucap-python.la
-libgnucap_python_la_SOURCES = garbage.cc
-libgnucap_python_la_LDFLAGS =
-
-
 all-local:
 	for i in ${pythongc_LTLIBRARIES:%.la=%.so}; do \
 		rm -f $$i; \
@@ -57,7 +54,7 @@ AM_LDFLAGS = -module -omit-version
 # (good idea?)
 LIBS = -lgnucap
 
-_globals_la_LIBADD = ${AM_LIBADD} libgnucap-python.la
+_globals_la_LIBADD = ${AM_LIBADD} lib/libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i
 

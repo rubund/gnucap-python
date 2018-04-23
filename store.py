@@ -14,7 +14,6 @@ gnucap.parse("resistor #(.r(1k)) s(nout 0)")
 gnucap.command("store ac v(nout)")
 gnucap.command("ac 1 1024 * 4")
 
-
 w = gnucap.CKT_BASE_find_wave("v(nout)")
 
 b = iter(w)

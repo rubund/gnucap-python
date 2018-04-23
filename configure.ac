@@ -10,7 +10,7 @@
 AC_PREREQ(2.69)
 AC_INIT([gnucap-python], [0.0.0], [gnucap-devel@gnu.org])
 AC_CONFIG_SRCDIR([c_python.cc])
-AM_INIT_AUTOMAKE([])
+AM_INIT_AUTOMAKE([foreign])
 AM_CONFIG_HEADER([config.h])
 
 # Checks for libraries.
@@ -102,6 +102,7 @@ AC_OUTPUT([
 	Makefile
 	include/Makefile
 	gnucap/Makefile
+	gnucap/lib/Makefile
 	gnucap/__init__.py
 	])
 

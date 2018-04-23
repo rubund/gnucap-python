@@ -18,6 +18,7 @@
  *------------------------------------------------------------------
  */
 #include <vector>
-#include <globals.h>
+
+class CMD;
 
 std::vector<CMD*> installed_commands;
