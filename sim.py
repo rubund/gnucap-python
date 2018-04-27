@@ -4,6 +4,7 @@
 from __future__ import print_function
 
 import gnucap
+import sys
 
 from gnucap import component as c
 from gnucap import install_device
@@ -45,15 +46,15 @@ gnucap.command("myac1 1 2 * 2")
 gnucap.command("myac:0 1 2 * 2")
 gnucap.command("myac 1 2 * 2")
 
-print("side effects")
-# BUG?: weird side effects
+print("side effects?")
 del(d2)
-gnucap.command("myac:0 1 2 * 2") # bad command?
+gnucap.command("myac:0 1 2 * 2") # bad command? yes. this was d2
+print("....")
+sys.stdout.flush()
 gnucap.command("myac 1 2 * 2")
 gnucap.command("myac1 1 2 * 2")
 
+
 print("done")
 
-# gnucap.uninstall_command(d1)
-# gnucap.uninstall_command(d2)
 # gnucap.parse("myac 1 2 * 2")

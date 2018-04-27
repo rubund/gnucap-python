@@ -1,6 +1,6 @@
 attach public c_python.so
 
-python simplugin.py
+loadpy simplugin.py
 
 mysim 1 4 * 2
 mysim 1 4 * 2

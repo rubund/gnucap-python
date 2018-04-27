@@ -60,6 +60,7 @@ AC_SUBST([GC_CPPFLAGS])
 AC_SUBST([GC_INCLUDEDIR])
 AC_SUBST([GC_LIBS])
 AC_SUBST([GC_PKGLIBDIR])
+AC_SUBST([LIBGNUCAP_SONAME])
 
 ## Libtool init
 AC_PROG_LIBTOOL
@@ -67,6 +68,8 @@ AC_CONFIG_MACRO_DIR([m4])
 
 ## Check for gnucap
 # PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+
+AX_CHECK_LIB_SONAME([LIBGNUCAP], [gnucap], [help_dispatcher])
 
 if test "$enable_debug" = "yes" ; then
 	CPPFLAGS="$CPPFLAGS -DTRACE_UNTESTED"

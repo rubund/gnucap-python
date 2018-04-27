@@ -15,10 +15,10 @@ transient: already installed, replacing
 stashing as transient:0
 transient: already installed, replacing
 stashing as transient:0
-load gnucap-default-plugins.so
-     ^ ? "gnucap-default-plugins.so": already loaded, replacing
 test: already installed, replacing
 stashing as test:0
+importing gnucap...
+... OK
 installing again
 installing again
 running mysim...

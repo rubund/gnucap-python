@@ -5,7 +5,12 @@
 # load from gnucap with "python simplugin.py",
 # then run "mysim".
 
-from gnucap import install_command, SIM #, IO
+print("importing gnucap...")
+from gnucap import install_command
+from gnucap import SIM
+print("... OK")
+
+
 import sys
 
 class mysim(SIM):

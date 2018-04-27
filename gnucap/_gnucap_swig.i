@@ -54,8 +54,8 @@
 
 %{
 #include <md.h>
-%}
 
+%}
 
 
 
@@ -88,8 +88,21 @@ protected:
 ///////////////////////////////////////////////////////////////////////////////
 // gnucap functions
 ///////////////////////////////////////////////////////////////////////////////
-std::string command(char *command);
-void parse(char *command);
+std::string command(char const*command);
+void parse(char const*command);
+
+%{
+// namespace{
+//   struct i{
+//     ~i(){
+//       trace0("this is possibly too late?\n");
+//       command("clear");
+//       trace0("goodbye\n");
+//     }
+//   }initme;
+// }
+%}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // non-gnucap utility functions

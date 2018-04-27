@@ -1,17 +1,25 @@
-# python3 only: use importlib
+from __future__ import print_function
 
 import sys
 import ctypes
 import os
 
+def trace(*args, **kwargs):
+	   print(*args, file=sys.stderr, **kwargs)
+
+ctypes.PyDLL("@LIBGNUCAP_SONAME@", mode=ctypes.RTLD_GLOBAL)
+
 oldflags = sys.getdlopenflags()
 if(os.name=="posix"):
 	# python tries to outsmart us, work around that
+	trace("POSIX ON")
 	sys.setdlopenflags(oldflags | ctypes.RTLD_GLOBAL)
+	trace("PYDDL'd")
 else:
 	untested()
 
 from .gnucap_swig import command, parse
+trace("cmd imported")
 from .c_comand import CMD, CMD_cmdproc, CMD_command
 from .c_exp import eval
 from .component import COMPONENT_ as COMPONENT
@@ -32,7 +40,7 @@ if(os.name=="posix"):
 	sys.setdlopenflags(oldflags)
 
 # this will change
-from .globals import install_device
+from .globals import install_device, need_default_plugins
 from .globals import install_command
 # from globals import shared_command_installer as command_installer
 
@@ -40,13 +48,13 @@ if not "GNUCAP_PLUGPATH" in os.environ:
 	os.environ["GNUCAP_PLUGPATH"] = "@GC_PKGLIBDIR@"
 
 if hasattr(sys, 'ps1'):
-	print("welcome to gnucap-python")
+	trace("welcome to gnucap-python")
 	run_mode = SET_RUN_MODE(rINTERACTIVE)
 else:
 	run_mode = SET_RUN_MODE(rBATCH)
 	if sys.flags.interactive:
 		# what is this?
-		print("... in interactive postmortem mode, incomplete")
+		trace("... in interactive postmortem mode, incomplete")
 
 try:
 	lang = os.environ["GNUCAP_DEFAULT_PLUGINS"]
@@ -58,9 +66,27 @@ try:
 except:
 	lang = "acs";
 
-command("load " + default_plugins)
-command("set lang=" + lang)
+if need_default_plugins():
+	# no c_python. likely "import gnucap"
+	trace("LOADING PLUGNS")
+	command("load " + default_plugins)
+	command("set lang=" + lang)
+else:
+	trace("from c_python")
+	# calling pythonstuff from c_python?
+	pass
+
+#c_python = True
 
 # this is the plan
 # for s in simulations:
 #	attach_output(s, our_own_sink)
+
+class session:
+	def __del__(self):
+		# this is called *before* the library loaded by PyDLL is destroyed.
+		trace("cleaning up")
+		command("clear")
+		trace("done")
+
+s=session()

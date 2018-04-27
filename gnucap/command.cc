@@ -17,14 +17,14 @@
 #include <fstream>
 #include <memory>
 
-void parse(char *command)
+void parse(char const*command)
 { untested();
 	assert(OPT::language);
 	CS cmd(CS::_STRING, command);
 	trace1("parse", command);
 	OPT::language->new__instance(cmd, NULL, &CARD_LIST::card_list);
 }
-std::string command(char *command)
+std::string command(char const*command)
 {
 	trace1("command", command);
   

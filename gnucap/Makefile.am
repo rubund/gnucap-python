@@ -50,10 +50,6 @@ check: all-local
 _gnucap_swig_la_LDFLAGS = -module -omit-version
 AM_LDFLAGS = -module -omit-version
 
-# link everything here against gnucap
-# (good idea?)
-LIBS = -lgnucap
-
 _globals_la_LIBADD = ${AM_LIBADD} lib/libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i

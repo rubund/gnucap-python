@@ -22,3 +22,4 @@
 class CMD;
 
 std::vector<CMD*> installed_commands;
+bool have_default_plugins=false;
