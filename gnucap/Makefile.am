@@ -5,14 +5,17 @@
 # (inspired by now obsolete files from Henrik Johansson)
 #
 
-SUBDIRS=lib
-
 AM_CPPFLAGS = \
 	-I${top_srcdir}/include \
 	@PYTHON_CPPFLAGS@ \
 	${CPPFLAGS} \
 	${GC_CPPFLAGS} \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\"
+
+# common library
+pkglib_LTLIBRARIES = libgnucap-python.la
+libgnucap_python_la_SOURCES = garbage.cc
+libgnucap_python_la_LDFLAGS =
 
 # python objects
 pythongcdir = $(pythondir)/gnucap
@@ -50,7 +53,7 @@ check: all-local
 _gnucap_swig_la_LDFLAGS = -module -omit-version
 AM_LDFLAGS = -module -omit-version
 
-_globals_la_LIBADD = ${AM_LIBADD} lib/libgnucap-python.la
+_globals_la_LIBADD = ${AM_LIBADD} libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i
 
