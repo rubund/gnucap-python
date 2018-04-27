@@ -14,10 +14,10 @@ m4_pattern_allow([^AX_])
 AC_DEFUN([AX_CHECK_LIB_SONAME], [
   AC_REQUIRE([LT_INIT])
   AS_VAR_PUSHDEF([ac_Lib_SONAME], [au_cv_lib_soname_$1])
-  AC_ARG_VAR([$1][_SONAME], [SONAME of lib$2, overriding ldd check])
+  AC_ARG_VAR([$1][_SONAME], [SONAME in lib$2, overriding ldd check])
   AC_CHECK_LIB($2,$3,[
     AC_PATH_PROG([PATH_LDD], [ldd])
-    AC_CACHE_CHECK([for SONAME of lib$2], [ac_Lib_SONAME],[
+    AC_CACHE_CHECK([for SONAME in lib$2], [ac_Lib_SONAME],[
       AS_IF([test x"$[$1][_SONAME]" = x""], [
         AS_IF([test x"$PATH_LDD" != x""], [
           AS_VAR_SET([ac_Lib_SONAME], ["unknown"])

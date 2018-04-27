@@ -66,10 +66,12 @@ AC_SUBST([LIBGNUCAP_SONAME])
 AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
-## Check for gnucap
-# PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+# export symbols to plugins
+LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
-AX_CHECK_LIB_SONAME([LIBGNUCAP], [gnucap], [help_dispatcher])
+AX_CHECK_LIB_SONAME([LIBGNUCAP], [gnucap], [help_dispatcher], [],
+		    [AC_MSG_ERROR(["cannot find SONAME in -lgnucap"])],
+		    [AC_MSG_ERROR(["cannot link -lgnucap"])])
 
 if test "$enable_debug" = "yes" ; then
 	CPPFLAGS="$CPPFLAGS -DTRACE_UNTESTED"
@@ -97,9 +99,6 @@ CPPFLAGS=$save_CPPFLAGS
 AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
 
 AC_PROG_SWIG()
-
-# exports symbols to plugins
-LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
 AC_OUTPUT([
 	Makefile
