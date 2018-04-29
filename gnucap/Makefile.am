@@ -51,8 +51,7 @@ all-local:
 
 check: all-local
 
-_gnucap_swig_la_LDFLAGS = -module -omit-version
-AM_LDFLAGS = -module -omit-version
+AM_LDFLAGS = -module -avoid-version
 
 _globals_la_LIBADD = ${AM_LIBADD} libgnucap-python.la
 
