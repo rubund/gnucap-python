@@ -36,6 +36,13 @@ from .s__ import SIM_ as SIM
 from .u_opt import SET_RUN_MODE
 from .u_sim_data import SIM_DATA
 
+from ._io_ import OMSTREAM__print, IO_mstdout_get
+
+_iomstout = IO_mstdout_get()
+
+def out(s):
+	OMSTREAM__print(_iomstout, s)
+
 if(os.name=="posix"):
 	sys.setdlopenflags(oldflags)
 

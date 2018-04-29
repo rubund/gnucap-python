@@ -38,6 +38,7 @@ pythongc_LTLIBRARIES = \
 	_e_cardlist.la \
 	_e_elemnt.la \
 	_e_node.la \
+	_io_.la \
 	_u_opt.la \
 	_u_status.la \
 	_s__.la
@@ -86,5 +87,6 @@ _globals.cxx: _m_wave.i
 _c_comand.cxx: _m_wave.i
 _s__.cxx: _m_wave.i
 _e_base.cxx: _m_wave.i
+_e_node.cxx: _io_.i
 _e_elemnt.cxx: _m_wave.i
 _gnucap_swig.cxx: e_card.i _e_base.i _m_matrix.i _m_wave.i

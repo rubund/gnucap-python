@@ -9,7 +9,7 @@ See the file "COPYING" for details.
 main version
 core-lib version
 default plugins
-importing gnucap...
+pre=pre
 generator: already installed, replacing
 stashing as generator:0
 transient: already installed, replacing
@@ -21,6 +21,7 @@ test: already installed, replacing
 stashing as test:0
 installing again
 installing again
+post=post
 running mysim...
 running mysim...
 running mysim...

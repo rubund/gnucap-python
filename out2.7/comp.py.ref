@@ -7,9 +7,11 @@ stashing as transient:0
 default plugins
 myac: already installed, replacing
 stashing as myac:0
+running ac
 #Freq      
  1.        
  2.        
+running myac
 HELLOWORLD
 construct somecomponent <__main__.somecomponent;  >
 init 

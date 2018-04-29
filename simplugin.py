@@ -5,18 +5,18 @@
 # load from gnucap with "python simplugin.py",
 # then run "mysim".
 
-print("importing gnucap...")
+from sys import stdout
+from gnucap import out
 from gnucap import install_command
 from gnucap import SIM
-print("... OK")
-
+out("... OK\n")
 
 import sys
 
 class mysim(SIM):
 	def do_it(self, cmd, scope):
-		print("running mysim...")
-		sys.stdout.flush()
+#		print("running mysim...")
+		out("running mysim...\n")
 	def setup(self, cmd):
 		pass
 		#out = IO.mstdout;
@@ -30,9 +30,9 @@ d1 = install_command("test", sim)
 #del(d1) #what does it do?
 d1 = install_command("test", sim)
 
-print("installing again")
+out("installing again\n")
 d2 = install_command("test", sim)
-print("installing again")
+out("installing again\n")
 d3 = install_command("mysim", sim)
 
 #BUG: that does not work as expected.

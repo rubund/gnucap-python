@@ -13,7 +13,8 @@ r: short circuit
  1.5        42.        1.4073     2.111      2.111      2.111     
  2.         42.        1.0555     2.111      2.111      2.111     
  2.5        42.        0.8444     2.111      2.111      2.111     
- 3.         42.        0.70366    2.111      2.111      2.111     mtest 2 
+ 3.         42.        0.70366    2.111      2.111      2.111     
+mtest 2 
 somelt clone
 copyconstruct myvs
 mtest 2 
@@ -22,4 +23,3 @@ somelt clone
 copyconstruct myvs
 iwant incomplete
 done
-
