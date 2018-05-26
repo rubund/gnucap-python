@@ -5,14 +5,17 @@
 # (inspired by now obsolete files from Henrik Johansson)
 #
 
-SUBDIRS=lib
-
 AM_CPPFLAGS = \
 	-I${top_srcdir}/include \
 	@PYTHON_CPPFLAGS@ \
 	${CPPFLAGS} \
 	${GC_CPPFLAGS} \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\"
+
+# common library
+pkglib_LTLIBRARIES = libgnucap-python.la
+libgnucap_python_la_SOURCES = garbage.cc
+libgnucap_python_la_LDFLAGS =
 
 # python objects
 pythongcdir = $(pythondir)/gnucap
@@ -35,6 +38,7 @@ pythongc_LTLIBRARIES = \
 	_e_cardlist.la \
 	_e_elemnt.la \
 	_e_node.la \
+	_io_.la \
 	_u_opt.la \
 	_u_status.la \
 	_s__.la
@@ -47,14 +51,9 @@ all-local:
 
 check: all-local
 
-_gnucap_swig_la_LDFLAGS = -module -omit-version
-AM_LDFLAGS = -module -omit-version
+AM_LDFLAGS = -module -avoid-version
 
-# link everything here against gnucap
-# (good idea?)
-LIBS = -lgnucap
-
-_globals_la_LIBADD = ${AM_LIBADD} lib/libgnucap-python.la
+_globals_la_LIBADD = ${AM_LIBADD} libgnucap-python.la
 
 AM_DEFAULT_SOURCE_EXT = .i
 
@@ -87,5 +86,6 @@ _globals.cxx: _m_wave.i
 _c_comand.cxx: _m_wave.i
 _s__.cxx: _m_wave.i
 _e_base.cxx: _m_wave.i
+_e_node.cxx: _io_.i
 _e_elemnt.cxx: _m_wave.i
 _gnucap_swig.cxx: e_card.i _e_base.i _m_matrix.i _m_wave.i

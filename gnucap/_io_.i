@@ -17,8 +17,20 @@
  * 02110-1301, USA.
  *------------------------------------------------------------------
  */
-#include <vector>
+%module(directors="0", allprotected="1") io_
 
-class CMD;
+%include std_string.i
 
-std::vector<CMD*> installed_commands;
+
+%{
+#include <io_.h>
+%}
+
+#define INTERFACE
+%include "io_.h"
+
+%extend OMSTREAM {
+  OMSTREAM& print(std::string const& s){
+    return *self << s;
+  }
+}

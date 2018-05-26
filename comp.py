@@ -8,6 +8,7 @@ import gnucap
 from gnucap import COMPONENT
 from gnucap import install_device
 from copy import deepcopy, copy
+from sys import stdout
 
 try:
 	c = COMPONENT()
@@ -19,17 +20,25 @@ except AttributeError:
 	pass
 
 class MyAC(gnucap.SIM):
-    def do_it(self, cmd, scope):
-        print("HELLOWORLD")
+	def do_it(self, cmd, scope):
+		print("HELLOWORLD")
+		stdout.flush()
 
 ac = MyAC()
 c1 = gnucap.install_command("myac", ac)
+stdout.flush()
 
 # test: "already installed"
 c2 = gnucap.install_command("myac", ac)
+stdout.flush()
 
+print("running ac")
+stdout.flush()
 gnucap.command("ac 1 2 * 2")
+stdout.flush()
 
+print("running myac")
+stdout.flush()
 gnucap.command("myac 1 2 * 2")
 
 try:

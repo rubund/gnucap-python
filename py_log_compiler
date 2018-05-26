@@ -7,5 +7,5 @@ out=${base}.out
 make $out PYTHON=${PYTHON}
 
 ref=${srcdir}/out${PYTHON_VERSION}/${base}.ref
-diff $out $ref || exit 1
+diff -rup $out $ref || exit 1
 rm $out

@@ -17,43 +17,50 @@
 #include <fstream>
 #include <memory>
 
-void parse(char *command)
+void parse(char const*command)
 { untested();
 	assert(OPT::language);
 	CS cmd(CS::_STRING, command);
 	trace1("parse", command);
 	OPT::language->new__instance(cmd, NULL, &CARD_LIST::card_list);
 }
-std::string command(char *command)
+std::string command(char const*command)
 {
 	trace1("command", command);
   
-  char filename[L_tmpnam];
+  //char filename[L_tmpnam];
   
-  tmpnam(filename);
+  //tmpnam(filename);
   
   // supress output to stdout
 //  IO::mstdout.detach(stdout);
+  IO::mstdout.reset(); // needed?
 
   // send output to file
 //   CMD::command(std::string("> ") + std::string(filename), &CARD_LIST::card_list);
 
   CMD::command(std::string(command), &CARD_LIST::card_list);
 
+  // somehow this is needed for python3, if compiled with optimisations on.
+  std::cout.flush();
+
+  //IO::mstdout.reset(); // needed?
+//  IO::mstdout.attach(stdout);
+
 //  CMD::command(">", &CARD_LIST::card_list);
 
   // Open file an read it
-  std::ifstream ifs(filename);
+  //std::ifstream ifs(filename);
 
-  std::ostringstream oss;
+  //std::ostringstream oss;
 
-  oss << ifs.rdbuf();
+//  oss << ifs.rdbuf();
 
-  std::string output(oss.str());
+//  std::string output(oss.str());
 
-  unlink(filename);
+  //unlink(filename);
   
-  return output;
+  return "";
 }
 
 

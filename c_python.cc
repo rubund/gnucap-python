@@ -9,6 +9,7 @@
 //extern "C" void init_gnucap();
 //
 extern std::vector<CMD*> installed_commands;
+extern bool have_default_plugins;
 
 /*--------------------------------------------------------------------------*/
 namespace {
@@ -56,6 +57,9 @@ void load_file(CS& cmd, OMSTREAM out, CARD_LIST* scope)
 /*--------------------------------------------------------------------------*/
 class CMD_PYTHON : public CMD {
 public:
+	CMD_PYTHON(){
+	  have_default_plugins=true;
+	}
 	~CMD_PYTHON(){
 		// need to uninstall from here?
 		trace1("~CMD_PYTHON", installed_commands.size());
@@ -70,6 +74,6 @@ public:
   }
 } p1;
 
-DISPATCHER<CMD>::INSTALL d1(&command_dispatcher, "python", &p1);
+DISPATCHER<CMD>::INSTALL d1(&command_dispatcher, "python|loadpy", &p1);
 /*--------------------------------------------------------------------------*/
 }

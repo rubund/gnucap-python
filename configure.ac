@@ -17,7 +17,6 @@ AM_CONFIG_HEADER([config.h])
 # this is a c++ program so use c++ for the tests
 AC_LANG([C++])
 AC_CHECK_LIB([dl], [dlopen])
-AC_CHECK_LIB([dl], [dlopen])
 
 # ------------ debug switch
 AC_MSG_CHECKING([if debug code should be compiled in])
@@ -60,13 +59,18 @@ AC_SUBST([GC_CPPFLAGS])
 AC_SUBST([GC_INCLUDEDIR])
 AC_SUBST([GC_LIBS])
 AC_SUBST([GC_PKGLIBDIR])
+AC_SUBST([LIBGNUCAP_SONAME])
 
 ## Libtool init
 AC_PROG_LIBTOOL
 AC_CONFIG_MACRO_DIR([m4])
 
-## Check for gnucap
-# PKG_CHECK_MODULES([DEPS], [libgnucap >= 0.0])
+# export symbols to plugins
+LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
+
+AX_CHECK_LIB_SONAME([LIBGNUCAP], [gnucap], [help_dispatcher], [],
+		    [AC_MSG_ERROR(["cannot find SONAME in -lgnucap"])],
+		    [AC_MSG_ERROR(["cannot link -lgnucap"])])
 
 if test "$enable_debug" = "yes" ; then
 	CPPFLAGS="$CPPFLAGS -DTRACE_UNTESTED"
@@ -95,14 +99,10 @@ AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
 
 AC_PROG_SWIG()
 
-# exports symbols to plugins
-LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
-
 AC_OUTPUT([
 	Makefile
 	include/Makefile
 	gnucap/Makefile
-	gnucap/lib/Makefile
 	gnucap/__init__.py
 	])
 
@@ -116,6 +116,7 @@ AC_MSG_RESULT([
    CXXFLAGS:                 $CXXFLAGS
    LDFLAGS:                  $LDFLAGS
    LIBS:                     $LIBS
+   PYTHON:                   $PYTHON
 
 ])
 

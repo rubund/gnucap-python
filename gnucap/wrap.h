@@ -58,8 +58,8 @@ public: // pure?
   virtual CARD* clone(CS&){ unreachable(); }
 };
 
-std::string command(char *command);
-void parse(char *command);
+std::string command(char const*command);
+void parse(char const*command);
 
 inline void test_dummy(CARD *c){ untested(); }
 
