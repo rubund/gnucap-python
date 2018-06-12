@@ -1,5 +1,6 @@
 todo, easy
 - get rid of warnings
+- remove stale numpy code
 - need to figure out what to do with interactive output
 - node_t/NODE access
 

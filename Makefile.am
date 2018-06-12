@@ -108,6 +108,7 @@ $(GC_TESTS:%.gc=%.log): .P
 $(PY_TESTS:%.py=%.log): .P
 
 EXTRA_DIST = \
+	CONTRIBUTE \
 	gc_log_compiler \
 	py_log_compiler \
 	simplugin.py \

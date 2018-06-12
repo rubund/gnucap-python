@@ -9,7 +9,7 @@ Three types of contributions make sense at the current stage
   not without
 
 - tests
-  a test consists of a pair of files. one is the script (here:*.gc or *.py),
+  a test consists of a pair of files. one is the script (here: *.gc or *.py),
   the other is the expected output (append .ref to the filename)
 
 - examples/documentation
