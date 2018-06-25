@@ -69,7 +69,8 @@ AC_CONFIG_MACRO_DIR([m4])
 LDFLAGS="$LDFLAGS -rdynamic $GC_LDFLAGS"
 
 AX_CHECK_LIB_SONAME([LIBGNUCAP], [gnucap], [help_dispatcher], [],
-		    [AC_MSG_ERROR(["cannot find SONAME in -lgnucap"])],
+		    [AC_MSG_WARN(["cannot find SONAME in -lgnucap, untested fallback"])
+		     LIBGNUCAP_SONAME=gnucap ],
 		    [AC_MSG_ERROR(["cannot link -lgnucap"])])
 
 if test "$enable_debug" = "yes" ; then

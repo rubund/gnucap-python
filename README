@@ -20,6 +20,16 @@ requirements are:
   * c++11 (pass -std=c++11 to your compiler,
            if 11 is supported but the default is <11)
 
+ NOTE
+-------------
+
+if you have installed gnucap with a custom prefix, try passing
+LDFLAGS=-L$prefix/lib to configure, and also export
+LD_LIBRARY_PATH=$prefix/lib when you run it.
+
+*** on some systems /usr/local is considered "custom", on others a dirty cache
+interferes with the linker. YMMV, tell me your workarounds ***
+
  Installation
 -------------
 
