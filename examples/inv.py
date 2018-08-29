@@ -95,3 +95,6 @@ print("V_SUPPLY: ", xopt[0])
 print("LMIN: ", xopt[1])
 print("FREQ: ", xopt[2])
 print("WP: ", xopt[3])
+
+# sometimes crashes during shutdown.
+print("done")
