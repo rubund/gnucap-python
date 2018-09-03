@@ -59,6 +59,7 @@ PY_LOG_COMPILER = $(top_srcdir)/py_log_compiler
 GC_LOG_COMPILER = $(top_srcdir)/gc_log_compiler
 
 PY_TESTS = \
+	crash.py \
 	elmt.py \
 	sim.py \
 	ac.py \
@@ -68,6 +69,10 @@ PY_TESTS = \
 
 GC_TESTS = \
 	use_simplugin.gc
+
+if PY2
+crash.log: PY_LOG_FLAGS=SKIP
+endif
 
 use_simplugin.gc.out: $(PWD)/simplugin.py
 
@@ -83,7 +88,7 @@ SED_OUT = sed -e '/^default plugins/s/:.*//' \
 	           -e '/^main version/s/:.*//'
 
 ${PY_TESTS:%.py=%.py.out}: %.py.out: %.py
-	${PYTHON} < ${srcdir}/$*.py | ${SED_OUT} > $@
+	${PYTHON} < ${srcdir}/$*.py | ${SED_OUT} > $@; exit $${PIPESTATUS[0]}
 
 TLP=.libs${LD_LIBRARY_PATH:%=:%}
 

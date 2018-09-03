@@ -7,4 +7,5 @@ later
 - OUTPUT support
 
 hacks
+- cleanup does not work in pyton2.
 - clone (when implemented in python) must keep a local reference, to trick garbage collector
