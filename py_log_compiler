@@ -1,10 +1,17 @@
 #!/bin/bash
 
-[ x$1 = xSKIP ] && exit 77
+if [ x$1 = xSKIP ]; then
+	skip=yes
+	shift
+fi
 
 base=`basename $1`
 out=${base}.out
 make $out PYTHON=${PYTHON}
+
+if [ x$skip = xyes ]; then
+	exit 77;
+fi
 
 ref=${srcdir}/out${PYTHON_VERSION}/${base}.ref
 diff -rup $out $ref || exit 1

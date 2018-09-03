@@ -55,7 +55,7 @@ class card : public CARD {
 public:
   explicit card() : CARD()  {}
 public: // pure?
-  virtual CARD* clone(CS&){ unreachable(); }
+  virtual CARD* clone(CS&){ unreachable(); return nullptr;}
 };
 
 std::string command(char const*command);

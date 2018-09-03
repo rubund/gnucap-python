@@ -97,6 +97,7 @@ AC_CHECK_HEADER([${NUMPY_DIR}/arrayobject.h],
 CPPFLAGS=$save_CPPFLAGS
 
 AM_CONDITIONAL(NUMPY, test "x$HAS_NUMPY" = "xyes")
+AM_CONDITIONAL(PY2, test "x$PYTHON_VERSION" = "x2.7")
 
 AC_PROG_SWIG()
 
@@ -104,6 +105,7 @@ AC_OUTPUT([
 	Makefile
 	include/Makefile
 	gnucap/Makefile
+	examples/Makefile
 	gnucap/__init__.py
 	])
 

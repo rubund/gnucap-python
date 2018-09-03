@@ -40,6 +40,7 @@ Build python plugin for gnucap
    $ ./bootstrap
    $ ./configure  # pass PYTHON=some_other_python, to select
    $ make
+   $ make check   # runs tests
    $ make install # optional. may require root privileges
 
 will install the python module "gnucap" and a gnucap plugin "python".
@@ -59,8 +60,8 @@ From gnucap
    gnucap> ac oct 10 1k 100k
    gnucap> myplot vm(2)
 
-First the gnucap plugin is loaded. The second line loads a new command called 
-"myplot" that plots a stored waveform using matplotlib. Line 3-5 loads a 
+First the gnucap plugin is loaded. The second line loads a new command called
+"myplot" that plots a stored waveform using matplotlib. Line 3-5 loads a
 circuit and runs an ac analysis. Finally the ac magnitude of node 2 is plotted
 using the new plotting command.
 
