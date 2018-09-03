@@ -12,7 +12,7 @@ test_python_CPPFLAGS = ${GC_CPPFLAGS} @PYTHON_CPPFLAGS@ \
 	-DPYTHON_SO=\"@ac_python_libdir@/@ac_python_soname@\" ${AM_CPPFLAGS}
 
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = include gnucap
+SUBDIRS = include gnucap examples
 
 all-local:
 	rm -f c_python.so

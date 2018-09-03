@@ -105,6 +105,7 @@ AC_OUTPUT([
 	Makefile
 	include/Makefile
 	gnucap/Makefile
+	examples/Makefile
 	gnucap/__init__.py
 	])
 
