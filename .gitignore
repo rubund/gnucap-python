@@ -1,4 +1,5 @@
 *.la
+*.so
 *.lo
 *.o
 *.pyc
@@ -33,12 +34,14 @@ configure
 configure.lineno
 
 compile
+py-compile
 ltmain.sh
 missing
 install-sh
 stamp-h1
 libtool
 depcomp
+test-driver
 
 Makefile.in
 Makefile
