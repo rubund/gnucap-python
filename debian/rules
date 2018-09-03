@@ -32,7 +32,8 @@ ac-python%:
 	dh_auto_configure --builddirectory=build$* -- PYTHON=python$*
 
 at-python%:
-		$(MAKE) -C build$* check
+	ln -sf out3.6 out3.7
+	$(MAKE) -C build$* check
 
 ar-python%:
 	rm -rf debian/tmp$*
@@ -57,7 +58,10 @@ override_dh_auto_test: $(PYVERS:%=at-python%)
 override_dh_clean: $(PYVERS:%=ar-python%)
 	dh_clean
 	rm -rf build*
-
+	find . -name *.pyc -delete
+	find . -name *.pyo -delete
+	rm -f out3.7
+	
 # create tarball
 get-orig-source:
 	@echo creating tarball from ${upstream_commit}

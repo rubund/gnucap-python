@@ -1,0 +1,560 @@
+Description: cruft in git repo, not in dist tarball
+ needs to be cleaned for the next release.
+ .
+ gnucap-python (0.0.0-1) unstable; urgency=medium
+ .
+   * Initial package.
+Author: Felix Salfelder <felix@salfelder.org>
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: 2018-09-03
+
+--- /dev/null
++++ gnucap-python-0.0.0/bootstrap
+@@ -0,0 +1,25 @@
++#! /bin/sh
++#
++# $Id$
++#
++# Run the various GNU autotools to bootstrap the build
++# system.  Should only need to be done once.
++
++# for now avoid using bash as not everyone has that installed
++CONFIG_SHELL=/bin/sh
++export CONFIG_SHELL
++
++echo "Running aclocal..."
++aclocal -I ./m4 $ACLOCAL_FLAGS || exit 1
++
++echo "Running libtoolize..."
++libtoolize --force --copy
++
++echo "Running autoheader..."
++autoheader || exit 1
++
++echo "Running automake..."
++automake -a -c --gnu || exit 1
++
++echo "Running autoconf..."
++autoconf || exit 1
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/README
+@@ -0,0 +1,2 @@
++some of this works, conceptually
++most of this needs work.
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/custom_ac.py
+@@ -0,0 +1,93 @@
++"""
++Copyright: 2009-2011 Henrik Johansson
++Author: Henrik Johansson
++
++Create a new ac-analysis that always runs at a single frequency
++"""
++
++import os
++import numpy as np
++import pylab
++
++import gnucap
++
++cl=gnucap.CARD_LIST().card_list_()
++
++print("MYAC")
++A=file("/tmp/HELLO","w+")
++
++gnucap.command("set trace")
++gnucap.command("set lang=acs")
++
++## Set gnucap run mode
++runmode = gnucap.SET_RUN_MODE(gnucap.rBATCH)
++
++gnucap.command("get example.ckt")
++
++class MyAC(gnucap.SIM):
++    def do_it(self, cmd, scope):
++        self._scope = scope
++        self.sim_().set_command_ac()
++        self.sim_().init()
++        self.sim_().alloc_vectors()
++        acx = self.sim_()._acx
++        acx.reallocate()
++
++        freq = 20e3
++
++        self.sim_()._jomega = 2j * np.pi * freq
++
++#        self.head(freq, freq, "Freq")
++
++        card_list = gnucap.CARD_LIST().card_list_()
++        card_list.ac_begin()
++        print("begun")
++
++        self.solve()
++        print("solved")
++
++        self.outdata(freq)
++
++        acx.unallocate();
++        self.unalloc_vectors()
++
++    def solve(self):
++        acx =  gnucap.cvar.CKT_BASE_acx ## Static attributes must be accessed through cvar
++        acx.zero()
++        card_list = gnucap.cvar.CARD_LIST_card_list
++        
++        ## Total number of states
++        n = gnucap.cvar.status.total_nodes
++
++#        gnucap.set_complex_array(gnucap.cvar.SIM_ac, np.zeros(n, dtype=np.complex))
++        
++        card_list.do_ac()
++        card_list.ac_load()
++
++        print "Loaded AC-matrix", gnucap.get_complex_array(gnucap.cvar.SIM_ac, n)
++
++        print gnucap.bsmatrix_to_array_c(acx)
++
++        ## Solve
++        acx.lu_decomp()
++        acx.fbsub(gnucap.cvar.SIM_ac)
++   
++        print "rhs after", gnucap.get_complex_array(gnucap.cvar.SIM_ac, n)
++
++               
++    def setup(self, cmd):
++        pass
++    def sweep(self):
++        pass
++
++myac = MyAC()
++
++d0=gnucap.install_command("myac", myac)
++d1=gnucap.install_command("ac", myac)
++
++gnucap.command("store ac vm(2)")
++gnucap.command("myac")
++
++w= gnucap.SIM.find_wave("vm(2)")
++x,y = gnucap.wave_to_arrays(w)
++print x,y
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/eq2-145.ckt
+@@ -0,0 +1,97 @@
++A 145 node circuit
++Vin 1 0 dc 1 ac 1
++x1 1 2 eq4
++.subckt eq4 1 5
++x1 1 2 eq
++x2 2 3 eq
++x3 3 4 eq
++x4 4 5 eq
++.ends eq4
++.subckt eq 31 37
++R101a   35   1  50.K
++R101b   36   1  50.K
++R102a   32   4  50.K
++R102b   33   4  50.K
++R103a   35   7  50.K
++R103b   36   7  50.K
++R104a   32  10  50.K
++R104b   33  10  50.K
++R105a   35  13  50.K
++R105b   36  13  50.K
++R106a   32  16  50.K
++R106b   33  16  50.K
++R107a   35  19  50.K
++R107b   36  19  50.K
++R108a   32  22  50.K
++R108b   33  22  50.K
++R109a   35  25  50.K
++R109b   36  25  50.K
++R110a   32  28  50.K
++R110b   33  28  50.K
++C1      1   2  1.5u
++C2      4   5  748.n
++C3      7   8  408.n
++C4     10  11  206.n
++C5     13  14  100.n
++C6     16  17  50.9n
++C7     19  20  25.3n
++C8     22  23  12.7n
++C9     25  26  5.9n
++C10    28  29  2.95n
++C11     2   3  15.n
++C12     5   6  6.8n
++C13     8   9  3.3n
++C14    11  12  1.8n
++C15    14  15  1.n
++C16    17  18  470.p
++C17    20  21  220.p
++C18    23  24  120.p
++C19    26  27  68.p
++C20    29  30  33.p
++R1      3   0  475.K
++R2      6   0  536.K
++R3      9   0  549.K
++R4     12   0  499.K
++R5     15   0  464.K
++R6     18   0  475.K
++R7     21   0  523.K
++R8     24   0  475.K
++R9     27   0  412.K
++R10    30   0  422.K
++G5a     2   0   3   0   -.000416666
++R11     2   0  2.4K
++G5b     5   0   6   0   -.000416666
++R12     5   0  2.4K
++G6a     8   0   9   0   -.000454545
++R13     8   0  2.2K
++G6b    11   0  12   0   -.000454545
++R14    11   0  2.2K
++G7a    14   0  15   0   -.000454545
++R15    14   0  2.2K
++G7b    17   0  18   0   -.000454545
++R16    17   0  2.2K
++G8a    20   0  21   0   -.000454545
++R17    20   0  2.2K
++G8b    23   0  24   0   -.000454545
++R18    23   0  2.2K
++G9a    26   0  27   0   -.000416666
++R19    26   0  2.4K
++G9b    29   0  30   0   -.000416666
++R20    29   0  2.4K
++R29    31  32  9.1K
++R30    33  34  9.1K
++R31    34  35  9.1K
++R32    36  37  9.1K
++C25    31  32  150.p
++C26    33  34  150.p
++C27    34  35  150.p
++C28    36  37  150.p
++E2     34   0  32  33  10.K
++E3     37   0  35  36  10.K
++.ends eq
++.print op iter(0) v(1) v(2)
++.print dc v(2)
++.print ac vm(2) vdb(2) vp(2)
++.dc Vin 1 10 1
++.ac oct 1 31.25 16000
++.end
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/example.ckt
+@@ -0,0 +1,5 @@
++Test circuit
++Vin 1 0 dc 0 ac 1.0
++R1 1 2 1e3
++C1 2 0 1e-8
++.end
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/example.gnucap
+@@ -0,0 +1,9 @@
++attach ../gnucap-plugins/python.so
++python loadplot.py
++
++get eq2-145.ckt
++
++store ac vm(2)
++ac oct 10 1k 100k
++
++myplot vm(2)
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/rungnucap.sh
+@@ -0,0 +1,2 @@
++#!/bin/sh
++gnucap -i example.gnucap
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/shooting.ckt
+@@ -0,0 +1,5 @@
++RC circuit
++Vin 1 0 dc 0 ac 1.5 pulse(iv=0, pv=1, period=1e-3, width=.5e-3)
++R1 1 2 1e3
++C1 2 0 1e-6
++.end
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/shooting.py
+@@ -0,0 +1,116 @@
++"""
++PSS analysis experiments
++
++Currently the TRANSIENT analysis is subclassed and the accept method is
++overloaded where the shooting newton iteration jacobian is formed using
++the C matrix and the transient jacobian 
++
++"""
++
++import os
++import numpy as np
++import pylab
++
++import gnucap
++
++gnucap.command("set lang=acs")
++
++## Set gnucap run mode
++runmode = gnucap.SET_RUN_MODE(gnucap.rBATCH)
++
++gnucap.command("get shooting.ckt")
++
++class MyTransient(gnucap.TRANSIENT):
++    def do_it(self, cmd, scope):
++        n = gnucap.cvar.status.total_nodes
++        self.Jshoot = np.eye(n)
++        self.lastC = None
++
++        ## Prepare AC analysis
++        card_list = gnucap.cvar.CARD_LIST_card_list
++        gnucap.cvar.SIM_jomega = 1j;
++        acx =  gnucap.cvar.CKT_BASE_acx ## Static attributes must be accessed through cvar
++        acx.reallocate()
++        card_list.ac_begin()
++        
++        self.first = True
++
++        gnucap.TRANSIENT.do_it(self, cmd, scope)
++
++    def accept(self):
++        gnucap.TRANSIENT.accept(self)
++        
++        t = gnucap.cvar.SIM_time0
++        if True:
++            print "Accept at ", gnucap.cvar.SIM_time0
++            n = gnucap.cvar.status.total_nodes
++            aa = gnucap.bsmatrix_to_array_d(gnucap.cvar.CKT_BASE_aa)
++            i = gnucap.to_double_array(gnucap.cvar.SIM_i, n)
++            v0 = gnucap.to_double_array(gnucap.cvar.SIM_v0, n)
++            print v0
++            if self.first:
++                self.v0_0 = v0.copy()
++                self.first = False
++            else:
++                self.v0_n = v0.copy()
++
++            ## Solve system ourself and compare with v0
++            if self.lastC != None:
++                myv0 = np.zeros(aa.shape)
++                h = gnucap.cvar.SIM_time0 - gnucap.cvar.SIM_time1
++
++                gnucap.bsmatrix_fbsub_array_double(gnucap.cvar.CKT_BASE_lu, 
++                                                   np.dot(self.Jshoot, self.lastC) / h, 
++                                                   self.Jshoot)
++
++            ## Get C matrix from ac-analysis
++            ## FIXME, there must be a better way
++            acx =  gnucap.cvar.CKT_BASE_acx ## Static attributes must be accessed through cvar
++            acx.zero()
++            card_list = gnucap.cvar.CARD_LIST_card_list
++    #        card_list.do_ac()
++#            card_list.ac_load()
++            C_bs = gnucap.bsmatrix_to_array_c(acx)
++            self.lastC = np.imag(C_bs)
++            self.lastC = np.array([[1e-6, 0],
++                                    [0, 0]])
++
++
++        
++mytran = MyTransient()
++
++gnucap.attach_command("mytran", mytran)
++
++gnucap.command("store tran v(2)")
++
++t0 = 0
++alpha = 1
++
++gnucap.command("options method euler")
++gnucap.command("mytran 1e-4 1e-3 0")
++
++while True:
++    n = gnucap.cvar.status.total_nodes
++
++    residual = mytran.v0_n - mytran.v0_0
++
++    print "residual: ", np.sqrt(np.dot(residual, residual))
++
++    Jshoot = (np.eye(n) - alpha * mytran.Jshoot)
++    print mytran.Jshoot
++
++    newx = mytran.v0_0 + np.linalg.solve(Jshoot, residual)
++    print "newton, last", newx, mytran.v0_n
++
++    gnucap.to_double_array(gnucap.cvar.SIM_vdc, n)[:] = newx[:]
++
++    print gnucap.to_double_array(gnucap.cvar.SIM_vdc, n)
++
++#    gnucap.cvar.SIM_last_time = t0
++
++    gnucap.command("mytran")
++
++w= gnucap.SIM.find_wave("v(2)")
++x,y = gnucap.wave_to_arrays(w)
++for x,y in  zip(x,y):
++    print x,y
+--- /dev/null
++++ gnucap-python-0.0.0/contrib/simple.py
+@@ -0,0 +1,17 @@
++import os
++import numpy as np
++import pylab
++
++import gnucap
++
++## Load custom plot command
++import loadplot
++
++## Load example circuit and run an ac analysis
++gnucap.command("get example.ckt")
++gnucap.command("store ac vm(2)")
++gnucap.command("ac oct 10 1k 100k")
++
++## Now use the new command to plot vm(2)
++gnucap.command("myplot vm(2)")
++
+--- /dev/null
++++ gnucap-python-0.0.0/gnucap/rc.py
+@@ -0,0 +1,10 @@
++
++lang="acs"
++
++def get_lang():
++	return lang
++
++def set_lang(l):
++	print("setlang", l)
++	global lang
++	lang=l
+--- /dev/null
++++ gnucap-python-0.0.0/out2.7/test.py.ref
+@@ -0,0 +1,28 @@
++generator: already installed, replacing
++stashing as generator:0
++transient: already installed, replacing
++stashing as transient:0
++transient: already installed, replacing
++stashing as transient:0
++default plugins
++#           hidden(0) 
++ 0.         0.        
++-1.         0.        
++ 0.         0.        
++#           hidden(0) 
++ 0.         0.        
++-1.         0.        
++ 0.         0.        
++#Freq      
++ 0.        
++#          
++ 27.       
++#Time       hidden(0) 
++ 0.         0.        
++ 1.         1.        
++Gnucap   System status
++iterations: op=2, dc=2, tran=6, fourier=0, total=16
++transient timesteps: accepted=3, rejected=0, total=3
++transient timesteps: accepted=3, rejected=0, total=3
++nodes: user=0, subckt=0, model=0, total=0
++dctran density=0.0%, ac density=0.0%
+--- /dev/null
++++ gnucap-python-0.0.0/out3.6/test.py.ref
+@@ -0,0 +1,28 @@
++generator: already installed, replacing
++stashing as generator:0
++transient: already installed, replacing
++stashing as transient:0
++transient: already installed, replacing
++stashing as transient:0
++default plugins
++#           hidden(0) 
++ 0.         0.        
++-1.         0.        
++ 0.         0.        
++#           hidden(0) 
++ 0.         0.        
++-1.         0.        
++ 0.         0.        
++#Freq      
++ 0.        
++#          
++ 27.       
++#Time       hidden(0) 
++ 0.         0.        
++ 1.         1.        
++Gnucap   System status
++iterations: op=2, dc=2, tran=6, fourier=0, total=16
++transient timesteps: accepted=3, rejected=0, total=3
++transient timesteps: accepted=3, rejected=0, total=3
++nodes: user=0, subckt=0, model=0, total=0
++dctran density=0.0%, ac density=0.0%
+--- /dev/null
++++ gnucap-python-0.0.0/pending/batchtest.gc
+@@ -0,0 +1,10 @@
++* test python from within gnucap
++
++load public c_python.so
++
++python batchtest.gcpy
++
++ac
++myac
++
++end
+--- /dev/null
++++ gnucap-python-0.0.0/pending/batchtest.gcpy
+@@ -0,0 +1,14 @@
++
++import gnucap
++print("helloworld")
++
++class myac(gnucap.SIM):
++	def do_it(self, cmd, scope):
++		print("HELLOWORLD")
++	def setup(self, cmd):
++		pass
++	def sweep(self):
++		pass
++
++ac = myac()
++d1 = gnucap.install_command("myac", ac)
+--- /dev/null
++++ gnucap-python-0.0.0/test.py
+@@ -0,0 +1,15 @@
++#import libgnucap
++
++import gnucap
++
++
++
++gnucap.command("print dc hidden(0)")
++gnucap.command("print tran hidden(0)")
++gnucap.command("dc trace=i")
++gnucap.command("dc trace=i")
++gnucap.command("ac")
++gnucap.command("op")
++gnucap.command("transient 0 1 1")
++gnucap.command("error") # BUG
++gnucap.command("status notime")
+--- /dev/null
++++ gnucap-python-0.0.0/test_override.py
+@@ -0,0 +1,12 @@
++# testing environment override
++
++import os
++os.environ["GNUCAP_LANG"] = "verilog"
++
++import gnucap
++
++gnucap.parse("resistor r1(0,1)")
++gnucap.command("list")
++
++gnucap.parse("error_1")
++gnucap.command("error_2") # TODO: can't see any error
