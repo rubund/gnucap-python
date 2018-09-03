@@ -72,7 +72,10 @@ GC_TESTS = \
 
 if PY2
 crash.log: PY_LOG_FLAGS=SKIP
+CRASH_OUT = crash.py.out
 endif
+
+CLEANFILES = ${CRASH_OUT}
 
 use_simplugin.gc.out: $(PWD)/simplugin.py
 
