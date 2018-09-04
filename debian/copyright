@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Contact: Felix Salfelder <felix@salfelder.org>
 Upstream-Name: gnucap-python
-Source: http://gnucap.org
+Source: http://gnucap.org/dokuwiki/doku.php/gnucap:user:gnucap_python
 
 Files: *
 Copyright: 2018 Felix Salfelder <felix@salfelder.org>
