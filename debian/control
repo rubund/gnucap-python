@@ -15,7 +15,7 @@ Build-Depends: debhelper (>= 11),
                python,
                python3,
                swig
-Homepage: http://gnucap.org
+Homepage: http://gnucap.org/dokuwiki/doku.php/gnucap:user:gnucap_python
 Vcs-Git: https://salsa.debian.org/felixs-guest/gnucap-python.git
 Vcs-Browser: https://salsa.debian.org/felixs-guest/gnucap-python
 
