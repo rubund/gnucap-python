@@ -42,7 +42,10 @@ Description: GNU Circuit Analysis package, python command plugin
 
 Package: python-gnucap
 Architecture: any
-Depends: ${misc:Depends}, ${python:Depends}, ${shlibs:Depends}
+Depends: ${dlopen:Depends},
+         ${misc:Depends},
+         ${python:Depends},
+         ${shlibs:Depends}
 Recommends: gnucap-default-plugins0
 Suggests: gnucap-devel
 Description: Python bindings for the GNU Circuit Analysis Package
@@ -55,7 +58,10 @@ Description: Python bindings for the GNU Circuit Analysis Package
 
 Package: python3-gnucap
 Architecture: any
-Depends: ${misc:Depends}, ${python3:Depends}, ${shlibs:Depends}
+Depends: ${dlopen:Depends},
+         ${misc:Depends},
+         ${python3:Depends},
+         ${shlibs:Depends}
 Recommends: gnucap-default-plugins0
 Description: Python 3 bindings for the GNU Circuit Analysis Package
  This package contains Python bindings for the GNU Circuit Analysis Package.

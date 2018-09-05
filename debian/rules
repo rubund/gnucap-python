@@ -61,6 +61,19 @@ override_dh_clean: $(PYVERS:%=ar-python%)
 	find . -name *.pyc -delete
 	find . -name *.pyo -delete
 	rm -f out3.7
+	rm -f debian/tmp.*
+
+override_dh_shlibdeps: debian/tmp.lib
+	dh_shlibdeps
+	cat $< >> debian/python-gnucap.substvars
+	cat $< >> debian/python3-gnucap.substvars
+
+debian/tmp.lib: debian/tmp.out
+	dpkg-shlibdeps $< -O -pdlopen > $@
+
+debian/tmp.out:
+	echo 'int main(){}' | gcc -lgnucap -x c - -o $@
+
 	
 # create tarball
 get-orig-source:
