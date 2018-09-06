@@ -46,8 +46,8 @@ Depends: ${dlopen:Depends},
          ${shlibs:Depends}
 Recommends: gnucap-default-plugins0
 Suggests: gnucap-devel
-Description: Python bindings for the GNU Circuit Analysis Package
- This package contains Python bindings for the GNU Circuit Analysis Package.
+Description: Python2 bindings for the GNU Circuit Analysis Package
+ This package contains Python2 bindings for the GNU Circuit Analysis Package.
  .
  Gnucap is a general purpose circuit simulator. It performs nonlinear
  dc and transient analyses, Fourier analysis, and ac analysis
