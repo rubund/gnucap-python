@@ -31,7 +31,7 @@ Depends: ${misc:Depends},
          ${python:Depends},
          ${shlibs:Depends}
 Suggests: gnucap
-Description: GNU Circuit Analysis package, python command plugin
+Description: GNU Circuit Analysis package, Python command plugin
  This package contains a plugin with a command to load extensions written in
  the Python language.
  .
