@@ -34,7 +34,7 @@ ac-python%:
 	dh_auto_configure --builddirectory=build$* -- PYTHON=python$*
 
 at-python%:
-	[ -e out3.6 ] || ln -sf out3.6 out3.7
+	[ -e out3.7 ] || ln -sf out3.6 out3.7
 	$(MAKE) -C build$* check
 
 ar-python%:
