@@ -1,6 +1,6 @@
 gnucap-python (0.0.0-1) unstable; urgency=medium
 
-  * Initial package.
+  * Initial release. (Closes: #908150)
   * Python 2 version included, as python-nlopt only works with Python2
     (you may safely ignore this package)
 
