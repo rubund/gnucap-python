@@ -41,6 +41,7 @@ Description: GNU Circuit Analysis package, python command plugin
  command driven. It can also be run in batch mode or as a server.
 
 Package: python-gnucap
+Section: python
 Architecture: any
 Depends: ${dlopen:Depends},
          ${misc:Depends},
@@ -57,6 +58,7 @@ Description: Python bindings for the GNU Circuit Analysis Package
  command driven. It can also be run in batch mode or as a server.
 
 Package: python3-gnucap
+Section: python
 Architecture: any
 Depends: ${dlopen:Depends},
          ${misc:Depends},
