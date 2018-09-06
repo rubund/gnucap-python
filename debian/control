@@ -27,10 +27,8 @@ Vcs-Browser: https://salsa.debian.org/felixs-guest/gnucap-python
 Package: gnucap-python
 Architecture: any
 Depends: ${misc:Depends},
-         ${python3:Depends},
-         ${python:Depends},
          ${shlibs:Depends}
-Suggests: gnucap
+Suggests: gnucap, python
 Description: GNU Circuit Analysis package, Python command plugin
  This package contains a plugin with a command to load extensions written in
  the Python language.
@@ -45,7 +43,6 @@ Section: python
 Architecture: any
 Depends: ${dlopen:Depends},
          ${misc:Depends},
-         ${python:Depends},
          ${shlibs:Depends}
 Recommends: gnucap-default-plugins0
 Suggests: gnucap-devel
