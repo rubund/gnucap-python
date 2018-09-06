@@ -5,6 +5,8 @@ PYVERS:= $(shell pyversions -v -r debian/control) \
 
 PYDEF:= $(shell py3versions -d -v)
 
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 include /usr/share/dpkg/pkg-info.mk
 
 #export DH_VERBOSE=1
