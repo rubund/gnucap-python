@@ -1,3 +1,4 @@
 usr/lib/*/gnucap-python/*.so.*
 usr/lib/*/gnucap/*.so
+usr/share/doc/gnucap-python/NEWS
 usr/share/doc/gnucap-python/examples/*

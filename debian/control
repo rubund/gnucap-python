@@ -5,7 +5,7 @@ Maintainer: Debian Electronics Team <pkg-electronics-devel@lists.alioth.debian.o
 Uploaders: Felix Salfelder <felix@salfelder.org>
 X-Python-Version: >= 2.6
 X-Python3-Version: >= 3.6
-Standards-Version: 4.1.3
+Standards-Version: 4.2.0
 Build-Depends: debhelper (>= 11),
                dh-python,
                dpkg-dev (>=1.17.14),

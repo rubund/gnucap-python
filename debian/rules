@@ -53,6 +53,8 @@ override_dh_auto_install:
 	cd debian/tmp/usr/lib/*/gnucap; ln -sf c_python${PYDEF}.so c_python.so
 	mv debian/tmp${PYDEF}/usr/share debian/tmp/usr
 
+	echo "0.0.0\n=====\n* initial release" > debian/tmp/usr/share/doc/gnucap-python/NEWS
+
 override_dh_auto_configure: $(PYVERS:%=ac-python%)
 override_dh_auto_build: $(PYVERS:%=ab-python%)
 override_dh_auto_test: $(PYVERS:%=at-python%)
