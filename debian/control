@@ -21,8 +21,8 @@ Build-Depends: debhelper (>= 11),
                python3.7-dev,
                swig
 Homepage: http://gnucap.org/dokuwiki/doku.php/gnucap:user:gnucap_python
-Vcs-Git: https://salsa.debian.org/felixs-guest/gnucap-python.git
-Vcs-Browser: https://salsa.debian.org/felixs-guest/gnucap-python
+Vcs-Git: https://salsa.debian.org/electronics-team/Gnucap/gnucap-python.git
+Vcs-Browser: https://salsa.debian.org/electronics-team/Gnucap/gnucap-python
 
 Package: gnucap-python
 Architecture: any
