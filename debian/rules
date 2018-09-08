@@ -11,6 +11,8 @@ include /usr/share/dpkg/pkg-info.mk
 
 #export DH_VERBOSE=1
 
+# process makefile dependencies with n jobs in parallel, if DEB_BUILD_OPTIONS
+# contains "parallel=n". (set -jn.)
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
         MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
 endif
