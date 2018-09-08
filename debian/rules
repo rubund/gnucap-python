@@ -69,12 +69,18 @@ override_dh_clean: $(PYVERS:%=ar-python%)
 
 override_dh_shlibdeps: debian/tmp.lib
 	dh_shlibdeps
+
+	# inject extra library dependency
 	cat $< >> debian/python-gnucap.substvars
 	cat $< >> debian/python3-gnucap.substvars
 
+# dpkg-shlibdeps misses the dlopen in gnucap/__init__.py
+# "ctypes.PyDLL("@LIBGNUCAP_SONAME@", mode=ctypes.RTLD_GLOBAL)"
+# need to act on a dummy binary (tmp.out) instead
 debian/tmp.lib: debian/tmp.out
 	dpkg-shlibdeps $< -O -pdlopen > $@
 
+# create dummy binary, linked against gnucap
 debian/tmp.out:
 	echo 'int main(){}' | gcc -lgnucap -x c - -o $@
 
