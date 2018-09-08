@@ -5,11 +5,83 @@ Source: http://gnucap.org/dokuwiki/doku.php/gnucap:user:gnucap_python
 
 Files: *
 Copyright: 2018 Felix Salfelder <felix@salfelder.org>
-           -2009? Henrik Johansson
-License: GPL-3
+           2009-2011 Henrik Johansson
+License: GPL-3+
+
+Files: gnucap/s_*cc
+Copyright: 2016 Albert Davis <aldavis@gnu.org>
+License: GPL-3+
+Comment: Gnucap upstream plugin source files. These are required here, so
+			objects can be derived from in Python through SWIG. Future Gnucap will
+         likely install these.
+
+Files: m4/ax_soname.m4
+Copyright: 2018 Felix Salfelder <felix@salfelder.org>
+           -2015 libusb developers
+License: GPL-3+
+Comment: derived from libusb-compat-0.1/m4/au_check_lib_soname.m4, LGPL2+
+
+Files: m4/ac_pkg_swig.m4
+Copyright: 2008 Sebastian Huber <sebastian-huber@web.de>
+           2008 Alan W. Irwin <irwin@beluga.phys.uvic.ca>
+           2008 Rafael Laboissiere <rafael@laboissiere.net>
+           2008 Andrew Collier <colliera@ukzn.ac.za>
+License: GPL-2+
  This program is free software; you can redistribute it and/or modify it under
  the terms of the GNU General Public License as published by the Free Software
- Foundation, version 3.
+ Foundation, version 2 or later.
+ .
+ On Debian GNU/Linux systems, the complete text of the GNU General Public
+ License can be found in `/usr/share/common-licenses/GPL-3'
+
+Files: m4/ac_python_devel.m4
+Copyright: 2009 Sebastian Huber <sebastian-huber@web.de>
+           2009 Alan W. Irwin
+           2009 Rafael Laboissiere <rafael@laboissiere.net>
+           2009 Andrew Collier
+           2009 Matteo Settenvini <matteo@member.fsf.org>
+           2009 Horst Knorr <hk_classes@knoda.org>
+           2013 Daniel Mullner <muellner@math.stanford.edu>
+License: GPL-3+
+
+Files: m4/l*.m4 aclocal.m4
+Copyright: 2018 Free Software Foundation
+License: GPL-3+
+Comment: autotools files
+
+Files: c_python.cc
+Copyright: 2018 Felix Salfelder <felix@salfelder.org>
+           2009 Henrik Johansson <henjo2006@gmail.com>
+License: GPL-3+
+
+Files: Makefile.am configure.ac
+Copyright: 2018 Felix Salfelder <felix@salfelder.org>
+           2011 Henrik Johansson <henjo2006@gmail.com>
+License: GPL-3+
+
+Files: include/numpy_interface.h
+Copyright: 2009 Henrik Johansson <henjo2006@gmail.com>
+License: GPL-3+
+Comment: initially "GPL" by Henrik Johansson, 2009
+
+Files: *.py *.ref examples/*
+Copyright: 2018 Felix Salfelder <felix@salfelder.org>
+License: GPL-3+
+
+Files: examples/*.typ
+Copyright: 2004 Joao Ramos
+License: public-domain
+ No license required for any purpose; the work is not subject to copyright in
+ any jurisdiction.
+Comment: These transistor model parameters appeared in examples shipped with
+			ASCO, a circuit optimisation tool (GPL). Without further context
+         (which is not supplied) these are equivalent to random numbers, and
+         only used as such.
+
+License: GPL-3+
+ This program is free software; you can redistribute it and/or modify it under
+ the terms of the GNU General Public License as published by the Free Software
+ Foundation, version 3 or later.
  .
  On Debian GNU/Linux systems, the complete text of the GNU General Public
  License can be found in `/usr/share/common-licenses/GPL-3'
