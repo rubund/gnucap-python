@@ -34,6 +34,7 @@ at-python%:
 	$(MAKE) -C build$* check
 
 ar-python%:
+	$(RM) -r debian/tmp$*
 
 override_dh_auto_install:
 	mkdir -p debian/tmp/usr/lib
@@ -60,6 +61,7 @@ override_dh_clean: $(PYVERS:%=ar-python%)
 	find . -name *.pyc -delete
 	find . -name *.pyo -delete
 	$(RM) -r out3.7 out3.6
+	$(RM) debian/tmp.*
 
 override_dh_shlibdeps: debian/tmp.lib
 	dh_shlibdeps
