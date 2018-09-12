@@ -1,6 +1,4 @@
 version=4
-opts=filenamemangle=s/.*\/uploads/[^\/]+/gnucap-python.*\.tar\.gz/gnucap-python-$1\.tar\.gz/g \
-   https://gitlab.com/gnucap/gnucap-python/tags?sort=updated_desc .*/uploads/[^\/]+/gnucap-python-(\d\S)\.tar\.gz
 
 opts="pgpmode=next" \
   https://gitlab.com/gnucap/gnucap-python/tags \
